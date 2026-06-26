@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Netflix España · Social × Contenido · Semana 19–25 jun 2026</title>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f5f5f5;color:#111;}
+    .header{background:#111;color:#fff;padding:20px 28px;display:flex;align-items:center;gap:16px;}
+    .header-n{color:#E50914;font-size:22px;font-weight:900;letter-spacing:-0.5px;}
+    .header-div{width:1px;height:28px;background:#444;}
+    .header-info h1{font-size:16px;font-weight:700;}
+    .header-info p{font-size:11px;color:#888;margin-top:2px;}
+    .toolbar{background:#fff;border-bottom:1px solid #e8e8e8;padding:12px 24px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+    .filter-pill{background:#f3f4f6;border:1px solid #e5e7eb;border-radius:20px;padding:6px 16px;font-size:12px;font-weight:600;cursor:pointer;transition:all .15s;}
+    .filter-pill.active{background:#111;color:#fff;border-color:#111;}
+    .filter-pill:hover{background:#e5e7eb;}
+    .filter-pill.active:hover{background:#333;}
+    .layout{display:flex;height:calc(100vh - 108px);overflow:hidden;}
+    .table-pane{flex:1;overflow-y:auto;}
+    .panel{width:360px;flex-shrink:0;background:#fff;border-left:1px solid #e8e8e8;overflow-y:auto;display:none;}
+    .panel.open{display:block;}
+    table{width:100%;border-collapse:collapse;}
+    thead th{background:#fafafa;padding:10px 12px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:#888;border-bottom:1px solid #e8e8e8;text-align:left;position:sticky;top:0;z-index:2;}
+    thead th:not(:first-child){text-align:center;}
+    tbody tr{border-bottom:1px solid #f0f0f0;transition:background .12s;}
+    tbody tr:hover{background:#fafafa;}
+    tbody tr.selected{background:#f0f7ff!important;}
+    .panel-header{background:#111;color:#fff;padding:16px 18px;display:flex;align-items:center;gap:10px;}
+    .panel-close{margin-left:auto;cursor:pointer;font-size:18px;opacity:.6;border:none;background:none;color:#fff;padding:0;}
+    .panel-close:hover{opacity:1;}
+    .psec{padding:14px 18px;border-bottom:1px solid #f0f0f0;}
+    .psec h3{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:#aaa;margin-bottom:8px;}
+    .rec-box{border-radius:10px;padding:10px 14px;font-size:12px;line-height:1.55;}
+    .asset-card{border:1px solid #f0f0f0;border-radius:8px;padding:10px;margin-bottom:8px;font-size:11px;}
+    .asset-net{font-size:9px;font-weight:700;padding:2px 7px;border-radius:6px;color:#fff;display:inline-block;margin-bottom:4px;}
+    .trend-bar-row{display:flex;align-items:flex-end;gap:8px;height:50px;margin-top:6px;}
+    .trend-bar-wrap{flex:1;text-align:center;}
+    .trend-bar{background:#E50914;border-radius:3px 3px 0 0;min-height:2px;transition:height .3s;}
+    .trend-label{font-size:9px;color:#aaa;margin-top:3px;}
+    .trend-posts{font-size:9px;color:#888;}
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-n">N</div>
+  <div class="header-div"></div>
+  <div class="header-info">
+    <h1>Social × Contenido · España</h1>
+    <p>Semana 19–25 jun 2026 · Versión pública · 26 junio 2026</p>
+  </div>
+  <div style="margin-left:auto;display:flex;gap:12px;align-items:center;">
+    <span style="background:#1a1a1a;color:#aaa;font-size:11px;padding:5px 12px;border-radius:8px;">ER Media ES 3m · IG&nbsp;4,96% · TT&nbsp;8,54% · FB&nbsp;1,58% · X&nbsp;2,55%</span>
+  </div>
+</div>
+
+<div class="toolbar">
+  <span style="font-size:11px;font-weight:600;color:#888;margin-right:4px;">Filtrar:</span>
+  <div class="filter-pill active" onclick="filterRec('all',this)">Todos (15)</div>
+  <div class="filter-pill" onclick="filterRec('yes',this)">🟢 Publicar (3)</div>
+  <div class="filter-pill" onclick="filterRec('wait',this)">🟡 Esperar (5)</div>
+  <div class="filter-pill" onclick="filterRec('stop',this)">🔴 Detener (3)</div>
+  <div class="filter-pill" onclick="filterRec('no',this)">⚪ No publicar (4)</div>
+</div>
+
+<div class="layout">
+  <div class="table-pane" id="table-pane">
+    <table>
+      <thead>
+        <tr>
+          <th>Título</th>
+          <th>Posts ES</th>
+          <th>Imp. 24h</th>
+          <th>Eng. 24h</th>
+          <th>ER 24h</th>
+          <th>Plataformas</th>
+          <th>Recomendación</th>
+        </tr>
+      </thead>
+      <tbody id="tbody">
+        
+    <tr onclick="openPanel(0)" style="cursor:pointer;" id="row-0">
+      <td style="padding:10px 12px;">
+        <div style="font-size:13px;font-weight:700;margin-bottom:3px;">I Will Find You <span style="background:#111;color:#fff;font-size:9px;font-weight:700;padding:1px 6px;border-radius:6px;">ORIG</span></div>
+        <div style="font-size:11px;color:#888;">Serie · Limited · 18 jun · D+7</div>
+      </td>
+      <td style="padding:10px 12px;text-align:center;font-size:13px;font-weight:700;">1</td>
+      <td style="padding:10px 12px;text-align:right;font-size:13px;">949</td>
+      <td style="padding:10px 12px;text-align:right;font-size:13px;">7</td>
+      <td style="padding:10px 12px;text-align:right;font-size:13px;font-weight:700;">0,74%</td>
+      <td style="padding:10px 12px;"><span style="background:#888;color:#fff;font-size:9px;font-weight:700;padding:2px 6px;border-radius:8px;margin-right:3px;">X</span></td>
+      <td style="padding:10px 12px;"><span style="background:#f3f4f6;color:#374151;font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px;white-space:nowrap;">⚪ No publicar</span></td>
+    </tr>
+
+    <tr onclick="openPanel(1)" style="cursor:pointer;" id="row-1">
+      <td style="padding:10px 12px;">
+        <div style="font-size:13px;font-weight:700;margin-bottom:3px;">Mensajes de Voz para Isabelle <span style="background:#111;color:#fff;font-size:9px;font-weight:700;padding:1px 6px;border-radius:6px;">ORIG</span></div>
+        <div style="font-size:11px;color:#888;">Película · 19 jun · D+6</div>
+      </td>
+      <td style="padding:10px 12px;text-align:center;font-size:13px;font-weight:700;">5</td>
+      <td style="padding:10px 12px;text-align:right;font-size:13px;">785K</td>
+      <td style="padding:10px 12px;text-align:right;font-size:13px;">25K</td>
+      <td style="padding:10px 12px;text-align:right;font-size:13px;font-weight:700;">3,19%</td>
+      <td style="padding:10px 12px;"><span style="background:#888;color:#fff;font-size:9px;font-weight:700;padding:2px 6px;border-radius:8px;margin-right:3px;">X</span><span style="background:#e1306c;color:#fff;font-size:9px;font-weight:700;padding:2px 6px;border-radius:8px;margin-right:3px;">IG</span><span style="background:#1877f2;color:#fff;font-size:9px;font-weight:700;padding:2px 6px;border-radius:8px;margin-right:3px;">FB</span><span style="background:#00ccc5;color:#fff;font-size:9px;font-weight:700;padding:2px 6px;border-radius:8px;margin-right:3px;">TT</span></td>
+      <td style="padding:10px 12px;"><span style="background:#d1fae5;color:#065f46;font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px;white-space:nowrap;">🟢 Publicar</span></td>
+    </tr>
+
+    <tr onclick="openPanel(2)" style="cursor:pointer;" id="row-2">
+      <td style="padding:10px 12px;">
+        <div style="font-size:13px;font-weight:700;margin-bottom:3px;">Oasis: Temporada 1 <span style="background:#111;color:#fff;font-size:9px;font-weight:700;padding:1px 6px;border-radius:6px;">ORIG</span></div>
+        <div style="font-size:11px;color:#888;">Serie · 19 jun · D+6</div>
+      </td>
+      <td style="padding:10px 12px;text-align:center;font-size:13px;font-weight:700;">35</td>
+      <td style="padding:10px 12px;text-align:right;font-size:13px;">1.7M</td>
+      <td style="padding:10px 12px;text-align:right;font-size:13px;">57K</td>
+      <td style="padding:10px 12px;text-align:right;font-size:13px;font-weight:700;">3,43%</td>
+      <td style="padding:10px 12px;"><span style="background:#e1306c;color:#fff;font-size:9px;font-weight:700;padding:2px 6px;border-radius:8px;margin-right:3px;">IG</span><span style="background:#00ccc5;color:#fff;font-size:9px;font-weight:700;padding:2px 6px;border-radius:8px;margin-right:3px;">TT</span><span style="background:#1877f2;color:#fff;font-size:9px;font-weight:700;padding:2px 6px;border-radius:8px;margin-right:3px;">FB</span><span style="background:#888;color:#fff;font-size:9px;font-weight:700;padding:2px 6px;border-radius:8px;margin-right:3px;">X</span><span style="background:#ff4444;color:#fff;font-size:9px;font-weight:700;padding:2px 6px;border-radius:8px;margin-right:3px;">YT</span></td>
+      <td style="padding:10px 12px;"><span style="background:#f3f4f6;color:#374151;font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px;white-space:nowrap;">⚪ No publicar</span></td>
+    </tr>
+
+    <tr onclick="openPanel(3)" style="cursor:pointer;" id="row-3">
+      <td style="padding:10px 12px;">
+        <div style="font-size:13px;font-weight:700;margin-bottom:3px;">The Marked Woman <span style="background:#111;color:#fff;font-size:9px;font-weight:700;padding:1px 6px;border-radius:6px;">ORIG</span></div>
+        <div style="font-size:11px;color:#888;">Serie · 5 jun · D+20</div>
+      </td>
+      <td style="padding:10px 12px;text-align:center;font-size:13px;font-weight:700;">—</td>
+      <td style="padding:10px 12px;text-align:right;font-size:13px;">—</td>
+      <td style="padding:10px 12px;text-align:right;font-size:13px;">—</td>
+      <td style="padding:10px 12px;text-align:right;font-size:13px;font-weight:700;">—</td>
+      <td style="padding:10px 12px;"></td>
+      <td style="padding:10px 12px;"><span style="background:#fee2e2;color:#991b1b;font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px;white-space:nowrap;">🔴 Detener</span></td>
+    </tr>
+
+    <tr onclick="openPanel(4)" style="cursor:pointer;" id="row-4">
+      <td style="padding:10px 12px;">
+        <div style="font-size:13px;font-weight:700;margin-bottom:3px;">Romance de Oficina <span style="background:#111;color:#fff;font-size:9px;font-weight:700;padding:1px 6px;border-radius:6px;">ORIG</span></div>
+        <div style="font-size:11px;color:#888;">Serie · 5 jun · D+20</div>
+      </td>
+      <td style="padding:10px 12px;text-align:center;font-size:13px;font-weight:700;">—</td>
+      <td style="padding:10px 12px;text-align:right;font-size:13px;">—</td>
+      <td style="padding:10px 12px;text-align:right;font-size:13px;">—</td>
+      <td style="padding:10px 12px;text-align:right;font-size:13px;font-weight:700;">—</td>
+      <td style="padding:10px 12px;"></td>
+      <td style="padding:10px 12px;"><span style="background:#f3f4f6;color:#374151;font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px;white-space:nowrap;">⚪ No publicar</span></td>
+    </tr>
+
+    <tr onclick="openPanel(5)" style="cursor:pointer;" id="row-5">
+      <td style="padding:10px 12px;">
+        <div style="font-size:13px;font-weight:700;margin-bottom:3px;">Losing Judgment: T1 <span style="background:#111;color:#fff;font-size:9px;font-weight:700;padding:1px 6px;border-radius:6px;">ORIG</span></div>
+        <div style="font-size:11px;color:#888;">Serie · 12 jun · D+13</div>
+      </td>
+      <td style="padding:10px 12px;text-align:center;font-size:13px;font-weight:700;">—</td>
+      <td style="padding:10px 12px;text-align:right;font-size:13px;">—</td>
+      <td style="padding:10px 12px;text-align:right;font-size:13px;">—</td>
+      <td style="padding:10px 12px;text-align:right;font-size:13px;font-weight:700;">—</td>
+      <td style="padding:10px 12px;"></td>
+      <td style="padding:10px 12px;"><span style="background:#fef3c7;color:#92400e;font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px;white-space:nowrap;">🟡 Esperar</span></td>
+    </tr>
+
+    <tr onclick="openPanel(6)" style="cursor:pointer;" id="row-6">
+      <td style="padding:10px 12px;">
+        <div style="font-size:13px;font-weight:700;margin-bottom:3px;">Colors of Evil: Black <span style="background:#111;color:#fff;font-size:9px;font-weight:700;padding:1px 6px;border-radius:6px;">ORIG</span></div>
+        <div style="font-size:11px;color:#888;">Película · 10 jun · D+15</div>
+      </td>
+      <td style="padding:10px 12px;text-align:center;font-size:13px;font-weight:700;">—</td>
+      <td style="padding:10px 12px;text-align:right;font-size:13px;">—</td>
+      <td style="padding:10px 12px;text-align:right;font-size:13px;">—</td>
+      <td style="padding:10px 12px;text-align:right;font-size:13px;font-weight:700;">—</td>
+      <td style="padding:10px 12px;"></td>
+      <td style="padding:10px 12px;"><span style="background:#fee2e2;color:#991b1b;font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px;white-space:nowrap;">🔴 Detener</span></td>
+    </tr>
+
+    <tr onclick="openPanel(7)" style="cursor:pointer;" id="row-7">
+      <td style="padding:10px 12px;">
+        <div style="font-size:13px;font-weight:700;margin-bottom:3px;">A Minecraft Movie </div>
+        <div style="font-size:11px;color:#888;">Película · 19 jun · D+6</div>
+      </td>
+      <td style="padding:10px 12px;text-align:center;font-size:13px;font-weight:700;">—</td>
+      <td style="padding:10px 12px;text-align:right;font-size:13px;">—</td>
+      <td style="padding:10px 12px;text-align:right;font-size:13px;">—</td>
+      <td style="padding:10px 12px;text-align:right;font-size:13px;font-weight:700;">—</td>
+      <td style="padding:10px 12px;"></td>
+      <td style="padding:10px 12px;"><span style="background:#fef3c7;color:#92400e;font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px;white-space:nowrap;">🟡 Esperar</span></td>
+    </tr>
+
+    <tr onclick="openPanel(8)" style="cursor:pointer;" id="row-8">
+      <td style="padding:10px 12px;">
+        <div style="font-size:13px;font-weight:700;margin-bottom:3px;">Instinto Maternal <span style="background:#111;color:#fff;font-size:9px;font-weight:700;padding:1px 6px;border-radius:6px;">ORIG</span></div>
+        <div style="font-size:11px;color:#888;">Película · 12 jun · D+13</div>
+      </td>
+      <td style="padding:10px 12px;text-align:center;font-size:13px;font-weight:700;">3</td>
+      <td style="padding:10px 12px;text-align:right;font-size:13px;">297K</td>
+      <td style="padding:10px 12px;text-align:right;font-size:13px;">7K</td>
+      <td style="padding:10px 12px;text-align:right;font-size:13px;font-weight:700;">2,21%</td>
+      <td style="padding:10px 12px;"><span style="background:#888;color:#fff;font-size:9px;font-weight:700;padding:2px 6px;border-radius:8px;margin-right:3px;">X</span><span style="background:#e1306c;color:#fff;font-size:9px;font-weight:700;padding:2px 6px;border-radius:8px;margin-right:3px;">IG</span><span style="background:#00ccc5;color:#fff;font-size:9px;font-weight:700;padding:2px 6px;border-radius:8px;margin-right:3px;">TT</span></td>
+      <td style="padding:10px 12px;"><span style="background:#f3f4f6;color:#374151;font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px;white-space:nowrap;">⚪ No publicar</span></td>
+    </tr>
+
+    <tr onclick="openPanel(9)" style="cursor:pointer;" id="row-9">
+      <td style="padding:10px 12px;">
+        <div style="font-size:13px;font-weight:700;margin-bottom:3px;">Teach You a Lesson <span style="background:#111;color:#fff;font-size:9px;font-weight:700;padding:1px 6px;border-radius:6px;">ORIG</span></div>
+        <div style="font-size:11px;color:#888;">Serie · Limited · 5 jun · D+20</div>
+      </td>
+      <td style="padding:10px 12px;text-align:center;font-size:13px;font-weight:700;">—</td>
+      <td style="padding:10px 12px;text-align:right;font-size:13px;">—</td>
+      <td style="padding:10px 12px;text-align:right;font-size:13px;">—</td>
+      <td style="padding:10px 12px;text-align:right;font-size:13px;font-weight:700;">—</td>
+      <td style="padding:10px 12px;"></td>
+      <td style="padding:10px 12px;"><span style="background:#d1fae5;color:#065f46;font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px;white-space:nowrap;">🟢 Publicar</span></td>
+    </tr>
+
+    <tr onclick="openPanel(10)" style="cursor:pointer;" id="row-10">
+      <td style="padding:10px 12px;">
+        <div style="font-size:13px;font-weight:700;margin-bottom:3px;">Sonic the Hedgehog 3 </div>
+        <div style="font-size:11px;color:#888;">Película · 9 jun · D+16</div>
+      </td>
+      <td style="padding:10px 12px;text-align:center;font-size:13px;font-weight:700;">—</td>
+      <td style="padding:10px 12px;text-align:right;font-size:13px;">—</td>
+      <td style="padding:10px 12px;text-align:right;font-size:13px;">—</td>
+      <td style="padding:10px 12px;text-align:right;font-size:13px;font-weight:700;">—</td>
+      <td style="padding:10px 12px;"></td>
+      <td style="padding:10px 12px;"><span style="background:#fef3c7;color:#92400e;font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px;white-space:nowrap;">🟡 Esperar</span></td>
+    </tr>
+
+    <tr onclick="openPanel(11)" style="cursor:pointer;" id="row-11">
+      <td style="padding:10px 12px;">
+        <div style="font-size:13px;font-weight:700;margin-bottom:3px;">El Polígamo: T1 <span style="background:#111;color:#fff;font-size:9px;font-weight:700;padding:1px 6px;border-radius:6px;">ORIG</span></div>
+        <div style="font-size:11px;color:#888;">Serie · 12 jun · D+13</div>
+      </td>
+      <td style="padding:10px 12px;text-align:center;font-size:13px;font-weight:700;">—</td>
+      <td style="padding:10px 12px;text-align:right;font-size:13px;">—</td>
+      <td style="padding:10px 12px;text-align:right;font-size:13px;">—</td>
+      <td style="padding:10px 12px;text-align:right;font-size:13px;font-weight:700;">—</td>
+      <td style="padding:10px 12px;"></td>
+      <td style="padding:10px 12px;"><span style="background:#fee2e2;color:#991b1b;font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px;white-space:nowrap;">🔴 Detener</span></td>
+    </tr>
+
+    <tr onclick="openPanel(12)" style="cursor:pointer;" id="row-12">
+      <td style="padding:10px 12px;">
+        <div style="font-size:13px;font-weight:700;margin-bottom:3px;">In the Hand of Dante </div>
+        <div style="font-size:11px;color:#888;">Película · 24 jun · D+1</div>
+      </td>
+      <td style="padding:10px 12px;text-align:center;font-size:13px;font-weight:700;">—</td>
+      <td style="padding:10px 12px;text-align:right;font-size:13px;">—</td>
+      <td style="padding:10px 12px;text-align:right;font-size:13px;">—</td>
+      <td style="padding:10px 12px;text-align:right;font-size:13px;font-weight:700;">—</td>
+      <td style="padding:10px 12px;"></td>
+      <td style="padding:10px 12px;"><span style="background:#fef3c7;color:#92400e;font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px;white-space:nowrap;">🟡 Esperar</span></td>
+    </tr>
+
+    <tr onclick="openPanel(13)" style="cursor:pointer;" id="row-13">
+      <td style="padding:10px 12px;">
+        <div style="font-size:13px;font-weight:700;margin-bottom:3px;">America's Sweethearts: Cowboys T3 <span style="background:#111;color:#fff;font-size:9px;font-weight:700;padding:1px 6px;border-radius:6px;">ORIG</span></div>
+        <div style="font-size:11px;color:#888;">Documental · 16 jun · D+9</div>
+      </td>
+      <td style="padding:10px 12px;text-align:center;font-size:13px;font-weight:700;">—</td>
+      <td style="padding:10px 12px;text-align:right;font-size:13px;">—</td>
+      <td style="padding:10px 12px;text-align:right;font-size:13px;">—</td>
+      <td style="padding:10px 12px;text-align:right;font-size:13px;font-weight:700;">—</td>
+      <td style="padding:10px 12px;"></td>
+      <td style="padding:10px 12px;"><span style="background:#d1fae5;color:#065f46;font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px;white-space:nowrap;">🟢 Publicar</span></td>
+    </tr>
+
+    <tr onclick="openPanel(14)" style="cursor:pointer;" id="row-14">
+      <td style="padding:10px 12px;">
+        <div style="font-size:13px;font-weight:700;margin-bottom:3px;">One Piece: Alabasta </div>
+        <div style="font-size:11px;color:#888;">Anime · 14 jun · D+11</div>
+      </td>
+      <td style="padding:10px 12px;text-align:center;font-size:13px;font-weight:700;">—</td>
+      <td style="padding:10px 12px;text-align:right;font-size:13px;">—</td>
+      <td style="padding:10px 12px;text-align:right;font-size:13px;">—</td>
+      <td style="padding:10px 12px;text-align:right;font-size:13px;font-weight:700;">—</td>
+      <td style="padding:10px 12px;"></td>
+      <td style="padding:10px 12px;"><span style="background:#fef3c7;color:#92400e;font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px;white-space:nowrap;">🟡 Esperar</span></td>
+    </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="panel" id="panel">
+    <div class="panel-header">
+      <div>
+        <div style="font-size:13px;font-weight:700;" id="panel-title">—</div>
+        <div style="font-size:11px;color:#aaa;margin-top:2px;" id="panel-meta">—</div>
+      </div>
+      <button class="panel-close" onclick="closePanel()">✕</button>
+    </div>
+    <div id="panel-body"></div>
+  </div>
+</div>
+
+<script>
+const TITLES_DATA = [{"id": 81509369, "title": "I Will Find You", "orig": true, "cat": "Serie · Limited", "launch": "18 jun", "daysOld": 7, "postsES": 1, "imp": 949, "eng": 7, "er": 0.74, "plat": ["X"], "rec": "no", "recPlatforms": [], "erByPlatform": {"X": {"posts": 1, "er": 0.74}}, "esProjectIds": [], "reason": "D+7 con 1 post en X (ER 0,74%, bajo la media del canal). Buena cobertura relativa al tiempo de lanzamiento.", "assets": [], "trend": [{"w": "W1", "p": 0, "i": 0}, {"w": "W2", "p": 4, "i": 14942}, {"w": "W3", "p": 1, "i": 949}]}, {"id": 81716219, "title": "Mensajes de Voz para Isabelle", "orig": true, "cat": "Película", "launch": "19 jun", "daysOld": 6, "postsES": 5, "imp": 784714, "eng": 25059, "er": 3.19, "plat": ["X", "INSTAGRAM", "FACEBOOK", "TIKTOK"], "rec": "yes", "recPlatforms": ["X"], "erByPlatform": {"X": {"posts": 1, "er": 9.93}, "INSTAGRAM": {"posts": 2, "er": 4.01}, "FACEBOOK": {"posts": 1, "er": 0.22}, "TIKTOK": {"posts": 1, "er": 4.75}}, "esProjectIds": ["7a7910f2-87ec-45d6-81ed-411c57bb0e4b"], "reason": "ER en X (9,93%) muy por encima de la media ES 3m (2,55%). Solo 1 post en X hasta ahora. Escalar en X.", "assets": [{"net": "X", "type": "Graphics Post", "spot": "Graphics Post", "country": "BR", "screen": "NetflixBrasil", "imp": 442394, "eng": 19357, "er": 4.38, "url": "https://twitter.com/NetflixBrasil/status/2068710534220841436", "sid": "194d8000-f9d8-426c-aae0-7c3998471c7e"}, {"net": "X", "type": "VIDEO", "spot": "Supercut", "country": "US", "screen": "netflix", "imp": 56485, "eng": 2344, "er": 4.15, "url": "https://twitter.com/netflix/status/2068710535437177001", "sid": "591843e9-9450-41f1-b2e4-7c194055eecf"}], "trend": [{"w": "W1", "p": 0, "i": 0}, {"w": "W2", "p": 0, "i": 0}, {"w": "W3", "p": 5, "i": 784714}]}, {"id": 81734908, "title": "Oasis: Temporada 1", "orig": true, "cat": "Serie", "launch": "19 jun", "daysOld": 6, "postsES": 35, "imp": 1669986, "eng": 57241, "er": 3.43, "plat": ["INSTAGRAM", "TIKTOK", "FACEBOOK", "X", "YOUTUBE"], "rec": "no", "recPlatforms": [], "erByPlatform": {"INSTAGRAM": {"posts": 13, "er": 2.5}, "TIKTOK": {"posts": 10, "er": 5.87}, "FACEBOOK": {"posts": 3, "er": 0.11}, "X": {"posts": 2, "er": 0.22}, "YOUTUBE": {"posts": 7, "er": 0.0}}, "esProjectIds": [], "reason": "Cobertura extensiva esta semana (35 posts, 5 plataformas). ER por plataforma por debajo de medias 3m. Mantener cadencia actual.", "assets": [], "trend": [{"w": "W1", "p": 0, "i": 0}, {"w": "W2", "p": 15, "i": 161457}, {"w": "W3", "p": 35, "i": 1669986}]}, {"id": 81698654, "title": "The Marked Woman", "orig": true, "cat": "Serie", "launch": "5 jun", "daysOld": 20, "postsES": 0, "imp": null, "eng": null, "er": null, "plat": [], "rec": "stop", "recPlatforms": [], "erByPlatform": {}, "esProjectIds": [], "reason": "Audiencia por debajo del umbral de escalada. No publicar más contenido activo.", "assets": [], "trend": [{"w": "W1", "p": 40, "i": 1620457}, {"w": "W2", "p": 9, "i": 70952}, {"w": "W3", "p": 0, "i": 0}]}, {"id": 81939823, "title": "Romance de Oficina", "orig": true, "cat": "Serie", "launch": "5 jun", "daysOld": 20, "postsES": 0, "imp": null, "eng": null, "er": null, "plat": [], "rec": "no", "recPlatforms": [], "erByPlatform": {}, "esProjectIds": [], "reason": "Sin posts esta semana. Lanzamiento hace 20 días con cobertura ya realizada en semanas anteriores.", "assets": [], "trend": [{"w": "W1", "p": 15, "i": 221541}, {"w": "W2", "p": 1, "i": 917}, {"w": "W3", "p": 0, "i": 0}]}, {"id": 81783257, "title": "Losing Judgment: T1", "orig": true, "cat": "Serie", "launch": "12 jun", "daysOld": 13, "postsES": 0, "imp": null, "eng": null, "er": null, "plat": [], "rec": "wait", "recPlatforms": [], "erByPlatform": {}, "esProjectIds": [], "reason": "Pendiente de evaluación final de audiencia. Esperar datos completos antes de escalar.", "assets": [], "trend": [{"w": "W1", "p": 0, "i": 0}, {"w": "W2", "p": 3, "i": 149393}, {"w": "W3", "p": 0, "i": 0}]}, {"id": 81921253, "title": "Colors of Evil: Black", "orig": true, "cat": "Película", "launch": "10 jun", "daysOld": 15, "postsES": 0, "imp": null, "eng": null, "er": null, "plat": [], "rec": "stop", "recPlatforms": [], "erByPlatform": {}, "esProjectIds": [], "reason": "Audiencia por debajo del umbral de escalada. No publicar más contenido activo.", "assets": [], "trend": [{"w": "W1", "p": 0, "i": 0}, {"w": "W2", "p": 1, "i": 147766}, {"w": "W3", "p": 0, "i": 0}]}, {"id": 81042820, "title": "A Minecraft Movie", "orig": false, "cat": "Película", "launch": "19 jun", "daysOld": 6, "postsES": 0, "imp": null, "eng": null, "er": null, "plat": [], "rec": "wait", "recPlatforms": [], "erByPlatform": {}, "esProjectIds": [], "reason": "Pendiente de evaluación final de audiencia. Esperar datos completos antes de escalar.", "assets": [], "trend": [{"w": "W1", "p": 0, "i": 0}, {"w": "W2", "p": 0, "i": 0}, {"w": "W3", "p": 0, "i": 0}]}, {"id": 81766093, "title": "Instinto Maternal", "orig": true, "cat": "Película", "launch": "12 jun", "daysOld": 13, "postsES": 3, "imp": 296937, "eng": 6556, "er": 2.21, "plat": ["X", "INSTAGRAM", "TIKTOK"], "rec": "no", "recPlatforms": [], "erByPlatform": {"X": {"posts": 1, "er": 0.08}, "TIKTOK": {"posts": 1, "er": 2.51}, "INSTAGRAM": {"posts": 1, "er": 2.04}}, "esProjectIds": [], "reason": "3 posts esta semana (IG, TT, X). ER por debajo de medias 3m en todos los canales. Mantener presencia actual.", "assets": [], "trend": [{"w": "W1", "p": 0, "i": 0}, {"w": "W2", "p": 0, "i": 0}, {"w": "W3", "p": 3, "i": 296937}]}, {"id": 81947301, "title": "Teach You a Lesson", "orig": true, "cat": "Serie · Limited", "launch": "5 jun", "daysOld": 20, "postsES": 0, "imp": null, "eng": null, "er": null, "plat": [], "rec": "yes", "recPlatforms": [], "erByPlatform": {}, "esProjectIds": [], "reason": "D+20 sin posts en ES esta semana. Título con audiencia muy sólida. Empezar por Instagram o TikTok con contenido de alta narrativa emocional.", "assets": [], "trend": [{"w": "W1", "p": 0, "i": 0}, {"w": "W2", "p": 0, "i": 0}, {"w": "W3", "p": 0, "i": 0}]}, {"id": 81902147, "title": "Sonic the Hedgehog 3", "orig": false, "cat": "Película", "launch": "9 jun", "daysOld": 16, "postsES": 0, "imp": null, "eng": null, "er": null, "plat": [], "rec": "wait", "recPlatforms": [], "erByPlatform": {}, "esProjectIds": [], "reason": "Pendiente de evaluación final de audiencia. Esperar datos completos antes de escalar.", "assets": [], "trend": [{"w": "W1", "p": 0, "i": 0}, {"w": "W2", "p": 0, "i": 0}, {"w": "W3", "p": 0, "i": 0}]}, {"id": 81687037, "title": "El Polígamo: T1", "orig": true, "cat": "Serie", "launch": "12 jun", "daysOld": 13, "postsES": 0, "imp": null, "eng": null, "er": null, "plat": [], "rec": "stop", "recPlatforms": [], "erByPlatform": {}, "esProjectIds": [], "reason": "Audiencia por debajo del umbral de escalada. No publicar más contenido activo.", "assets": [], "trend": [{"w": "W1", "p": 0, "i": 0}, {"w": "W2", "p": 0, "i": 0}, {"w": "W3", "p": 0, "i": 0}]}, {"id": 82623388, "title": "In the Hand of Dante", "orig": false, "cat": "Película", "launch": "24 jun", "daysOld": 1, "postsES": 0, "imp": null, "eng": null, "er": null, "plat": [], "rec": "wait", "recPlatforms": [], "erByPlatform": {}, "esProjectIds": [], "reason": "D+1 — datos de audiencia incompletos. Esperar al menos hasta D+3 antes de evaluar.", "assets": [], "trend": [{"w": "W1", "p": 0, "i": 0}, {"w": "W2", "p": 0, "i": 0}, {"w": "W3", "p": 0, "i": 0}]}, {"id": 81922235, "title": "America's Sweethearts: Cowboys T3", "orig": true, "cat": "Documental", "launch": "16 jun", "daysOld": 9, "postsES": 0, "imp": null, "eng": null, "er": null, "plat": [], "rec": "yes", "recPlatforms": [], "erByPlatform": {}, "esProjectIds": [], "reason": "D+9 sin posts en ES esta semana. Título con audiencia muy sólida. Empezar por Instagram.", "assets": [], "trend": [{"w": "W1", "p": 0, "i": 0}, {"w": "W2", "p": 0, "i": 0}, {"w": "W3", "p": 0, "i": 0}]}, {"id": 80234581, "title": "One Piece: Alabasta", "orig": false, "cat": "Anime", "launch": "14 jun", "daysOld": 11, "postsES": 0, "imp": null, "eng": null, "er": null, "plat": [], "rec": "wait", "recPlatforms": [], "erByPlatform": {}, "esProjectIds": [], "reason": "Pendiente de evaluación final de audiencia. Esperar datos completos antes de escalar.", "assets": [], "trend": [{"w": "W1", "p": 0, "i": 0}, {"w": "W2", "p": 0, "i": 0}, {"w": "W3", "p": 0, "i": 0}]}];
+const PLAT_ER_AVG = {"FACEBOOK": 1.58, "INSTAGRAM": 4.96, "TIKTOK": 8.54, "X": 2.55, "YOUTUBE": 0.0};
+
+
+const REC_STYLES = {
+  yes:  {icon:"🟢", bg:"#d1fae5", fg:"#065f46", label:"Publicar"},
+  no:   {icon:"⚪", bg:"#f3f4f6", fg:"#374151", label:"No publicar"},
+  wait: {icon:"🟡", bg:"#fef3c7", fg:"#92400e", label:"Esperar"},
+  stop: {icon:"🔴", bg:"#fee2e2", fg:"#991b1b", label:"Detener"},
+};
+const PLAT_COLORS = {INSTAGRAM:"#e1306c",TIKTOK:"#00ccc5",FACEBOOK:"#1877f2",X:"#888",YOUTUBE:"#ff4444",THREADS:"#444"};
+const PLAT_ORDER = ["TIKTOK","INSTAGRAM","YOUTUBE","FACEBOOK","X"];
+
+function normNet(p){
+  const m = {INSTAGRAM:"IG",TIKTOK:"TT",FACEBOOK:"FB",X:"X",YOUTUBE:"YT",THREADS:"TH"};
+  return m[p]||p;
+}
+
+let currentFilter = 'all';
+let currentRow = -1;
+
+function filterRec(rec, el) {
+  currentFilter = rec;
+  document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  const rows = document.querySelectorAll('#tbody tr');
+  rows.forEach(row => {
+    const idx = parseInt(row.id.replace('row-',''));
+    const t = TITLES_DATA[idx];
+    row.style.display = (rec === 'all' || t.rec === rec) ? '' : 'none';
+  });
+  closePanel();
+}
+
+function openPanel(idx) {
+  currentRow = idx;
+  const d = TITLES_DATA[idx];
+  document.querySelectorAll('#tbody tr').forEach(r => r.classList.remove('selected'));
+  document.getElementById('row-'+idx).classList.add('selected');
+  document.getElementById('panel-title').textContent = d.title;
+  document.getElementById('panel-meta').textContent = d.cat + ' · ' + d.launch + ' · D+' + d.daysOld + (d.orig ? ' · Original' : ' · Licencia');
+  
+  const rs = REC_STYLES[d.rec];
+  let html = '';
+
+  // Rec box
+  html += `<div class="psec">
+    <h3>Recomendación</h3>
+    <div class="rec-box" style="background:${rs.bg};color:${rs.fg};">
+      <div style="font-weight:700;font-size:13px;margin-bottom:6px;">${rs.icon} ${rs.label}</div>
+      <div style="font-size:12px;line-height:1.55;">${d.reason}</div>
+    </div>
+  </div>`;
+
+  // ER por plataforma
+  if (d.erByPlatform && Object.keys(d.erByPlatform).length > 0) {
+    const platRows = PLAT_ORDER.filter(p => d.erByPlatform[p]).map(p => {
+      const info = d.erByPlatform[p];
+      const avg = PLAT_ER_AVG[p];
+      const above = info.er > avg;
+      const badge = above
+        ? '<span style="background:#d1fae5;color:#065f46;font-size:0.68rem;padding:1px 7px;border-radius:8px;font-weight:700;margin-left:4px">↑ escalar</span>'
+        : '<span style="background:#f5f5f5;color:#999;font-size:0.68rem;padding:1px 7px;border-radius:8px;margin-left:4px">bajo media</span>';
+      const erColor = above ? '#065f46' : '#555';
+      return `<div style="display:flex;align-items:center;gap:9px;font-size:0.79rem;padding:5px 0;border-bottom:1px solid #f4f4f4">
+        <span style="background:${PLAT_COLORS[p]||'#999'};color:#fff;font-size:9px;font-weight:700;padding:2px 7px;border-radius:6px;flex-shrink:0;width:28px;text-align:center">${normNet(p)}</span>
+        <span style="font-weight:700;color:${erColor};min-width:48px">${info.er.toFixed(2).replace('.',',')}%</span>
+        <span style="color:#bbb;font-size:0.72rem">media 3m: ${avg.toFixed(2).replace('.',',')}%</span>
+        ${badge}
+        <span style="margin-left:auto;color:#aaa;font-size:0.7rem">${info.posts} post${info.posts!==1?'s':''}</span>
+      </div>`;
+    }).join('');
+    html += `<div class="psec"><h3>ER por plataforma (ES) — 24h</h3><div style="margin-top:4px">${platRows}</div></div>`;
+  }
+
+  // Tendencia 3 semanas
+  const trend = d.trend || [];
+  const maxI = Math.max(...trend.map(t => t.i||0), 1);
+  const bars = trend.map(t => {
+    const h = Math.max(4, Math.round((t.i||0)/maxI*46));
+    const label = t.i > 0 ? (t.i >= 1000000 ? (t.i/1000000).toFixed(1)+'M' : (t.i/1000).toFixed(0)+'K') : '—';
+    return `<div class="trend-bar-wrap">
+      <div style="height:46px;display:flex;align-items:flex-end;">
+        <div class="trend-bar" style="width:100%;height:${h}px;background:${t.i>0?'#E50914':'#e8e8e8'};"></div>
+      </div>
+      <div class="trend-label">${t.w}</div>
+      <div class="trend-posts">${t.p} posts</div>
+      <div class="trend-posts" style="color:#E50914;">${label}</div>
+    </div>`;
+  }).join('');
+  html += `<div class="psec"><h3>Tendencia — últimas 3 semanas</h3><div class="trend-bar-row">${bars}</div></div>`;
+
+  // Assets globales
+  const filteredAssets = (d.assets||[]).filter(a => !(d.esProjectIds||[]).includes(a.sid));
+  const recFiltered = (d.recPlatforms && d.recPlatforms.length > 0)
+    ? filteredAssets.filter(a => d.recPlatforms.includes(a.net))
+    : filteredAssets;
+  const assetsToShow = recFiltered.length > 0 ? recFiltered : filteredAssets;
+  
+  if (assetsToShow.length > 0) {
+    const assetHtml = assetsToShow.slice(0,5).map(a => {
+      const pc = PLAT_COLORS[a.net]||'#999';
+      const impStr = a.imp >= 1000000 ? (a.imp/1000000).toFixed(1)+'M' : (a.imp/1000).toFixed(0)+'K';
+      const engStr = a.eng >= 1000 ? (a.eng/1000).toFixed(0)+'K' : a.eng;
+      return `<div class="asset-card">
+        <span class="asset-net" style="background:${pc};">${normNet(a.net)}</span>
+        <span style="color:#888;font-size:10px;margin-left:4px;">${a.country} · ${a.screen}</span>
+        <div style="font-weight:600;margin:4px 0 2px;font-size:12px;">${a.spot}</div>
+        <div style="color:#666;margin-bottom:4px;">${impStr} imp · ${engStr} eng · ${a.er.toFixed(2).replace('.',',')}% ER</div>
+        <a href="${a.url}" target="_blank" style="color:#E50914;font-size:10px;text-decoration:none;font-weight:600;">Ver en Socialite →</a>
+      </div>`;
+    }).join('');
+    html += `<div class="psec"><h3>Assets globales</h3>${assetHtml}</div>`;
+  } else if (d.rec === 'yes') {
+    html += `<div class="psec"><h3>Assets globales</h3><div style="font-size:12px;color:#888;padding:8px 0;">Sin assets con 50K+ impresiones disponibles. Consultar Socialite para assets adicionales.</div></div>`;
+  }
+
+  document.getElementById('panel-body').innerHTML = html;
+  document.getElementById('panel').classList.add('open');
+}
+
+function closePanel() {
+  document.getElementById('panel').classList.remove('open');
+  document.querySelectorAll('#tbody tr').forEach(r => r.classList.remove('selected'));
+  currentRow = -1;
+}
+</script>
+
+</body>
+</html>
