@@ -49,10 +49,9 @@
 <div class="toolbar">
   <span style="font-size:11px;font-weight:600;color:#888;margin-right:4px;">Filtrar:</span>
   <div class="filter-pill active" onclick="filterRec('all',this)">Todos (15)</div>
-  <div class="filter-pill" onclick="filterRec('yes',this)">🟢 Publicar (3)</div>
-  <div class="filter-pill" onclick="filterRec('wait',this)">🟡 Esperar (5)</div>
-  <div class="filter-pill" onclick="filterRec('stop',this)">🔴 Detener (3)</div>
-  <div class="filter-pill" onclick="filterRec('no',this)">⚪ No publicar (4)</div>
+  <div class="filter-pill" onclick="filterRec('yes',this)">🟢 Incrementar (3)</div>
+  <div class="filter-pill" onclick="filterRec('mantener',this)">🟡 Mantener (9)</div>
+  <div class="filter-pill" onclick="filterRec('stop',this)">🔴 Dejar de publicar (3)</div>
 </div>
 
 <div class="info-bar">Títulos estrenados en ES en las últimas 3 semanas (1–22 Jun 2026) · Social: semana 15–22 Jun · Datos: Kragle / DSE</div>
@@ -78,7 +77,7 @@
       <td style="padding:10px 12px;text-align:right;font-size:13px;">7</td>
       <td style="padding:10px 12px;text-align:right;font-size:13px;font-weight:700;">0,74%</td>
       <td style="padding:10px 12px;"><span style="background:#888;color:#fff;font-size:9px;font-weight:700;padding:2px 6px;border-radius:8px;margin-right:3px;">X</span></td>
-      <td style="padding:10px 12px;"><span style="background:#f3f4f6;color:#374151;font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px;white-space:nowrap;">⚪ No publicar</span></td>
+      <td style="padding:10px 12px;"><span style="background:#fef3c7;color:#92400e;font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px;white-space:nowrap;">🟡 Mantener</span></td>
     </tr>
     <tr onclick="openPanel(1)" style="cursor:pointer;" id="row-1">
       <td style="padding:10px 12px;"><div style="font-size:13px;font-weight:700;margin-bottom:3px;">Mensajes de Voz para Isabelle</div><div style="font-size:11px;color:#888;">Película · 19 jun · D+6</div></td>
@@ -87,7 +86,7 @@
       <td style="padding:10px 12px;text-align:right;font-size:13px;">25K</td>
       <td style="padding:10px 12px;text-align:right;font-size:13px;font-weight:700;">3,19%</td>
       <td style="padding:10px 12px;"><span style="background:#888;color:#fff;font-size:9px;font-weight:700;padding:2px 6px;border-radius:8px;margin-right:3px;">X</span><span style="background:#e1306c;color:#fff;font-size:9px;font-weight:700;padding:2px 6px;border-radius:8px;margin-right:3px;">IG</span><span style="background:#1877f2;color:#fff;font-size:9px;font-weight:700;padding:2px 6px;border-radius:8px;margin-right:3px;">FB</span><span style="background:#00ccc5;color:#fff;font-size:9px;font-weight:700;padding:2px 6px;border-radius:8px;margin-right:3px;">TT</span></td>
-      <td style="padding:10px 12px;"><span style="background:#d1fae5;color:#065f46;font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px;white-space:nowrap;">🟢 Publicar</span></td>
+      <td style="padding:10px 12px;"><span style="background:#d1fae5;color:#065f46;font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px;white-space:nowrap;">🟢 Incrementar</span></td>
     </tr>
     <tr onclick="openPanel(2)" style="cursor:pointer;" id="row-2">
       <td style="padding:10px 12px;"><div style="font-size:13px;font-weight:700;margin-bottom:3px;">Oasis: Temporada 1</div><div style="font-size:11px;color:#888;">Serie · 19 jun · D+6</div></td>
@@ -96,37 +95,37 @@
       <td style="padding:10px 12px;text-align:right;font-size:13px;">57K</td>
       <td style="padding:10px 12px;text-align:right;font-size:13px;font-weight:700;">3,43%</td>
       <td style="padding:10px 12px;"><span style="background:#e1306c;color:#fff;font-size:9px;font-weight:700;padding:2px 6px;border-radius:8px;margin-right:3px;">IG</span><span style="background:#00ccc5;color:#fff;font-size:9px;font-weight:700;padding:2px 6px;border-radius:8px;margin-right:3px;">TT</span><span style="background:#1877f2;color:#fff;font-size:9px;font-weight:700;padding:2px 6px;border-radius:8px;margin-right:3px;">FB</span><span style="background:#888;color:#fff;font-size:9px;font-weight:700;padding:2px 6px;border-radius:8px;margin-right:3px;">X</span><span style="background:#ff4444;color:#fff;font-size:9px;font-weight:700;padding:2px 6px;border-radius:8px;margin-right:3px;">YT</span></td>
-      <td style="padding:10px 12px;"><span style="background:#f3f4f6;color:#374151;font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px;white-space:nowrap;">⚪ No publicar</span></td>
+      <td style="padding:10px 12px;"><span style="background:#fef3c7;color:#92400e;font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px;white-space:nowrap;">🟡 Mantener</span></td>
     </tr>
     <tr onclick="openPanel(3)" style="cursor:pointer;" id="row-3">
       <td style="padding:10px 12px;"><div style="font-size:13px;font-weight:700;margin-bottom:3px;">The Marked Woman</div><div style="font-size:11px;color:#888;">Serie · 5 jun · D+20</div></td>
       <td style="padding:10px 12px;text-align:center;font-size:13px;font-weight:700;">—</td><td style="padding:10px 12px;text-align:right;font-size:13px;">—</td><td style="padding:10px 12px;text-align:right;font-size:13px;">—</td><td style="padding:10px 12px;text-align:right;font-size:13px;font-weight:700;">—</td>
       <td style="padding:10px 12px;"></td>
-      <td style="padding:10px 12px;"><span style="background:#fee2e2;color:#991b1b;font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px;white-space:nowrap;">🔴 Detener</span></td>
+      <td style="padding:10px 12px;"><span style="background:#fee2e2;color:#991b1b;font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px;white-space:nowrap;">🔴 Dejar de publicar</span></td>
     </tr>
     <tr onclick="openPanel(4)" style="cursor:pointer;" id="row-4">
       <td style="padding:10px 12px;"><div style="font-size:13px;font-weight:700;margin-bottom:3px;">Romance de Oficina</div><div style="font-size:11px;color:#888;">Serie · 5 jun · D+20</div></td>
       <td style="padding:10px 12px;text-align:center;font-size:13px;font-weight:700;">—</td><td style="padding:10px 12px;text-align:right;font-size:13px;">—</td><td style="padding:10px 12px;text-align:right;font-size:13px;">—</td><td style="padding:10px 12px;text-align:right;font-size:13px;font-weight:700;">—</td>
       <td style="padding:10px 12px;"></td>
-      <td style="padding:10px 12px;"><span style="background:#f3f4f6;color:#374151;font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px;white-space:nowrap;">⚪ No publicar</span></td>
+      <td style="padding:10px 12px;"><span style="background:#fef3c7;color:#92400e;font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px;white-space:nowrap;">🟡 Mantener</span></td>
     </tr>
     <tr onclick="openPanel(5)" style="cursor:pointer;" id="row-5">
       <td style="padding:10px 12px;"><div style="font-size:13px;font-weight:700;margin-bottom:3px;">Losing Judgment: T1</div><div style="font-size:11px;color:#888;">Serie · 12 jun · D+13</div></td>
       <td style="padding:10px 12px;text-align:center;font-size:13px;font-weight:700;">—</td><td style="padding:10px 12px;text-align:right;font-size:13px;">—</td><td style="padding:10px 12px;text-align:right;font-size:13px;">—</td><td style="padding:10px 12px;text-align:right;font-size:13px;font-weight:700;">—</td>
       <td style="padding:10px 12px;"></td>
-      <td style="padding:10px 12px;"><span style="background:#fef3c7;color:#92400e;font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px;white-space:nowrap;">🟡 Esperar</span></td>
+      <td style="padding:10px 12px;"><span style="background:#fef3c7;color:#92400e;font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px;white-space:nowrap;">🟡 Mantener</span></td>
     </tr>
     <tr onclick="openPanel(6)" style="cursor:pointer;" id="row-6">
       <td style="padding:10px 12px;"><div style="font-size:13px;font-weight:700;margin-bottom:3px;">Colors of Evil: Black</div><div style="font-size:11px;color:#888;">Película · 10 jun · D+15</div></td>
       <td style="padding:10px 12px;text-align:center;font-size:13px;font-weight:700;">—</td><td style="padding:10px 12px;text-align:right;font-size:13px;">—</td><td style="padding:10px 12px;text-align:right;font-size:13px;">—</td><td style="padding:10px 12px;text-align:right;font-size:13px;font-weight:700;">—</td>
       <td style="padding:10px 12px;"></td>
-      <td style="padding:10px 12px;"><span style="background:#fee2e2;color:#991b1b;font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px;white-space:nowrap;">🔴 Detener</span></td>
+      <td style="padding:10px 12px;"><span style="background:#fee2e2;color:#991b1b;font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px;white-space:nowrap;">🔴 Dejar de publicar</span></td>
     </tr>
     <tr onclick="openPanel(7)" style="cursor:pointer;" id="row-7">
       <td style="padding:10px 12px;"><div style="font-size:13px;font-weight:700;margin-bottom:3px;">A Minecraft Movie <span style="background:#555;color:#fff;font-size:9px;font-weight:700;padding:1px 6px;border-radius:6px;">LIC</span></div><div style="font-size:11px;color:#888;">Película · 19 jun · D+6</div></td>
       <td style="padding:10px 12px;text-align:center;font-size:13px;font-weight:700;">—</td><td style="padding:10px 12px;text-align:right;font-size:13px;">—</td><td style="padding:10px 12px;text-align:right;font-size:13px;">—</td><td style="padding:10px 12px;text-align:right;font-size:13px;font-weight:700;">—</td>
       <td style="padding:10px 12px;"></td>
-      <td style="padding:10px 12px;"><span style="background:#fef3c7;color:#92400e;font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px;white-space:nowrap;">🟡 Esperar</span></td>
+      <td style="padding:10px 12px;"><span style="background:#fef3c7;color:#92400e;font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px;white-space:nowrap;">🟡 Mantener</span></td>
     </tr>
     <tr onclick="openPanel(8)" style="cursor:pointer;" id="row-8">
       <td style="padding:10px 12px;"><div style="font-size:13px;font-weight:700;margin-bottom:3px;">Instinto Maternal</div><div style="font-size:11px;color:#888;">Película · 12 jun · D+13</div></td>
@@ -135,43 +134,43 @@
       <td style="padding:10px 12px;text-align:right;font-size:13px;">7K</td>
       <td style="padding:10px 12px;text-align:right;font-size:13px;font-weight:700;">2,21%</td>
       <td style="padding:10px 12px;"><span style="background:#888;color:#fff;font-size:9px;font-weight:700;padding:2px 6px;border-radius:8px;margin-right:3px;">X</span><span style="background:#e1306c;color:#fff;font-size:9px;font-weight:700;padding:2px 6px;border-radius:8px;margin-right:3px;">IG</span><span style="background:#00ccc5;color:#fff;font-size:9px;font-weight:700;padding:2px 6px;border-radius:8px;margin-right:3px;">TT</span></td>
-      <td style="padding:10px 12px;"><span style="background:#f3f4f6;color:#374151;font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px;white-space:nowrap;">⚪ No publicar</span></td>
+      <td style="padding:10px 12px;"><span style="background:#fef3c7;color:#92400e;font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px;white-space:nowrap;">🟡 Mantener</span></td>
     </tr>
     <tr onclick="openPanel(9)" style="cursor:pointer;" id="row-9">
       <td style="padding:10px 12px;"><div style="font-size:13px;font-weight:700;margin-bottom:3px;">Teach You a Lesson</div><div style="font-size:11px;color:#888;">Serie · Limited · 5 jun · D+20</div></td>
       <td style="padding:10px 12px;text-align:center;font-size:13px;font-weight:700;">—</td><td style="padding:10px 12px;text-align:right;font-size:13px;">—</td><td style="padding:10px 12px;text-align:right;font-size:13px;">—</td><td style="padding:10px 12px;text-align:right;font-size:13px;font-weight:700;">—</td>
       <td style="padding:10px 12px;"></td>
-      <td style="padding:10px 12px;"><span style="background:#d1fae5;color:#065f46;font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px;white-space:nowrap;">🟢 Publicar</span></td>
+      <td style="padding:10px 12px;"><span style="background:#d1fae5;color:#065f46;font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px;white-space:nowrap;">🟢 Incrementar</span></td>
     </tr>
     <tr onclick="openPanel(10)" style="cursor:pointer;" id="row-10">
       <td style="padding:10px 12px;"><div style="font-size:13px;font-weight:700;margin-bottom:3px;">Sonic the Hedgehog 3 <span style="background:#555;color:#fff;font-size:9px;font-weight:700;padding:1px 6px;border-radius:6px;">LIC</span></div><div style="font-size:11px;color:#888;">Película · 9 jun · D+16</div></td>
       <td style="padding:10px 12px;text-align:center;font-size:13px;font-weight:700;">—</td><td style="padding:10px 12px;text-align:right;font-size:13px;">—</td><td style="padding:10px 12px;text-align:right;font-size:13px;">—</td><td style="padding:10px 12px;text-align:right;font-size:13px;font-weight:700;">—</td>
       <td style="padding:10px 12px;"></td>
-      <td style="padding:10px 12px;"><span style="background:#fef3c7;color:#92400e;font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px;white-space:nowrap;">🟡 Esperar</span></td>
+      <td style="padding:10px 12px;"><span style="background:#fef3c7;color:#92400e;font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px;white-space:nowrap;">🟡 Mantener</span></td>
     </tr>
     <tr onclick="openPanel(11)" style="cursor:pointer;" id="row-11">
       <td style="padding:10px 12px;"><div style="font-size:13px;font-weight:700;margin-bottom:3px;">El Polígamo: T1</div><div style="font-size:11px;color:#888;">Serie · 12 jun · D+13</div></td>
       <td style="padding:10px 12px;text-align:center;font-size:13px;font-weight:700;">—</td><td style="padding:10px 12px;text-align:right;font-size:13px;">—</td><td style="padding:10px 12px;text-align:right;font-size:13px;">—</td><td style="padding:10px 12px;text-align:right;font-size:13px;font-weight:700;">—</td>
       <td style="padding:10px 12px;"></td>
-      <td style="padding:10px 12px;"><span style="background:#fee2e2;color:#991b1b;font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px;white-space:nowrap;">🔴 Detener</span></td>
+      <td style="padding:10px 12px;"><span style="background:#fee2e2;color:#991b1b;font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px;white-space:nowrap;">🔴 Dejar de publicar</span></td>
     </tr>
     <tr onclick="openPanel(12)" style="cursor:pointer;" id="row-12">
       <td style="padding:10px 12px;"><div style="font-size:13px;font-weight:700;margin-bottom:3px;">In the Hand of Dante <span style="background:#555;color:#fff;font-size:9px;font-weight:700;padding:1px 6px;border-radius:6px;">LIC</span></div><div style="font-size:11px;color:#888;">Película · 24 jun · D+1</div></td>
       <td style="padding:10px 12px;text-align:center;font-size:13px;font-weight:700;">—</td><td style="padding:10px 12px;text-align:right;font-size:13px;">—</td><td style="padding:10px 12px;text-align:right;font-size:13px;">—</td><td style="padding:10px 12px;text-align:right;font-size:13px;font-weight:700;">—</td>
       <td style="padding:10px 12px;"></td>
-      <td style="padding:10px 12px;"><span style="background:#fef3c7;color:#92400e;font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px;white-space:nowrap;">🟡 Esperar</span></td>
+      <td style="padding:10px 12px;"><span style="background:#fef3c7;color:#92400e;font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px;white-space:nowrap;">🟡 Mantener</span></td>
     </tr>
     <tr onclick="openPanel(13)" style="cursor:pointer;" id="row-13">
       <td style="padding:10px 12px;"><div style="font-size:13px;font-weight:700;margin-bottom:3px;">America's Sweethearts: Cowboys T3</div><div style="font-size:11px;color:#888;">Documental · 16 jun · D+9</div></td>
       <td style="padding:10px 12px;text-align:center;font-size:13px;font-weight:700;">—</td><td style="padding:10px 12px;text-align:right;font-size:13px;">—</td><td style="padding:10px 12px;text-align:right;font-size:13px;">—</td><td style="padding:10px 12px;text-align:right;font-size:13px;font-weight:700;">—</td>
       <td style="padding:10px 12px;"></td>
-      <td style="padding:10px 12px;"><span style="background:#d1fae5;color:#065f46;font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px;white-space:nowrap;">🟢 Publicar</span></td>
+      <td style="padding:10px 12px;"><span style="background:#d1fae5;color:#065f46;font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px;white-space:nowrap;">🟢 Incrementar</span></td>
     </tr>
     <tr onclick="openPanel(14)" style="cursor:pointer;" id="row-14">
       <td style="padding:10px 12px;"><div style="font-size:13px;font-weight:700;margin-bottom:3px;">One Piece: Alabasta <span style="background:#555;color:#fff;font-size:9px;font-weight:700;padding:1px 6px;border-radius:6px;">LIC</span></div><div style="font-size:11px;color:#888;">Anime · 14 jun · D+11</div></td>
       <td style="padding:10px 12px;text-align:center;font-size:13px;font-weight:700;">—</td><td style="padding:10px 12px;text-align:right;font-size:13px;">—</td><td style="padding:10px 12px;text-align:right;font-size:13px;">—</td><td style="padding:10px 12px;text-align:right;font-size:13px;font-weight:700;">—</td>
       <td style="padding:10px 12px;"></td>
-      <td style="padding:10px 12px;"><span style="background:#fef3c7;color:#92400e;font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px;white-space:nowrap;">🟡 Esperar</span></td>
+      <td style="padding:10px 12px;"><span style="background:#fef3c7;color:#92400e;font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px;white-space:nowrap;">🟡 Mantener</span></td>
     </tr>
       </tbody>
     </table>
@@ -193,10 +192,10 @@ const TITLES_DATA = [{"id": 81509369, "title": "I Will Find You", "orig": true, 
 const PLAT_ER_AVG = {"FACEBOOK": 1.58, "INSTAGRAM": 4.96, "TIKTOK": 8.54, "X": 2.55, "YOUTUBE": 0.0};
 
 const REC_STYLES = {
-  yes:  {icon:"🟢", bg:"#d1fae5", fg:"#065f46", label:"Publicar"},
-  no:   {icon:"⚪", bg:"#f3f4f6", fg:"#374151", label:"No publicar"},
-  wait: {icon:"🟡", bg:"#fef3c7", fg:"#92400e", label:"Esperar"},
-  stop: {icon:"🔴", bg:"#fee2e2", fg:"#991b1b", label:"Detener"},
+  yes:  {icon:"🟢", bg:"#d1fae5", fg:"#065f46", label:"Incrementar"},
+  no:   {icon:"🟡", bg:"#fef3c7", fg:"#92400e", label:"Mantener"},
+  wait: {icon:"🟡", bg:"#fef3c7", fg:"#92400e", label:"Mantener"},
+  stop: {icon:"🔴", bg:"#fee2e2", fg:"#991b1b", label:"Dejar de publicar"},
 };
 const PLAT_COLORS = {INSTAGRAM:"#e1306c",TIKTOK:"#00ccc5",FACEBOOK:"#1877f2",X:"#888",YOUTUBE:"#ff4444",THREADS:"#444"};
 const PLAT_ORDER = ["TIKTOK","INSTAGRAM","YOUTUBE","FACEBOOK","X"];
@@ -217,7 +216,7 @@ function filterRec(rec, el) {
   rows.forEach(row => {
     const idx = parseInt(row.id.replace('row-',''));
     const t = TITLES_DATA[idx];
-    row.style.display = (rec === 'all' || t.rec === rec) ? '' : 'none';
+    row.style.display = (rec === 'all' || t.rec === rec || (rec === 'mantener' && (t.rec === 'wait' || t.rec === 'no'))) ? '' : 'none';
   });
   closePanel();
 }
