@@ -39,6 +39,7 @@
     .asset-links{display:flex;gap:10px;margin-top:6px;}
     .asset-link{color:#E50914;font-size:10px;text-decoration:none;font-weight:600;white-space:nowrap;}
     .asset-link:hover{text-decoration:underline;}
+    .info-bar{background:#fafafa;border-bottom:1px solid #e8e8e8;padding:6px 24px;font-size:11px;color:#888;flex-shrink:0;}
   </style>
 </head>
 <body>
@@ -54,6 +55,7 @@
   <div class="filter-pill" onclick="filterRec('no',this)">⚪ No publicar (4)</div>
 </div>
 
+<div class="info-bar">Títulos estrenados en ES en las últimas 3 semanas (1–22 Jun 2026) · Social: semana 15–22 Jun · Datos: Kragle / DSE</div>
 <div class="layout">
   <div class="table-pane" id="table-pane">
     <table>
@@ -70,7 +72,7 @@
       </thead>
       <tbody id="tbody">
     <tr onclick="openPanel(0)" style="cursor:pointer;" id="row-0">
-      <td style="padding:10px 12px;"><div style="font-size:13px;font-weight:700;margin-bottom:3px;">I Will Find You <span style="background:#111;color:#fff;font-size:9px;font-weight:700;padding:1px 6px;border-radius:6px;">ORIG</span></div><div style="font-size:11px;color:#888;">Serie · Limited · 18 jun · D+7</div></td>
+      <td style="padding:10px 12px;"><div style="font-size:13px;font-weight:700;margin-bottom:3px;">I Will Find You</div><div style="font-size:11px;color:#888;">Serie · Limited · 18 jun · D+7</div></td>
       <td style="padding:10px 12px;text-align:center;font-size:13px;font-weight:700;">1</td>
       <td style="padding:10px 12px;text-align:right;font-size:13px;">949</td>
       <td style="padding:10px 12px;text-align:right;font-size:13px;">7</td>
@@ -79,7 +81,7 @@
       <td style="padding:10px 12px;"><span style="background:#f3f4f6;color:#374151;font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px;white-space:nowrap;">⚪ No publicar</span></td>
     </tr>
     <tr onclick="openPanel(1)" style="cursor:pointer;" id="row-1">
-      <td style="padding:10px 12px;"><div style="font-size:13px;font-weight:700;margin-bottom:3px;">Mensajes de Voz para Isabelle <span style="background:#111;color:#fff;font-size:9px;font-weight:700;padding:1px 6px;border-radius:6px;">ORIG</span></div><div style="font-size:11px;color:#888;">Película · 19 jun · D+6</div></td>
+      <td style="padding:10px 12px;"><div style="font-size:13px;font-weight:700;margin-bottom:3px;">Mensajes de Voz para Isabelle</div><div style="font-size:11px;color:#888;">Película · 19 jun · D+6</div></td>
       <td style="padding:10px 12px;text-align:center;font-size:13px;font-weight:700;">5</td>
       <td style="padding:10px 12px;text-align:right;font-size:13px;">785K</td>
       <td style="padding:10px 12px;text-align:right;font-size:13px;">25K</td>
@@ -88,7 +90,7 @@
       <td style="padding:10px 12px;"><span style="background:#d1fae5;color:#065f46;font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px;white-space:nowrap;">🟢 Publicar</span></td>
     </tr>
     <tr onclick="openPanel(2)" style="cursor:pointer;" id="row-2">
-      <td style="padding:10px 12px;"><div style="font-size:13px;font-weight:700;margin-bottom:3px;">Oasis: Temporada 1 <span style="background:#111;color:#fff;font-size:9px;font-weight:700;padding:1px 6px;border-radius:6px;">ORIG</span></div><div style="font-size:11px;color:#888;">Serie · 19 jun · D+6</div></td>
+      <td style="padding:10px 12px;"><div style="font-size:13px;font-weight:700;margin-bottom:3px;">Oasis: Temporada 1</div><div style="font-size:11px;color:#888;">Serie · 19 jun · D+6</div></td>
       <td style="padding:10px 12px;text-align:center;font-size:13px;font-weight:700;">35</td>
       <td style="padding:10px 12px;text-align:right;font-size:13px;">1.7M</td>
       <td style="padding:10px 12px;text-align:right;font-size:13px;">57K</td>
@@ -97,37 +99,37 @@
       <td style="padding:10px 12px;"><span style="background:#f3f4f6;color:#374151;font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px;white-space:nowrap;">⚪ No publicar</span></td>
     </tr>
     <tr onclick="openPanel(3)" style="cursor:pointer;" id="row-3">
-      <td style="padding:10px 12px;"><div style="font-size:13px;font-weight:700;margin-bottom:3px;">The Marked Woman <span style="background:#111;color:#fff;font-size:9px;font-weight:700;padding:1px 6px;border-radius:6px;">ORIG</span></div><div style="font-size:11px;color:#888;">Serie · 5 jun · D+20</div></td>
+      <td style="padding:10px 12px;"><div style="font-size:13px;font-weight:700;margin-bottom:3px;">The Marked Woman</div><div style="font-size:11px;color:#888;">Serie · 5 jun · D+20</div></td>
       <td style="padding:10px 12px;text-align:center;font-size:13px;font-weight:700;">—</td><td style="padding:10px 12px;text-align:right;font-size:13px;">—</td><td style="padding:10px 12px;text-align:right;font-size:13px;">—</td><td style="padding:10px 12px;text-align:right;font-size:13px;font-weight:700;">—</td>
       <td style="padding:10px 12px;"></td>
       <td style="padding:10px 12px;"><span style="background:#fee2e2;color:#991b1b;font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px;white-space:nowrap;">🔴 Detener</span></td>
     </tr>
     <tr onclick="openPanel(4)" style="cursor:pointer;" id="row-4">
-      <td style="padding:10px 12px;"><div style="font-size:13px;font-weight:700;margin-bottom:3px;">Romance de Oficina <span style="background:#111;color:#fff;font-size:9px;font-weight:700;padding:1px 6px;border-radius:6px;">ORIG</span></div><div style="font-size:11px;color:#888;">Serie · 5 jun · D+20</div></td>
+      <td style="padding:10px 12px;"><div style="font-size:13px;font-weight:700;margin-bottom:3px;">Romance de Oficina</div><div style="font-size:11px;color:#888;">Serie · 5 jun · D+20</div></td>
       <td style="padding:10px 12px;text-align:center;font-size:13px;font-weight:700;">—</td><td style="padding:10px 12px;text-align:right;font-size:13px;">—</td><td style="padding:10px 12px;text-align:right;font-size:13px;">—</td><td style="padding:10px 12px;text-align:right;font-size:13px;font-weight:700;">—</td>
       <td style="padding:10px 12px;"></td>
       <td style="padding:10px 12px;"><span style="background:#f3f4f6;color:#374151;font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px;white-space:nowrap;">⚪ No publicar</span></td>
     </tr>
     <tr onclick="openPanel(5)" style="cursor:pointer;" id="row-5">
-      <td style="padding:10px 12px;"><div style="font-size:13px;font-weight:700;margin-bottom:3px;">Losing Judgment: T1 <span style="background:#111;color:#fff;font-size:9px;font-weight:700;padding:1px 6px;border-radius:6px;">ORIG</span></div><div style="font-size:11px;color:#888;">Serie · 12 jun · D+13</div></td>
+      <td style="padding:10px 12px;"><div style="font-size:13px;font-weight:700;margin-bottom:3px;">Losing Judgment: T1</div><div style="font-size:11px;color:#888;">Serie · 12 jun · D+13</div></td>
       <td style="padding:10px 12px;text-align:center;font-size:13px;font-weight:700;">—</td><td style="padding:10px 12px;text-align:right;font-size:13px;">—</td><td style="padding:10px 12px;text-align:right;font-size:13px;">—</td><td style="padding:10px 12px;text-align:right;font-size:13px;font-weight:700;">—</td>
       <td style="padding:10px 12px;"></td>
       <td style="padding:10px 12px;"><span style="background:#fef3c7;color:#92400e;font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px;white-space:nowrap;">🟡 Esperar</span></td>
     </tr>
     <tr onclick="openPanel(6)" style="cursor:pointer;" id="row-6">
-      <td style="padding:10px 12px;"><div style="font-size:13px;font-weight:700;margin-bottom:3px;">Colors of Evil: Black <span style="background:#111;color:#fff;font-size:9px;font-weight:700;padding:1px 6px;border-radius:6px;">ORIG</span></div><div style="font-size:11px;color:#888;">Película · 10 jun · D+15</div></td>
+      <td style="padding:10px 12px;"><div style="font-size:13px;font-weight:700;margin-bottom:3px;">Colors of Evil: Black</div><div style="font-size:11px;color:#888;">Película · 10 jun · D+15</div></td>
       <td style="padding:10px 12px;text-align:center;font-size:13px;font-weight:700;">—</td><td style="padding:10px 12px;text-align:right;font-size:13px;">—</td><td style="padding:10px 12px;text-align:right;font-size:13px;">—</td><td style="padding:10px 12px;text-align:right;font-size:13px;font-weight:700;">—</td>
       <td style="padding:10px 12px;"></td>
       <td style="padding:10px 12px;"><span style="background:#fee2e2;color:#991b1b;font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px;white-space:nowrap;">🔴 Detener</span></td>
     </tr>
     <tr onclick="openPanel(7)" style="cursor:pointer;" id="row-7">
-      <td style="padding:10px 12px;"><div style="font-size:13px;font-weight:700;margin-bottom:3px;">A Minecraft Movie</div><div style="font-size:11px;color:#888;">Película · 19 jun · D+6</div></td>
+      <td style="padding:10px 12px;"><div style="font-size:13px;font-weight:700;margin-bottom:3px;">A Minecraft Movie <span style="background:#555;color:#fff;font-size:9px;font-weight:700;padding:1px 6px;border-radius:6px;">LIC</span></div><div style="font-size:11px;color:#888;">Película · 19 jun · D+6</div></td>
       <td style="padding:10px 12px;text-align:center;font-size:13px;font-weight:700;">—</td><td style="padding:10px 12px;text-align:right;font-size:13px;">—</td><td style="padding:10px 12px;text-align:right;font-size:13px;">—</td><td style="padding:10px 12px;text-align:right;font-size:13px;font-weight:700;">—</td>
       <td style="padding:10px 12px;"></td>
       <td style="padding:10px 12px;"><span style="background:#fef3c7;color:#92400e;font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px;white-space:nowrap;">🟡 Esperar</span></td>
     </tr>
     <tr onclick="openPanel(8)" style="cursor:pointer;" id="row-8">
-      <td style="padding:10px 12px;"><div style="font-size:13px;font-weight:700;margin-bottom:3px;">Instinto Maternal <span style="background:#111;color:#fff;font-size:9px;font-weight:700;padding:1px 6px;border-radius:6px;">ORIG</span></div><div style="font-size:11px;color:#888;">Película · 12 jun · D+13</div></td>
+      <td style="padding:10px 12px;"><div style="font-size:13px;font-weight:700;margin-bottom:3px;">Instinto Maternal</div><div style="font-size:11px;color:#888;">Película · 12 jun · D+13</div></td>
       <td style="padding:10px 12px;text-align:center;font-size:13px;font-weight:700;">3</td>
       <td style="padding:10px 12px;text-align:right;font-size:13px;">297K</td>
       <td style="padding:10px 12px;text-align:right;font-size:13px;">7K</td>
@@ -136,37 +138,37 @@
       <td style="padding:10px 12px;"><span style="background:#f3f4f6;color:#374151;font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px;white-space:nowrap;">⚪ No publicar</span></td>
     </tr>
     <tr onclick="openPanel(9)" style="cursor:pointer;" id="row-9">
-      <td style="padding:10px 12px;"><div style="font-size:13px;font-weight:700;margin-bottom:3px;">Teach You a Lesson <span style="background:#111;color:#fff;font-size:9px;font-weight:700;padding:1px 6px;border-radius:6px;">ORIG</span></div><div style="font-size:11px;color:#888;">Serie · Limited · 5 jun · D+20</div></td>
+      <td style="padding:10px 12px;"><div style="font-size:13px;font-weight:700;margin-bottom:3px;">Teach You a Lesson</div><div style="font-size:11px;color:#888;">Serie · Limited · 5 jun · D+20</div></td>
       <td style="padding:10px 12px;text-align:center;font-size:13px;font-weight:700;">—</td><td style="padding:10px 12px;text-align:right;font-size:13px;">—</td><td style="padding:10px 12px;text-align:right;font-size:13px;">—</td><td style="padding:10px 12px;text-align:right;font-size:13px;font-weight:700;">—</td>
       <td style="padding:10px 12px;"></td>
       <td style="padding:10px 12px;"><span style="background:#d1fae5;color:#065f46;font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px;white-space:nowrap;">🟢 Publicar</span></td>
     </tr>
     <tr onclick="openPanel(10)" style="cursor:pointer;" id="row-10">
-      <td style="padding:10px 12px;"><div style="font-size:13px;font-weight:700;margin-bottom:3px;">Sonic the Hedgehog 3</div><div style="font-size:11px;color:#888;">Película · 9 jun · D+16</div></td>
+      <td style="padding:10px 12px;"><div style="font-size:13px;font-weight:700;margin-bottom:3px;">Sonic the Hedgehog 3 <span style="background:#555;color:#fff;font-size:9px;font-weight:700;padding:1px 6px;border-radius:6px;">LIC</span></div><div style="font-size:11px;color:#888;">Película · 9 jun · D+16</div></td>
       <td style="padding:10px 12px;text-align:center;font-size:13px;font-weight:700;">—</td><td style="padding:10px 12px;text-align:right;font-size:13px;">—</td><td style="padding:10px 12px;text-align:right;font-size:13px;">—</td><td style="padding:10px 12px;text-align:right;font-size:13px;font-weight:700;">—</td>
       <td style="padding:10px 12px;"></td>
       <td style="padding:10px 12px;"><span style="background:#fef3c7;color:#92400e;font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px;white-space:nowrap;">🟡 Esperar</span></td>
     </tr>
     <tr onclick="openPanel(11)" style="cursor:pointer;" id="row-11">
-      <td style="padding:10px 12px;"><div style="font-size:13px;font-weight:700;margin-bottom:3px;">El Polígamo: T1 <span style="background:#111;color:#fff;font-size:9px;font-weight:700;padding:1px 6px;border-radius:6px;">ORIG</span></div><div style="font-size:11px;color:#888;">Serie · 12 jun · D+13</div></td>
+      <td style="padding:10px 12px;"><div style="font-size:13px;font-weight:700;margin-bottom:3px;">El Polígamo: T1</div><div style="font-size:11px;color:#888;">Serie · 12 jun · D+13</div></td>
       <td style="padding:10px 12px;text-align:center;font-size:13px;font-weight:700;">—</td><td style="padding:10px 12px;text-align:right;font-size:13px;">—</td><td style="padding:10px 12px;text-align:right;font-size:13px;">—</td><td style="padding:10px 12px;text-align:right;font-size:13px;font-weight:700;">—</td>
       <td style="padding:10px 12px;"></td>
       <td style="padding:10px 12px;"><span style="background:#fee2e2;color:#991b1b;font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px;white-space:nowrap;">🔴 Detener</span></td>
     </tr>
     <tr onclick="openPanel(12)" style="cursor:pointer;" id="row-12">
-      <td style="padding:10px 12px;"><div style="font-size:13px;font-weight:700;margin-bottom:3px;">In the Hand of Dante</div><div style="font-size:11px;color:#888;">Película · 24 jun · D+1</div></td>
+      <td style="padding:10px 12px;"><div style="font-size:13px;font-weight:700;margin-bottom:3px;">In the Hand of Dante <span style="background:#555;color:#fff;font-size:9px;font-weight:700;padding:1px 6px;border-radius:6px;">LIC</span></div><div style="font-size:11px;color:#888;">Película · 24 jun · D+1</div></td>
       <td style="padding:10px 12px;text-align:center;font-size:13px;font-weight:700;">—</td><td style="padding:10px 12px;text-align:right;font-size:13px;">—</td><td style="padding:10px 12px;text-align:right;font-size:13px;">—</td><td style="padding:10px 12px;text-align:right;font-size:13px;font-weight:700;">—</td>
       <td style="padding:10px 12px;"></td>
       <td style="padding:10px 12px;"><span style="background:#fef3c7;color:#92400e;font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px;white-space:nowrap;">🟡 Esperar</span></td>
     </tr>
     <tr onclick="openPanel(13)" style="cursor:pointer;" id="row-13">
-      <td style="padding:10px 12px;"><div style="font-size:13px;font-weight:700;margin-bottom:3px;">America's Sweethearts: Cowboys T3 <span style="background:#111;color:#fff;font-size:9px;font-weight:700;padding:1px 6px;border-radius:6px;">ORIG</span></div><div style="font-size:11px;color:#888;">Documental · 16 jun · D+9</div></td>
+      <td style="padding:10px 12px;"><div style="font-size:13px;font-weight:700;margin-bottom:3px;">America's Sweethearts: Cowboys T3</div><div style="font-size:11px;color:#888;">Documental · 16 jun · D+9</div></td>
       <td style="padding:10px 12px;text-align:center;font-size:13px;font-weight:700;">—</td><td style="padding:10px 12px;text-align:right;font-size:13px;">—</td><td style="padding:10px 12px;text-align:right;font-size:13px;">—</td><td style="padding:10px 12px;text-align:right;font-size:13px;font-weight:700;">—</td>
       <td style="padding:10px 12px;"></td>
       <td style="padding:10px 12px;"><span style="background:#d1fae5;color:#065f46;font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px;white-space:nowrap;">🟢 Publicar</span></td>
     </tr>
     <tr onclick="openPanel(14)" style="cursor:pointer;" id="row-14">
-      <td style="padding:10px 12px;"><div style="font-size:13px;font-weight:700;margin-bottom:3px;">One Piece: Alabasta</div><div style="font-size:11px;color:#888;">Anime · 14 jun · D+11</div></td>
+      <td style="padding:10px 12px;"><div style="font-size:13px;font-weight:700;margin-bottom:3px;">One Piece: Alabasta <span style="background:#555;color:#fff;font-size:9px;font-weight:700;padding:1px 6px;border-radius:6px;">LIC</span></div><div style="font-size:11px;color:#888;">Anime · 14 jun · D+11</div></td>
       <td style="padding:10px 12px;text-align:center;font-size:13px;font-weight:700;">—</td><td style="padding:10px 12px;text-align:right;font-size:13px;">—</td><td style="padding:10px 12px;text-align:right;font-size:13px;">—</td><td style="padding:10px 12px;text-align:right;font-size:13px;font-weight:700;">—</td>
       <td style="padding:10px 12px;"></td>
       <td style="padding:10px 12px;"><span style="background:#fef3c7;color:#92400e;font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px;white-space:nowrap;">🟡 Esperar</span></td>
