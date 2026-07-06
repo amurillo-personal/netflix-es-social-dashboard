@@ -1,426 +1,1082 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Netflix España · Dashboard Social Media · Semana 19–25 de junio de 2026</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f5; color: #111; }
-    .header { background: #111; color: #fff; padding: 24px 32px; }
-    .header-netflix { color: #E50914; font-size: 22px; font-weight: 900; letter-spacing: -0.5px; }
-    .header-title { font-size: 18px; font-weight: 700; margin-top: 4px; }
-    .header-meta { font-size: 12px; color: #aaa; margin-top: 4px; }
-    .container { max-width: 1200px; margin: 0 auto; padding: 24px 16px; }
-    .section { margin-bottom: 32px; }
-    .section-title { font-size: 11px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: #999; margin-bottom: 16px; }
-    .card { background: #fff; border-radius: 12px; border: 1px solid #e8e8e8; padding: 20px; }
-    .kpi-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 16px; }
-    .kpi-card { background: #fff; border: 1px solid #e8e8e8; border-radius: 12px; padding: 16px; }
-    .kpi-label { font-size: 11px; color: #999; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
-    .kpi-value { font-size: 24px; font-weight: 800; margin: 4px 0; color: #111; }
-    .kpi-wow { font-size: 12px; font-weight: 600; }
-    .kpi-wow.up { color: #16a34a; }
-    .kpi-wow.down { color: #E50914; }
-    .chips { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
-    .chip { background: #f5f5f5; border: 1px solid #e8e8e8; border-radius: 20px; padding: 6px 14px; font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 6px; }
-    .chip-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
-    .charts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; }
-    .insights-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 16px; }
-    .insight-card { background: #fff; border: 1px solid #e8e8e8; border-radius: 10px; padding: 16px; }
-    .insight-icon { font-size: 18px; margin-bottom: 8px; }
-    .insight-text { font-size: 13px; color: #444; line-height: 1.5; }
-    .platform-section { background: #fff; border: 1px solid #e8e8e8; border-radius: 12px; padding: 20px; }
-    .platform-header { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
-    .platform-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
-    .platform-name { font-size: 15px; font-weight: 700; }
-    .platform-metrics { display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
-    .platform-metric { font-size: 12px; }
-    .platform-metric-val { font-weight: 700; font-size: 14px; }
-    .posts-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-    .posts-col-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: #999; margin-bottom: 8px; }
-    .post-list { margin-top: 8px; }
-    .post-item { padding: 8px 0; border-bottom: 1px solid #f0f0f0; font-size: 12px; line-height: 1.5; }
-    .post-item:last-child { border-bottom: none; }
-    .post-metric { font-weight: 700; color: #E50914; }
-    .post-link { color: #999; text-decoration: none; }
-    .post-link:hover { color: #E50914; }
-    .titulo-bar { height: 8px; border-radius: 4px; background: linear-gradient(90deg, #E50914, #ff6b6b); margin: 4px 0; }
-    .rec-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-    .rec-card { background: #fff; border: 1px solid #e8e8e8; border-radius: 10px; padding: 16px; }
-    .rec-priority { font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; padding: 3px 8px; border-radius: 10px; display: inline-block; margin-bottom: 8px; }
-    .priority-high { background: #fee2e2; color: #991b1b; }
-    .priority-medium { background: #fef3c7; color: #92400e; }
-    .priority-low { background: #dcfce7; color: #166534; }
-    .rec-title { font-size: 13px; font-weight: 700; margin-bottom: 6px; }
-    .rec-text { font-size: 12px; color: #666; line-height: 1.5; }
-    .rules-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-    .rule-card { background: #fff; border: 1px solid #e8e8e8; border-radius: 10px; padding: 16px; }
-    .rule-num { font-size: 28px; font-weight: 900; color: #E50914; opacity: 0.2; }
-    .rule-text { font-size: 13px; color: #444; line-height: 1.5; }
-    .platform-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-    @media (max-width: 768px) {
-      .kpi-grid { grid-template-columns: repeat(2, 1fr); }
-      .charts-grid, .platform-grid, .insights-grid, .rec-grid, .rules-grid, .posts-row { grid-template-columns: 1fr; }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Netflix España · Social Dashboard · Jun 11–17, 2026</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root {
+    --red:       #E50914;
+    --red-light: #fff0f0;
+    --red-mid:   #ffd6d8;
+    --bg:        #f5f5f5;
+    --surface:   #ffffff;
+    --surface2:  #fafafa;
+    --border:    #e8e8e8;
+    --border2:   #f0f0f0;
+    --text:      #111111;
+    --text2:     #444444;
+    --muted:     #999999;
+    --green:     #16a34a;
+    --green-bg:  #f0fdf4;
+    --orange:    #d97706;
+    --orange-bg: #fffbeb;
+    --blue:      #2563eb;
+    --r: 14px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif; font-size: 13.5px; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+
+  /* ── HEADER ── */
+  .header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 48px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky; top: 0; z-index: 100;
+    box-shadow: 0 1px 0 var(--border);
+  }
+  .header-left { display: flex; align-items: center; gap: 20px; }
+  .nf-wordmark { color: var(--red); font-size: 22px; font-weight: 900; letter-spacing: -0.5px; }
+  .header-divider { width: 1px; height: 24px; background: var(--border); }
+  .header-title { font-size: 13px; color: var(--text2); }
+  .header-title strong { color: var(--text); font-weight: 700; }
+  .header-right { display: flex; align-items: center; gap: 10px; }
+  .pill { display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+  .pill-date { background: #f3f3f3; color: var(--text2); border: 1px solid var(--border); }
+  .pill-warn { background: var(--orange-bg); color: var(--orange); border: 1px solid #fde68a; }
+
+  /* ── LAYOUT ── */
+  .container { max-width: 1360px; margin: 0 auto; padding: 32px 48px 64px; }
+
+  /* ── SECTION ── */
+  .section { margin-bottom: 52px; }
+  .section-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--red); margin-bottom: 6px; }
+  .section-heading { font-size: 22px; font-weight: 800; color: var(--text); margin-bottom: 4px; }
+  .section-sub { font-size: 13px; color: var(--muted); margin-bottom: 24px; }
+
+  /* ── FOLLOWERS ROW ── */
+  .followers-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 28px; }
+  .fol-chip { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 10px 16px; display: flex; align-items: center; gap: 10px; }
+  .fol-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .fol-platform { font-size: 11px; color: var(--muted); font-weight: 500; }
+  .fol-value { font-size: 15px; font-weight: 800; color: var(--text); }
+  .fol-chip.total { background: var(--red-light); border-color: var(--red-mid); }
+  .fol-chip.total .fol-value { color: var(--red); }
+
+  /* ── KPI GRID ── */
+  .kpi-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 24px; }
+  .kpi { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 20px; }
+  .kpi-label { font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 10px; }
+  .kpi-main { font-size: 30px; font-weight: 900; color: var(--text); line-height: 1; margin-bottom: 8px; }
+  .kpi-main.good { color: var(--green); }
+  .kpi-compare { font-size: 12px; color: var(--muted); margin-bottom: 10px; }
+  .kpi-compare span { font-weight: 700; }
+  .kpi-compare .up   { color: var(--green); }
+  .kpi-compare .down { color: #dc2626; }
+  .kpi-spark { display: flex; gap: 3px; align-items: flex-end; height: 24px; }
+  .kpi-bar { flex: 1; border-radius: 3px 3px 0 0; background: #eeeeee; }
+  .kpi-bar.now { background: var(--red); }
+  .kpi-note { font-size: 10.5px; color: var(--muted); margin-top: 6px; line-height: 1.4; }
+
+  /* ── CHARTS ── */
+  .charts-row { display: grid; grid-template-columns: 1.5fr 1fr; gap: 16px; margin-bottom: 24px; }
+  .chart-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 22px 24px; }
+  .chart-title { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+  .chart-subtitle { font-size: 11.5px; color: var(--muted); margin-bottom: 18px; }
+  .chart-wrap { position: relative; height: 210px; }
+
+  /* ── INSIGHTS ── */
+  .insights-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .insight { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 16px 18px; display: flex; gap: 12px; }
+  .insight-emoji { font-size: 20px; flex-shrink: 0; }
+  .insight-content { font-size: 13px; color: var(--text2); line-height: 1.6; }
+  .insight-content strong { color: var(--text); }
+
+  /* ── PLATFORM BLOCKS ── */
+  .platform-block { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); margin-bottom: 16px; overflow: hidden; }
+
+  .plat-header { display: flex; align-items: center; gap: 14px; padding: 16px 24px; border-bottom: 1px solid var(--border2); }
+  .plat-icon { width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 17px; flex-shrink: 0; font-weight: 700; }
+  .plat-title { font-size: 16px; font-weight: 800; }
+  .plat-handle { font-size: 11.5px; color: var(--muted); }
+  .plat-kpis { margin-left: auto; display: flex; gap: 28px; }
+  .plat-kpi { text-align: right; }
+  .plat-kpi-val { font-size: 15px; font-weight: 800; color: var(--text); }
+  .plat-kpi-label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.3px; }
+
+  .plat-body { display: grid; grid-template-columns: 1fr 1fr; padding: 20px 24px; gap: 24px; }
+  .posts-heading { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); margin-bottom: 10px; }
+
+  /* ── POST ROWS ── */
+  .post-rows { display: flex; flex-direction: column; gap: 6px; }
+  .post-row { display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 10px; background: var(--surface2); border: 1px solid var(--border2); text-decoration: none; color: inherit; transition: border-color 0.12s, background 0.12s; }
+  .post-row:hover { background: #fafafa; border-color: #ddd; }
+  .post-num { font-size: 11px; font-weight: 700; color: var(--muted); width: 14px; flex-shrink: 0; }
+  .post-icon { width: 36px; height: 36px; border-radius: 8px; background: var(--bg); display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; border: 1px solid var(--border2); }
+  .post-text { flex: 1; min-width: 0; }
+  .post-title { font-size: 12.5px; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .post-tags { display: flex; gap: 5px; margin-top: 2px; flex-wrap: wrap; }
+  .tag { display: inline-block; font-size: 10px; font-weight: 600; padding: 1px 6px; border-radius: 4px; background: #f0f0f0; color: var(--muted); text-transform: uppercase; letter-spacing: 0.2px; }
+  .post-nums { display: flex; flex-direction: column; align-items: flex-end; gap: 1px; flex-shrink: 0; }
+  .post-primary { font-size: 13px; font-weight: 800; color: var(--text); }
+  .post-secondary { font-size: 11px; color: var(--muted); }
+  .post-er { font-size: 11px; font-weight: 700; color: var(--green); }
+  .post-er.hot { color: var(--orange); }
+
+  /* ── PLATFORM INSIGHT ── */
+  .plat-insight { padding: 14px 24px; background: #fcfcfc; border-top: 1px solid var(--border2); }
+  .plat-insight-label { font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--red); margin-bottom: 5px; }
+  .plat-insight-text { font-size: 12.5px; color: var(--text2); line-height: 1.65; }
+  .plat-insight-text strong { color: var(--text); }
+
+  /* ── TITLES SECTION ── */
+  .titles-platform { margin-bottom: 28px; }
+  .titles-plat-header { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; font-size: 13px; font-weight: 700; color: var(--text); }
+  .title-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .title-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 16px; }
+  .title-rank { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--red); margin-bottom: 6px; }
+  .title-name { font-size: 16px; font-weight: 800; color: var(--text); margin-bottom: 2px; line-height: 1.25; }
+  .title-genre { font-size: 11.5px; color: var(--muted); margin-bottom: 12px; }
+  .title-metric-row { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; }
+  .title-metric-label { font-size: 10px; color: var(--muted); width: 30px; flex-shrink: 0; }
+  .title-bar-bg { flex: 1; height: 5px; background: #f0f0f0; border-radius: 3px; }
+  .title-bar-fg { height: 100%; border-radius: 3px; background: var(--red); }
+  .title-metric-val { font-size: 11px; font-weight: 700; color: var(--text2); width: 44px; text-align: right; flex-shrink: 0; }
+
+  /* ── TRENDS ── */
+  .trends-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .trend-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 20px; }
+  .trend-card h4 { font-size: 13px; font-weight: 800; color: var(--text); margin-bottom: 14px; }
+  .trend-item { display: flex; gap: 10px; margin-bottom: 12px; font-size: 13px; color: var(--text2); line-height: 1.55; }
+  .trend-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
+
+  /* ── RECO CARDS ── */
+  .reco-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .reco { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 20px; }
+  .reco-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 10px; }
+  .reco-title { font-size: 14px; font-weight: 800; color: var(--text); }
+  .reco-sub { font-size: 11.5px; color: var(--muted); margin-top: 1px; }
+  .reco-badge { flex-shrink: 0; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.3px; padding: 3px 9px; border-radius: 6px; }
+  .badge-high { background: var(--red-light); color: var(--red); }
+  .badge-med  { background: var(--orange-bg); color: var(--orange); }
+  .badge-low  { background: var(--green-bg);  color: var(--green); }
+  .reco-body { font-size: 13px; color: var(--text2); line-height: 1.65; }
+  .reco-body strong { color: var(--text); }
+
+  /* ── FOOTER ── */
+  .footer { margin-top: 48px; border-top: 1px solid var(--border); padding: 20px 48px; display: flex; justify-content: space-between; font-size: 11.5px; color: var(--muted); }
+
+  /* Platform color accents */
+  .ig  { background: linear-gradient(135deg, #f7931e, #e1306c); color: #fff; }
+  .tk  { background: #000; color: #00f2ea; }
+  .fb  { background: #1877f2; color: #fff; }
+  .xv  { background: #f3f3f3; color: #111; border: 1px solid #e0e0e0; }
+  .yt  { background: #ff0000; color: #fff; }
+
+  .ig-t { color: #e1306c; }
+  .tk-t { color: #008c86; }
+  .fb-t { color: #1877f2; }
+  .xv-t { color: #555; }
+  .yt-t { color: #cc0000; }
+</style>
 </head>
 <body>
 
+<!-- PASSWORD SCREEN -->
+<div id="auth-overlay" style="position:fixed;inset:0;background:#f5f5f5;z-index:9999;display:flex;align-items:center;justify-content:center;">
+  <div style="background:#fff;border:1px solid #e8e8e8;border-radius:16px;padding:48px 40px;width:360px;text-align:center;box-shadow:0 4px 24px rgba(0,0,0,0.08);">
+    <div style="color:#E50914;font-size:28px;font-weight:900;letter-spacing:-0.5px;margin-bottom:8px;">NETFLIX</div>
+    <div style="font-size:15px;font-weight:700;color:#111;margin-bottom:4px;">España · Social Dashboard</div>
+    <div style="font-size:12px;color:#999;margin-bottom:32px;">Introduce la contraseña para acceder</div>
+    <input id="auth-input" type="password" placeholder="Contraseña"
+      style="width:100%;padding:12px 16px;border:1px solid #e8e8e8;border-radius:10px;font-size:14px;outline:none;margin-bottom:12px;box-sizing:border-box;"
+      onkeydown="if(event.key==='Enter')checkAuth()">
+    <div id="auth-error" style="font-size:12px;color:#E50914;margin-bottom:10px;min-height:16px;"></div>
+    <button onclick="checkAuth()"
+      style="width:100%;background:#E50914;color:#fff;border:none;border-radius:10px;padding:13px;font-size:14px;font-weight:700;cursor:pointer;">
+      Acceder
+    </button>
+  </div>
+</div>
+
+<script>
+(function(){
+  if(sessionStorage.getItem('nfes_auth')==='ok'){
+    document.getElementById('auth-overlay').style.display='none';
+  }
+})();
+function checkAuth(){
+  const val=document.getElementById('auth-input').value;
+  if(val==='$0c1@lD@$hb0@rd'){
+    sessionStorage.setItem('nfes_auth','ok');
+    document.getElementById('auth-overlay').style.display='none';
+  } else {
+    document.getElementById('auth-error').textContent='Contraseña incorrecta. Inténtalo de nuevo.';
+    document.getElementById('auth-input').value='';
+    document.getElementById('auth-input').focus();
+  }
+}
+</script>
+
 <!-- HEADER -->
 <div class="header">
-  <div class="header-netflix">NETFLIX</div>
-  <div class="header-title">España · Dashboard Social Media · Semana 19–25 de junio de 2026</div>
-  <div class="header-meta">Generado automáticamente · Datos: Kragle / Sprinklr</div>
+  <div class="header-left">
+    <div class="nf-wordmark">NETFLIX</div>
+    <div class="header-divider"></div>
+    <div class="header-title"><strong>España · Social Media Dashboard</strong> · Semana 11–17 jun 2026</div>
+  </div>
+  <div class="header-right">
+    <div class="pill pill-date">📅 Jun 11–17, 2026</div>
+    <div class="pill pill-warn">⚠ Métricas W1 en acumulación</div>
+  </div>
 </div>
 
 <div class="container">
 
-  <!-- SECCIÓN 01: Overview General -->
-  <div class="section">
-    <div class="section-title">01 — Overview General · W1: 19–25 de junio de 2026</div>
-    <div class="chips">
-      <div class="chip"><span class="chip-dot" style="background:#e1306c;"></span>Instagram · 9,5M</div>
-      <div class="chip"><span class="chip-dot" style="background:#00ccc5;"></span>TikTok · 9,1M</div>
-      <div class="chip"><span class="chip-dot" style="background:#1877f2;"></span>Facebook · 7,6M</div>
-      <div class="chip"><span class="chip-dot" style="background:#888;"></span>X · 4,6M</div>
-      <div class="chip"><span class="chip-dot" style="background:#ff4444;"></span>YouTube · 2,2M</div>
-      <div class="chip"><span class="chip-dot" style="background:#444;"></span>Threads · 1,7M</div>
-      <div class="chip" style="background:#111;color:#fff;border-color:#111;font-weight:800;">Total: 34,7M</div>
-    </div>
-    <div class="kpi-grid">
-      <div class="kpi-card"><div class="kpi-label">Impresiones</div><div class="kpi-value">32,9M</div><div class="kpi-wow down">▼ 23,5% WoW</div></div>
-      <div class="kpi-card"><div class="kpi-label">Engagements</div><div class="kpi-value">1,0M</div><div class="kpi-wow down">▼ 32,8% WoW</div></div>
-      <div class="kpi-card"><div class="kpi-label">Tasa de Engagement</div><div class="kpi-value">3,1%</div><div class="kpi-wow down">▼ 12,2% WoW</div></div>
-      <div class="kpi-card"><div class="kpi-label">Posts publicados</div><div class="kpi-value">102</div><div class="kpi-wow down">▼ 15,7% WoW</div></div>
-      <div class="kpi-card"><div class="kpi-label">Seguidores totales</div><div class="kpi-value">34,7M</div><div class="kpi-wow up">— N/D WoW</div></div>
-    </div>
-    <div class="charts-grid">
-      <div class="card">
-        <div style="font-size:13px;font-weight:700;margin-bottom:12px;">Impresiones por plataforma (5 semanas · M)</div>
-        <canvas id="chartImp" height="130"></canvas>
+<!-- ══════════════════════════
+     1. OVERVIEW GENERAL
+══════════════════════════ -->
+<div class="section">
+  <div class="section-label">Sección 01</div>
+  <div class="section-heading">Overview General</div>
+  <div class="section-sub">Rendimiento agregado de todos los canales · comparativa WoW y tendencia 4 semanas</div>
+
+  <!-- Followers -->
+  <div class="followers-row">
+    <div class="fol-chip"><div class="fol-dot" style="background:linear-gradient(135deg,#f7931e,#e1306c)"></div><div><div class="fol-platform">Instagram</div><div class="fol-value">9,5M</div></div></div>
+    <div class="fol-chip"><div class="fol-dot" style="background:#00ccc5"></div><div><div class="fol-platform">TikTok</div><div class="fol-value">9,1M</div></div></div>
+    <div class="fol-chip"><div class="fol-dot" style="background:#1877f2"></div><div><div class="fol-platform">Facebook</div><div class="fol-value">7,6M</div></div></div>
+    <div class="fol-chip"><div class="fol-dot" style="background:#888"></div><div><div class="fol-platform">X / Twitter</div><div class="fol-value">4,6M</div></div></div>
+    <div class="fol-chip"><div class="fol-dot" style="background:#ff0000"></div><div><div class="fol-platform">YouTube</div><div class="fol-value">2,2M</div></div></div>
+    <div class="fol-chip"><div class="fol-dot" style="background:#bbb"></div><div><div class="fol-platform">Threads</div><div class="fol-value">1,7M</div></div></div>
+    <div class="fol-chip total"><div><div class="fol-platform">Comunidad total</div><div class="fol-value">34,7M</div></div></div>
+  </div>
+
+  <!-- KPIs -->
+  <div class="kpi-grid">
+    <div class="kpi">
+      <div class="kpi-label">Impresiones</div>
+      <div class="kpi-main">23,5M</div>
+      <div class="kpi-compare">W2: 77,3M <span class="down">(W1 acumulando)</span></div>
+      <div class="kpi-spark">
+        <div class="kpi-bar" style="height:70%"></div>
+        <div class="kpi-bar" style="height:100%"></div>
+        <div class="kpi-bar" style="height:80%"></div>
+        <div class="kpi-bar" style="height:30%"></div>
+        <div class="kpi-bar now" style="height:25%"></div>
       </div>
-      <div class="card">
-        <div style="font-size:13px;font-weight:700;margin-bottom:12px;">Distribución de impresiones — W1</div>
-        <canvas id="chartPlat" height="130"></canvas>
-      </div>
+      <div class="kpi-note">IG impulsa el 80% del total. W2 inflado por viral TikTok (14,8M imp solo post).</div>
     </div>
-    <div class="insights-grid" style="margin-top:16px;">
-      <div class="insight-card"><div class="insight-icon">📉</div><div class="insight-text">Las impresiones totales caen un <strong>23,5% WoW</strong> (32,9M vs 42,9M en W2). Es la semana con menor volumen de los últimos 30 días.</div></div>
-      <div class="insight-card"><div class="insight-icon">🚀</div><div class="insight-text"><strong>TikTok destaca positivamente</strong> con un incremento del +47,7% WoW en impresiones (4,2M vs 2,9M), impulsado por Oasis y THE ONE PIECE.</div></div>
-      <div class="insight-card"><div class="insight-icon">💬</div><div class="insight-text"><strong>#OasisNetflix domina</strong> el contenido de la semana, con presencia en los top posts de Instagram, TikTok y Facebook simultáneamente.</div></div>
-      <div class="insight-card"><div class="insight-icon">📸</div><div class="insight-text">Instagram lidera con el <strong>70,7% de las impresiones totales</strong> de la semana (23,2M de 32,9M), consolidándose como canal principal.</div></div>
-      <div class="insight-card"><div class="insight-icon">🎯</div><div class="insight-text">El <strong>ER de TikTok (6,3%)</strong> más que duplica el de Instagram (3,0%), indicando mayor capacidad de engagement por impresión.</div></div>
-      <div class="insight-card"><div class="insight-icon">🏴‍☠️</div><div class="insight-text"><strong>THE ONE PIECE</strong> muestra enorme potencial: el trailer en TikTok alcanzó un ER del 13,9%, el más alto de toda la semana en cualquier plataforma.</div></div>
+    <div class="kpi">
+      <div class="kpi-label">Engagements</div>
+      <div class="kpi-main">791,6K</div>
+      <div class="kpi-compare">W2: 1,51M</div>
+      <div class="kpi-spark">
+        <div class="kpi-bar" style="height:65%"></div>
+        <div class="kpi-bar" style="height:91%"></div>
+        <div class="kpi-bar" style="height:100%"></div>
+        <div class="kpi-bar" style="height:73%"></div>
+        <div class="kpi-bar now" style="height:52%"></div>
+      </div>
+      <div class="kpi-note">Instagram genera el 85% de todos los engagements.</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Engagement Rate</div>
+      <div class="kpi-main good">3,37%</div>
+      <div class="kpi-compare">W2: 1,96% — <span class="up">↑ +71%</span></div>
+      <div class="kpi-spark">
+        <div class="kpi-bar" style="height:63%;background:#bbf7d0"></div>
+        <div class="kpi-bar" style="height:77%;background:#bbf7d0"></div>
+        <div class="kpi-bar" style="height:72%;background:#bbf7d0"></div>
+        <div class="kpi-bar" style="height:47%;background:#bbf7d0"></div>
+        <div class="kpi-bar" style="height:81%;background:#16a34a"></div>
+      </div>
+      <div class="kpi-note">Mejor métrica comparativa real WoW. Tendencia sólida.</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Posts publicados</div>
+      <div class="kpi-main">105</div>
+      <div class="kpi-compare">W2: 162 — <span class="down">↓ −35%</span></div>
+      <div class="kpi-spark">
+        <div class="kpi-bar" style="height:63%"></div>
+        <div class="kpi-bar" style="height:98%"></div>
+        <div class="kpi-bar" style="height:83%"></div>
+        <div class="kpi-bar" style="height:100%"></div>
+        <div class="kpi-bar now" style="height:65%"></div>
+      </div>
+      <div class="kpi-note">IG 32 · X 20 · YT 24 · TT 19 · FB 10 posts</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Seguidores totales</div>
+      <div class="kpi-main">34,7M</div>
+      <div class="kpi-compare">Dato a 16 jun 2026</div>
+      <div class="kpi-spark">
+        <div class="kpi-bar" style="height:95%"></div>
+        <div class="kpi-bar" style="height:96%"></div>
+        <div class="kpi-bar" style="height:98%"></div>
+        <div class="kpi-bar" style="height:99%"></div>
+        <div class="kpi-bar now" style="height:100%"></div>
+      </div>
+      <div class="kpi-note">IG 9,5M · TT 9,1M · FB 7,6M · X 4,6M · YT 2,2M</div>
     </div>
   </div>
 
-  <!-- SECCIÓN 02: Plataformas -->
-  <div class="section">
-    <div class="section-title">02 — Datos por Plataforma</div>
-    <div style="display:flex;flex-direction:column;gap:16px;">
-
-      <!-- Instagram -->
-      <div class="platform-section">
-        <div class="platform-header">
-          <span class="platform-dot" style="background:#e1306c;"></span>
-          <span class="platform-name">Instagram</span>
-          <span style="margin-left:auto;font-size:12px;color:#999;">9,5M seguidores</span>
-        </div>
-        <div class="platform-metrics">
-          <div class="platform-metric"><div class="platform-metric-val">23,2M</div><div style="color:#999;font-size:11px;">Impresiones</div></div>
-          <div class="platform-metric"><div class="platform-metric-val">696K</div><div style="color:#999;font-size:11px;">Engagements</div></div>
-          <div class="platform-metric"><div class="platform-metric-val">3,0%</div><div style="color:#999;font-size:11px;">ER</div></div>
-          <div class="platform-metric"><div class="platform-metric-val">31</div><div style="color:#999;font-size:11px;">Posts</div></div>
-          <div class="platform-metric"><div class="platform-metric-val" style="color:#E50914;">▼ 24,2%</div><div style="color:#999;font-size:11px;">WoW Imp.</div></div>
-        </div>
-        <div class="posts-row">
-          <div>
-            <div class="posts-col-title">Top 5 por Impresiones</div>
-            <div class="post-list">
-              <div class="post-item"><span class="post-metric">3,5M</span> · Su hermana muere y para superar el duelo le enviará mensajes de voz... — 19 jun <a href="https://www.instagram.com/p/DZxLMo8Fut8/" class="post-link">🔗</a></div>
-              <div class="post-item"><span class="post-metric">3,4M</span> · Este verano cambiamos la playa por el rancho. 'Mi vida con los chicos Walter' T3 — 24 jun <a href="https://www.instagram.com/p/DZ-UY8cD7s1/" class="post-link">🔗</a></div>
-              <div class="post-item"><span class="post-metric">2,1M</span> · En #InstintoMaternal, Taylor Parker fingió un embarazo y asesinó a otra mujer... — 21 jun <a href="https://www.instagram.com/reel/DZ2ik-YTk7f/" class="post-link">🔗</a></div>
-              <div class="post-item"><span class="post-metric">2,0M</span> · El beef entre ellos se queda dentro del Oasis, porque fuera del resort 🫣 #OasisNetflix — 20 jun <a href="https://www.instagram.com/p/DZ0SWBTEzYJ/" class="post-link">🔗</a></div>
-              <div class="post-item"><span class="post-metric">1,7M</span> · Los problemas de los rich kids mientras Celia está literalmente secuestrada #OasisNetflix — 23 jun <a href="https://www.instagram.com/reel/DZ8LAGEz1d0/" class="post-link">🔗</a></div>
-            </div>
-          </div>
-          <div>
-            <div class="posts-col-title">Top 5 por Engagement</div>
-            <div class="post-list">
-              <div class="post-item"><span class="post-metric">172K</span> · Este verano cambiamos la playa por el rancho. 'Mi vida con los chicos Walter' T3 — 24 jun <a href="https://www.instagram.com/p/DZ-UY8cD7s1/" class="post-link">🔗</a></div>
-              <div class="post-item"><span class="post-metric">140K</span> · Su hermana muere y para superar el duelo le enviará mensajes de voz... — 19 jun <a href="https://www.instagram.com/p/DZxLMo8Fut8/" class="post-link">🔗</a></div>
-              <div class="post-item"><span class="post-metric">64K</span> · Los problemas de los rich kids mientras Celia está literalmente secuestrada #OasisNetflix — 23 jun <a href="https://www.instagram.com/reel/DZ8LAGEz1d0/" class="post-link">🔗</a></div>
-              <div class="post-item"><span class="post-metric">43K</span> · En #InstintoMaternal, Taylor Parker fingió un embarazo y asesinó a otra mujer... — 21 jun <a href="https://www.instagram.com/reel/DZ2ik-YTk7f/" class="post-link">🔗</a></div>
-              <div class="post-item"><span class="post-metric">30K</span> · Conoces a tu amor de verano, la secuestran y te conviertes en el principal sospechoso — 20 jun <a href="https://www.instagram.com/reel/DZzUm5Wz7wF/" class="post-link">🔗</a></div>
-            </div>
-          </div>
-        </div>
-        <div style="margin-top:12px;padding:10px 14px;background:#fdf2f8;border-radius:8px;font-size:12px;color:#9d174d;">
-          💡 <strong>Insight:</strong> La semana estuvo dominada por #OasisNetflix y Mensajes de Voz para Isabelle. Los carousels de alta narrativa emocional siguen siendo el formato más efectivo.
-        </div>
-      </div>
-
-      <!-- TikTok -->
-      <div class="platform-section">
-        <div class="platform-header">
-          <span class="platform-dot" style="background:#00ccc5;"></span>
-          <span class="platform-name">TikTok</span>
-          <span style="margin-left:auto;font-size:12px;color:#999;">9,1M seguidores</span>
-        </div>
-        <div class="platform-metrics">
-          <div class="platform-metric"><div class="platform-metric-val">4,2M</div><div style="color:#999;font-size:11px;">Impresiones</div></div>
-          <div class="platform-metric"><div class="platform-metric-val">265K</div><div style="color:#999;font-size:11px;">Engagements</div></div>
-          <div class="platform-metric"><div class="platform-metric-val">6,3%</div><div style="color:#999;font-size:11px;">ER</div></div>
-          <div class="platform-metric"><div class="platform-metric-val">20</div><div style="color:#999;font-size:11px;">Posts</div></div>
-          <div class="platform-metric"><div class="platform-metric-val" style="color:#16a34a;">▲ 47,7%</div><div style="color:#999;font-size:11px;">WoW Imp.</div></div>
-        </div>
-        <div class="posts-row">
-          <div>
-            <div class="posts-col-title">Top 5 por Impresiones</div>
-            <div class="post-list">
-              <div class="post-item"><span class="post-metric">903K</span> · Los problemas de los rich kids mientras Celia está literalmente secuestrada &lt;&lt;&lt; #OasisNetflix — 23 jun <a href="https://www.tiktok.com/@netflixes/video/7654675570940267809" class="post-link">🔗</a></div>
-              <div class="post-item"><span class="post-metric">749K</span> · Puede que las vacaciones que llevabas esperando no sean tal y como las imaginabas — 19 jun <a href="https://www.tiktok.com/@netflixes/video/7652986867763252502" class="post-link">🔗</a></div>
-              <div class="post-item"><span class="post-metric">611K</span> · En #InstintoMaternal, Taylor Parker fingió un embarazo y asesinó a otra mujer para robarle su bebé — 21 jun <a href="https://www.tiktok.com/@netflixes/video/7653863807122525473" class="post-link">🔗</a></div>
-              <div class="post-item"><span class="post-metric">478K</span> · Tatuándonos "la fina línea entre la diversión y el convento" 😅 #OasisNetflix — 21 jun <a href="https://www.tiktok.com/@netflixes/video/7653794243848277280" class="post-link">🔗</a></div>
-              <div class="post-item"><span class="post-metric">453K</span> · Conoces a tu amor de verano, la secuestran y te conviertes en el principal sospechoso — 20 jun <a href="https://www.tiktok.com/@netflixes/video/7653399958200093985" class="post-link">🔗</a></div>
-            </div>
-          </div>
-          <div>
-            <div class="posts-col-title">Top 5 por Engagement</div>
-            <div class="post-list">
-              <div class="post-item"><span class="post-metric">58K</span> · Puede que las vacaciones que llevabas esperando no sean tal y como las imaginabas — 19 jun <a href="https://www.tiktok.com/@netflixes/video/7652986867763252502" class="post-link">🔗</a></div>
-              <div class="post-item"><span class="post-metric">52K</span> · Preparad los sombreros de paja porque una nueva era de #THEONEPIECE se acerca ⚓ — 24 jun <a href="https://www.tiktok.com/@netflixes/video/7654946172653620513" class="post-link">🔗</a></div>
-              <div class="post-item"><span class="post-metric">48K</span> · Los problemas de los rich kids mientras Celia está literalmente secuestrada &lt;&lt;&lt; #OasisNetflix — 23 jun <a href="https://www.tiktok.com/@netflixes/video/7654675570940267809" class="post-link">🔗</a></div>
-              <div class="post-item"><span class="post-metric">34K</span> · Tatuándonos "la fina línea entre la diversión y el convento" 😅 #OasisNetflix — 21 jun <a href="https://www.tiktok.com/@netflixes/video/7653794243848277280" class="post-link">🔗</a></div>
-              <div class="post-item"><span class="post-metric">20K</span> · En #InstintoMaternal, Taylor Parker fingió un embarazo y asesinó a otra mujer para robarle su bebé — 21 jun <a href="https://www.tiktok.com/@netflixes/video/7653863807122525473" class="post-link">🔗</a></div>
-            </div>
-          </div>
-        </div>
-        <div style="margin-top:12px;padding:10px 14px;background:#f0fffe;border-radius:8px;font-size:12px;color:#065f46;">
-          💡 <strong>Insight:</strong> TikTok es la plataforma estrella de la semana con +47,7% WoW. El clip de THE ONE PIECE logró el ER más alto de toda la semana (13,9%).
-        </div>
-      </div>
-
-      <!-- Facebook -->
-      <div class="platform-section">
-        <div class="platform-header">
-          <span class="platform-dot" style="background:#1877f2;"></span>
-          <span class="platform-name">Facebook</span>
-          <span style="margin-left:auto;font-size:12px;color:#999;">7,6M seguidores</span>
-        </div>
-        <div class="platform-metrics">
-          <div class="platform-metric"><div class="platform-metric-val">3,8M</div><div style="color:#999;font-size:11px;">Impresiones</div></div>
-          <div class="platform-metric"><div class="platform-metric-val">23K</div><div style="color:#999;font-size:11px;">Engagements</div></div>
-          <div class="platform-metric"><div class="platform-metric-val">0,6%</div><div style="color:#999;font-size:11px;">ER</div></div>
-          <div class="platform-metric"><div class="platform-metric-val">12</div><div style="color:#999;font-size:11px;">Posts</div></div>
-          <div class="platform-metric"><div class="platform-metric-val" style="color:#E50914;">▼ 32,3%</div><div style="color:#999;font-size:11px;">WoW Imp.</div></div>
-        </div>
-        <div class="posts-row">
-          <div>
-            <div class="posts-col-title">Top posts por Impresiones</div>
-            <div class="post-list">
-              <div class="post-item"><span class="post-metric">1,5M</span> · Tras la muerte de su hermana, Jill le mandará mensajes de voz para contarle todo... — 19 jun <a href="https://www.facebook.com/637261485095435/posts/1451190413702534" class="post-link">🔗</a></div>
-              <div class="post-item"><span class="post-metric">972K</span> · Y todas ellas nos dejaron con el cuerpo muy raro — 20 jun <a href="https://www.facebook.com/637261485095435/posts/1451953653626210" class="post-link">🔗</a></div>
-              <div class="post-item"><span class="post-metric">430K</span> · Este verano cambiamos la playa por el rancho. 'Mi vida con los chicos Walter' T3 — 24 jun <a href="https://www.facebook.com/637261485095435/posts/1455825273239048" class="post-link">🔗</a></div>
-              <div class="post-item"><span class="post-metric">347K</span> · En #Campeones, cuando un entrenador profesional sufre una crisis personal... — 20 jun <a href="https://www.facebook.com/reel/4407561366127386/" class="post-link">🔗</a></div>
-            </div>
-          </div>
-          <div>
-            <div class="posts-col-title">Top posts por Engagement</div>
-            <div class="post-list">
-              <div class="post-item"><span class="post-metric">6,4K</span> · En #Campeones, cuando un entrenador profesional sufre una crisis personal... — 20 jun <a href="https://www.facebook.com/reel/4407561366127386/" class="post-link">🔗</a></div>
-              <div class="post-item"><span class="post-metric">5,2K</span> · Tras la muerte de su hermana, Jill le mandará mensajes de voz... — 19 jun <a href="https://www.facebook.com/637261485095435/posts/1451190413702534" class="post-link">🔗</a></div>
-              <div class="post-item"><span class="post-metric">3,2K</span> · Este verano cambiamos la playa por el rancho. 'Mi vida con los chicos Walter' T3 — 24 jun <a href="https://www.facebook.com/637261485095435/posts/1455825273239048" class="post-link">🔗</a></div>
-              <div class="post-item"><span class="post-metric">3,1K</span> · Y todas ellas nos dejaron con el cuerpo muy raro — 20 jun <a href="https://www.facebook.com/637261485095435/posts/1451953653626210" class="post-link">🔗</a></div>
-            </div>
-          </div>
-        </div>
-        <div style="margin-top:12px;padding:10px 14px;background:#eff6ff;border-radius:8px;font-size:12px;color:#1e40af;">
-          💡 <strong>Insight:</strong> Facebook registra una caída del 32,3% WoW pero el contenido de Mensajes de Voz para Isabelle generó 1,5M de impresiones en un solo post.
-        </div>
-      </div>
-
-      <!-- X -->
-      <div class="platform-section">
-        <div class="platform-header">
-          <span class="platform-dot" style="background:#888;"></span>
-          <span class="platform-name">X (Twitter)</span>
-          <span style="margin-left:auto;font-size:12px;color:#999;">4,6M seguidores</span>
-        </div>
-        <div class="platform-metrics">
-          <div class="platform-metric"><div class="platform-metric-val">1,5M</div><div style="color:#999;font-size:11px;">Impresiones</div></div>
-          <div class="platform-metric"><div class="platform-metric-val">26K</div><div style="color:#999;font-size:11px;">Engagements</div></div>
-          <div class="platform-metric"><div class="platform-metric-val">1,7%</div><div style="color:#999;font-size:11px;">ER</div></div>
-          <div class="platform-metric"><div class="platform-metric-val">20</div><div style="color:#999;font-size:11px;">Posts</div></div>
-          <div class="platform-metric"><div class="platform-metric-val" style="color:#E50914;">▼ 58,3%</div><div style="color:#999;font-size:11px;">WoW Imp.</div></div>
-        </div>
-        <div class="posts-row">
-          <div>
-            <div class="posts-col-title">Top posts por Impresiones</div>
-            <div class="post-list">
-              <div class="post-item"><span class="post-metric">316K</span> · Preparad los sombreros de paja porque una nueva era de 'THE ONE PIECE' se acerca ⚓ — 24 jun <a href="https://twitter.com/NetflixES/status/2069767499827024383" class="post-link">🔗</a></div>
-              <div class="post-item"><span class="post-metric">271K</span> · Como nos bloquee cada país al que ganemos vamos a acabar sin seguidores... — 22 jun <a href="https://twitter.com/NetflixES/status/2068968173731275020" class="post-link">🔗</a></div>
-            </div>
-          </div>
-          <div>
-            <div class="posts-col-title">Top posts por Engagement</div>
-            <div class="post-list">
-              <div class="post-item"><span class="post-metric">6,4K</span> · Preparad los sombreros de paja porque una nueva era de 'THE ONE PIECE' se acerca ⚓ — 24 jun <a href="https://twitter.com/NetflixES/status/2069767499827024383" class="post-link">🔗</a></div>
-              <div class="post-item"><span class="post-metric">4,3K</span> · Como nos bloquee cada país al que ganemos vamos a acabar sin seguidores... — 22 jun <a href="https://twitter.com/NetflixES/status/2068968173731275020" class="post-link">🔗</a></div>
-            </div>
-          </div>
-        </div>
-        <div style="margin-top:12px;padding:10px 14px;background:#f9fafb;border-radius:8px;font-size:12px;color:#374151;">
-          💡 <strong>Insight:</strong> La caída del 58,3% WoW en impresiones es la más pronunciada de todas las plataformas. Solo el anuncio de THE ONE PIECE y un tweet orgánico lograron destacar.
-        </div>
-      </div>
-
-      <!-- YouTube -->
-      <div class="platform-section">
-        <div class="platform-header">
-          <span class="platform-dot" style="background:#ff4444;"></span>
-          <span class="platform-name">YouTube</span>
-          <span style="margin-left:auto;font-size:12px;color:#999;">2,2M suscriptores</span>
-        </div>
-        <div class="platform-metrics">
-          <div class="platform-metric"><div class="platform-metric-val">132K</div><div style="color:#999;font-size:11px;">Impresiones</div></div>
-          <div class="platform-metric"><div class="platform-metric-val">4K</div><div style="color:#999;font-size:11px;">Engagements</div></div>
-          <div class="platform-metric"><div class="platform-metric-val">3,0%</div><div style="color:#999;font-size:11px;">ER</div></div>
-          <div class="platform-metric"><div class="platform-metric-val">19</div><div style="color:#999;font-size:11px;">Posts</div></div>
-          <div class="platform-metric"><div class="platform-metric-val" style="color:#E50914;">▼ 55,3%</div><div style="color:#999;font-size:11px;">WoW Imp.</div></div>
-        </div>
-        <div style="margin-top:8px;padding:8px 12px;background:#f9f9f9;border-radius:8px;font-size:12px;color:#888;font-style:italic;">
-          Sin entradas en el top global esta semana (media 6,9K imp/post para 19 posts).
-        </div>
-        <div style="margin-top:12px;padding:10px 14px;background:#fff5f5;border-radius:8px;font-size:12px;color:#991b1b;">
-          💡 <strong>Insight:</strong> YouTube registra su peor semana en el período analizado. La caída del 55,3% WoW requiere una revisión urgente de la estrategia de contenido.
-        </div>
-      </div>
+  <!-- Charts -->
+  <div class="charts-row">
+    <div class="chart-card">
+      <div class="chart-title">Impresiones semanales por plataforma</div>
+      <div class="chart-subtitle">Últimas 5 semanas · Suma lifetime de posts publicados en cada semana</div>
+      <div class="chart-wrap"><canvas id="chartImpressions"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Distribución de engagements · W1</div>
+      <div class="chart-subtitle">Semana actual 11–17 jun · Total 791,6K</div>
+      <div class="chart-wrap"><canvas id="chartEngagements"></canvas></div>
     </div>
   </div>
 
-  <!-- SECCIÓN 03: Overview Títulos -->
-  <div class="section">
-    <div class="section-title">03 — Overview Títulos</div>
-    <div class="platform-grid">
-      <div class="card">
-        <div style="font-size:13px;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:8px;">
-          <span class="platform-dot" style="background:#e1306c;"></span>Top 3 Títulos — Instagram (W1)
-        </div>
-        <div style="margin-bottom:14px;">
-          <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;"><span><strong>1.</strong> Oasis</span><span style="color:#e1306c;font-weight:700;">~8,4M imp</span></div>
-          <div class="titulo-bar" style="width:100%;"></div>
-        </div>
-        <div style="margin-bottom:14px;">
-          <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;"><span><strong>2.</strong> Mensajes de Voz para Isabelle</span><span style="color:#e1306c;font-weight:700;">3,5M imp</span></div>
-          <div class="titulo-bar" style="width:42%;"></div>
-        </div>
-        <div style="margin-bottom:14px;">
-          <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;"><span><strong>3.</strong> Instinto Maternal</span><span style="color:#e1306c;font-weight:700;">2,1M imp</span></div>
-          <div class="titulo-bar" style="width:25%;"></div>
+  <!-- Insights -->
+  <div class="section-label" style="margin-bottom:10px">Highlights de la semana</div>
+  <div class="insights-row">
+    <div class="insight">
+      <div class="insight-emoji">⛸️</div>
+      <div class="insight-content"><strong>Icebreach domina IG.</strong> Un único post tipo Foto generó 3,8M imp y 163K eng — el mejor post de las últimas 5 semanas. El formato gráfico con copy de romance superó a todos los Reels.</div>
+    </div>
+    <div class="insight">
+      <div class="insight-emoji">⚽</div>
+      <div class="insight-content"><strong>El Mundial amplifica TikTok y X.</strong> Contenido reactivo sobre España (Lamine Yamal, Cucurella) registró 8,1% ER en TikTok. Ventana de oportunidad activa las próximas semanas.</div>
+    </div>
+    <div class="insight">
+      <div class="insight-emoji">🍂</div>
+      <div class="insight-content"><strong>Heartstopper crece cross-platform.</strong> Con el final el 17 jul, los teasers están generando ER excepcional: <strong>15,7% en TikTok</strong>, 7,2% en IG Reel, 4,3% en X. Uno de los mejores arranques de campaña recientes.</div>
+    </div>
+    <div class="insight">
+      <div class="insight-emoji">📉</div>
+      <div class="insight-content"><strong>La caída WoW en impresiones brutas es contextual.</strong> W2 tuvo un viral de Rafa Nadal en TikTok (14,8M sólo ese post). Sin ese outlier, el rendimiento agregado es comparable.</div>
+    </div>
+    <div class="insight">
+      <div class="insight-emoji">💎</div>
+      <div class="insight-content"><strong>Bridgerton S4 con presencia sólida.</strong> Múltiples posts suman +2M imp en IG. Los carruseles emocionales de personajes generan mucho guardar/compartir en la comunidad femenina joven.</div>
+    </div>
+    <div class="insight">
+      <div class="insight-emoji">🇪🇸</div>
+      <div class="insight-content"><strong>Producciones locales con ER superior a la media.</strong> Zero Calcare 8,1% ER, La Desconocida, Perdiendo el juicio. El contenido local resuena más profundo que el global en engagement.</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════
+     2. DATOS POR PLATAFORMA
+══════════════════════════ -->
+<div class="section">
+  <div class="section-label">Sección 02</div>
+  <div class="section-heading">Datos por Plataforma</div>
+  <div class="section-sub">Top 5 posts por impresiones y engagements · Semana 11–17 jun 2026</div>
+
+  <!-- INSTAGRAM -->
+  <div class="platform-block">
+    <div class="plat-header">
+      <div class="plat-icon ig">📸</div>
+      <div>
+        <div class="plat-title ig-t">Instagram</div>
+        <div class="plat-handle">@netflixes · 9,5M seguidores</div>
+      </div>
+      <div class="plat-kpis">
+        <div class="plat-kpi"><div class="plat-kpi-val">18,9M</div><div class="plat-kpi-label">Impresiones W1</div></div>
+        <div class="plat-kpi"><div class="plat-kpi-val">673,6K</div><div class="plat-kpi-label">Engagements W1</div></div>
+        <div class="plat-kpi"><div class="plat-kpi-val" style="color:var(--green)">3,57%</div><div class="plat-kpi-label">ER · vs 2,61% W2</div></div>
+        <div class="plat-kpi"><div class="plat-kpi-val">32</div><div class="plat-kpi-label">Posts</div></div>
+      </div>
+    </div>
+    <div class="plat-body">
+      <div>
+        <div class="posts-heading">👁 Top 5 por Impresiones</div>
+        <div class="post-rows">
+          <a href="https://www.instagram.com/p/DZnRwX0lIoL/" target="_blank" class="post-row">
+            <div class="post-num">1</div><div class="post-icon">⛸️</div>
+            <div class="post-text"><div class="post-title">Afila tus patines ⛸️ — Icebreach</div><div class="post-tags"><span class="tag">Photo</span><span class="tag">15 jun</span><span class="tag">Gráfico</span></div></div>
+            <div class="post-nums"><div class="post-primary">3,80M</div><div class="post-secondary">163,7K eng</div><div class="post-er">ER 4,30%</div></div>
+          </a>
+          <a href="https://www.instagram.com/p/DZmjf1lj7mt/" target="_blank" class="post-row">
+            <div class="post-num">2</div><div class="post-icon">💎</div>
+            <div class="post-text"><div class="post-title">Cuando los ojos hablan por sí solos — Bridgerton</div><div class="post-tags"><span class="tag">Carousel</span><span class="tag">15 jun</span></div></div>
+            <div class="post-nums"><div class="post-primary">1,55M</div><div class="post-secondary">80,5K eng</div><div class="post-er">ER 5,21%</div></div>
+          </a>
+          <a href="https://www.instagram.com/p/DZkQQKwms6i/" target="_blank" class="post-row">
+            <div class="post-num">3</div><div class="post-icon">🏔</div>
+            <div class="post-text"><div class="post-title">Tres años después y 'La sociedad de la nieve'...</div><div class="post-tags"><span class="tag">Carousel</span><span class="tag">14 jun</span></div></div>
+            <div class="post-nums"><div class="post-primary">1,26M</div><div class="post-secondary">35,9K eng</div><div class="post-er">ER 2,86%</div></div>
+          </a>
+          <a href="https://www.instagram.com/p/DZmwr9FEiJs/" target="_blank" class="post-row">
+            <div class="post-num">4</div><div class="post-icon">🍂</div>
+            <div class="post-text"><div class="post-title">El tráiler del final de #Heartstopper llega mañana</div><div class="post-tags"><span class="tag">Photo</span><span class="tag">15 jun</span></div></div>
+            <div class="post-nums"><div class="post-primary">1,23M</div><div class="post-secondary">48,0K eng</div><div class="post-er">ER 3,91%</div></div>
+          </a>
+          <a href="https://www.instagram.com/p/DZdOH39idue/" target="_blank" class="post-row">
+            <div class="post-num">5</div><div class="post-icon">💍</div>
+            <div class="post-text"><div class="post-title">MIS DIAMANTES DE LA TEMPORADA 💎 #BridgertonNetflix</div><div class="post-tags"><span class="tag">Carousel</span><span class="tag">11 jun</span></div></div>
+            <div class="post-nums"><div class="post-primary">720K</div><div class="post-secondary">24,7K eng</div><div class="post-er">ER 3,43%</div></div>
+          </a>
         </div>
       </div>
-      <div class="card">
-        <div style="font-size:13px;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:8px;">
-          <span class="platform-dot" style="background:#00ccc5;"></span>Top 3 Títulos — TikTok (W1)
-        </div>
-        <div style="margin-bottom:14px;">
-          <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;"><span><strong>1.</strong> Oasis</span><span style="color:#00ccc5;font-weight:700;">~2,1M imp</span></div>
-          <div class="titulo-bar" style="width:100%;background:linear-gradient(90deg,#00ccc5,#00e5e0);"></div>
-        </div>
-        <div style="margin-bottom:14px;">
-          <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;"><span><strong>2.</strong> Instinto Maternal</span><span style="color:#00ccc5;font-weight:700;">611K imp</span></div>
-          <div class="titulo-bar" style="width:29%;background:linear-gradient(90deg,#00ccc5,#00e5e0);"></div>
-        </div>
-        <div style="margin-bottom:14px;">
-          <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;"><span><strong>3.</strong> THE ONE PIECE</span><span style="color:#00ccc5;font-weight:700;">371K imp</span></div>
-          <div class="titulo-bar" style="width:18%;background:linear-gradient(90deg,#00ccc5,#00e5e0);"></div>
+      <div>
+        <div class="posts-heading">💬 Top 5 por Engagements</div>
+        <div class="post-rows">
+          <a href="https://www.instagram.com/p/DZnRwX0lIoL/" target="_blank" class="post-row">
+            <div class="post-num">1</div><div class="post-icon">⛸️</div>
+            <div class="post-text"><div class="post-title">Afila tus patines ⛸️ — Icebreach · Foto</div><div class="post-tags"><span class="tag">Photo</span><span class="tag">3,80M imp</span></div></div>
+            <div class="post-nums"><div class="post-primary">163,7K</div><div class="post-secondary">engagements</div><div class="post-er">ER 4,30%</div></div>
+          </a>
+          <a href="https://www.instagram.com/p/DZmjf1lj7mt/" target="_blank" class="post-row">
+            <div class="post-num">2</div><div class="post-icon">💎</div>
+            <div class="post-text"><div class="post-title">Cuando los ojos hablan por sí solos — Bridgerton</div><div class="post-tags"><span class="tag">Carousel</span><span class="tag">1,55M imp</span></div></div>
+            <div class="post-nums"><div class="post-primary">80,5K</div><div class="post-secondary">engagements</div><div class="post-er">ER 5,21%</div></div>
+          </a>
+          <a href="https://www.instagram.com/reel/DZc5lIfiiM0/" target="_blank" class="post-row">
+            <div class="post-num">3</div><div class="post-icon">🎾</div>
+            <div class="post-text"><div class="post-title">Despedida de Rafa en el ojo 🥺 #RafaNetflix</div><div class="post-tags"><span class="tag">Reel</span><span class="tag">705K imp</span></div></div>
+            <div class="post-nums"><div class="post-primary">69,8K</div><div class="post-secondary">engagements</div><div class="post-er hot">ER 9,90%</div></div>
+          </a>
+          <a href="https://www.instagram.com/p/DZmwr9FEiJs/" target="_blank" class="post-row">
+            <div class="post-num">4</div><div class="post-icon">🍂</div>
+            <div class="post-text"><div class="post-title">El tráiler del final de #Heartstopper llega mañana</div><div class="post-tags"><span class="tag">Photo</span><span class="tag">1,23M imp</span></div></div>
+            <div class="post-nums"><div class="post-primary">48,0K</div><div class="post-secondary">engagements</div><div class="post-er">ER 3,91%</div></div>
+          </a>
+          <a href="https://www.instagram.com/reel/DZfzNF5FcGx/" target="_blank" class="post-row">
+            <div class="post-num">5</div><div class="post-icon">🫀</div>
+            <div class="post-text"><div class="post-title">El team de los raros con Jughead. #Riverdale</div><div class="post-tags"><span class="tag">Reel</span><span class="tag">681K imp</span></div></div>
+            <div class="post-nums"><div class="post-primary">33,8K</div><div class="post-secondary">engagements</div><div class="post-er">ER 4,96%</div></div>
+          </a>
         </div>
       </div>
+    </div>
+    <div class="plat-insight">
+      <div class="plat-insight-label">Insight</div>
+      <div class="plat-insight-text"><strong>Foto y Carousel dominan el alcance</strong> (Icebreach Photo: 3,8M imp), pero los <strong>Reels lideran en ER</strong> (Rafa 9,9%, Zero Calcare 8,1%, Riverdale 5%). La comunidad de fandoms es muy activa: los carruseles de personajes con copy emocional generan mucho guardar/compartir. El PhotoDUMP semanal sigue siendo un pilar consistente (20K eng). Tendencia 4 semanas: IG es el canal más estable con ER 2,6–3,6%.</div>
     </div>
   </div>
 
-  <!-- SECCIÓN 04: Recomendaciones -->
-  <div class="section">
-    <div class="section-title">04 — Insights y Recomendaciones</div>
-    <div class="rec-grid">
-      <div class="rec-card"><div class="rec-priority priority-high">ALTA PRIORIDAD</div><div class="rec-title">Escalar THE ONE PIECE cross-platform</div><div class="rec-text">Con un ER del 13,9% en TikTok y fuerte tracción en X, THE ONE PIECE tiene el mayor potencial viral de las próximas semanas. Escalar la campaña de inmediato antes del estreno.</div></div>
-      <div class="rec-card"><div class="rec-priority priority-high">ALTA PRIORIDAD</div><div class="rec-title">Aumentar cadencia en TikTok</div><div class="rec-text">TikTok es la única plataforma con crecimiento WoW (+47,7%) y tiene el ER más alto (6,3%). Incrementar de 20 a 25-28 posts semanales priorizando clips de Oasis y THE ONE PIECE.</div></div>
-      <div class="rec-card"><div class="rec-priority priority-medium">MEDIA PRIORIDAD</div><div class="rec-title">Revisar estrategia en X</div><div class="rec-text">La caída del 58,3% WoW en X es la más pronunciada. El tweet orgánico conversacional superó en ER al contenido de vídeo promocional. Pivotar hacia contenido más nativo.</div></div>
-      <div class="rec-card"><div class="rec-priority priority-medium">MEDIA PRIORIDAD</div><div class="rec-title">Impulsar el formato carousel en Instagram</div><div class="rec-text">Los 3 carousels con mayor impresión de la semana superan los 2M cada uno. El ER de los carousels narrativos supera la media del canal. Aumentar la ratio carousel vs. reel.</div></div>
-      <div class="rec-card"><div class="rec-priority priority-medium">MEDIA PRIORIDAD</div><div class="rec-title">Plan de rescate para YouTube</div><div class="rec-text">Con solo 132K impresiones para 19 posts (media 6,9K/post), YouTube tiene la peor eficiencia. Revisar el mix Shorts vs. long-form y ajustar la estrategia de contenido.</div></div>
-      <div class="rec-card"><div class="rec-priority priority-low">BAJA PRIORIDAD</div><div class="rec-title">Activar cuenta de Threads</div><div class="rec-text">Threads tiene 1,7M de seguidores pero registra 0 posts en las últimas semanas. Evaluar una estrategia diferenciada aprovechando el tono conversacional de la plataforma.</div></div>
-    </div>
-  </div>
-
-  <!-- SECCIÓN 05: Publishing -->
-  <div class="section">
-    <div class="section-title">05 — Publishing: Cadencias y Reglas de Oro</div>
-    <div class="card" style="margin-bottom:16px;">
-      <div style="font-size:13px;font-weight:700;margin-bottom:12px;">Cadencia actual — W1 (posts publicados)</div>
-      <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:8px;text-align:center;">
-        <div><div style="font-size:10px;color:#e1306c;font-weight:700;margin-bottom:4px;">INSTAGRAM</div><div style="font-size:22px;font-weight:900;">31</div><div style="font-size:10px;color:#999;">posts/sem</div></div>
-        <div><div style="font-size:10px;color:#00ccc5;font-weight:700;margin-bottom:4px;">TIKTOK</div><div style="font-size:22px;font-weight:900;">20</div><div style="font-size:10px;color:#999;">posts/sem</div></div>
-        <div><div style="font-size:10px;color:#1877f2;font-weight:700;margin-bottom:4px;">FACEBOOK</div><div style="font-size:22px;font-weight:900;">12</div><div style="font-size:10px;color:#999;">posts/sem</div></div>
-        <div><div style="font-size:10px;color:#888;font-weight:700;margin-bottom:4px;">X</div><div style="font-size:22px;font-weight:900;">20</div><div style="font-size:10px;color:#999;">posts/sem</div></div>
-        <div><div style="font-size:10px;color:#ff4444;font-weight:700;margin-bottom:4px;">YOUTUBE</div><div style="font-size:22px;font-weight:900;">19</div><div style="font-size:10px;color:#999;">posts/sem</div></div>
-        <div><div style="font-size:10px;color:#444;font-weight:700;margin-bottom:4px;">THREADS</div><div style="font-size:22px;font-weight:900;">0</div><div style="font-size:10px;color:#999;">posts/sem</div></div>
+  <!-- TIKTOK -->
+  <div class="platform-block">
+    <div class="plat-header">
+      <div class="plat-icon tk">♪</div>
+      <div>
+        <div class="plat-title tk-t">TikTok</div>
+        <div class="plat-handle">@netflixes · 9,1M seguidores</div>
+      </div>
+      <div class="plat-kpis">
+        <div class="plat-kpi"><div class="plat-kpi-val">930K</div><div class="plat-kpi-label">Impresiones W1</div></div>
+        <div class="plat-kpi"><div class="plat-kpi-val">76,5K</div><div class="plat-kpi-label">Engagements W1</div></div>
+        <div class="plat-kpi"><div class="plat-kpi-val" style="color:var(--green)">8,21%</div><div class="plat-kpi-label">ER · vs 1,35% W2</div></div>
+        <div class="plat-kpi"><div class="plat-kpi-val">19</div><div class="plat-kpi-label">Posts</div></div>
       </div>
     </div>
-    <div class="rules-grid">
-      <div class="rule-card"><div class="rule-num">01</div><div class="rule-text"><strong>Priorizar formato vertical</strong> — Reels, TikToks y Shorts siempre en 9:16. El contenido vertical genera en media un 34% más de reproducciones completas.</div></div>
-      <div class="rule-card"><div class="rule-num">02</div><div class="rule-text"><strong>Los primeros 3 segundos son clave</strong> — El gancho visual debe aparecer en los primeros 3 segundos para maximizar la retención en plataformas de scroll.</div></div>
-      <div class="rule-card"><div class="rule-num">03</div><div class="rule-text"><strong>Subtítulos siempre activados</strong> — El 85% del contenido en redes se consume sin sonido. Los subtítulos aumentan la tasa de finalización en +28%.</div></div>
-      <div class="rule-card"><div class="rule-num">04</div><div class="rule-text"><strong>Publicar en ventanas de alta actividad</strong> — IG y TikTok: 18h–21h. Facebook: 12h–14h y 19h–21h. X: 8h–10h y 20h–22h.</div></div>
-      <div class="rule-card"><div class="rule-num">05</div><div class="rule-text"><strong>Equilibrio editorial vs. comercial</strong> — Máximo 40% de contenido promocional puro. El 60% restante debe ser entretenimiento, comunidad o behind-the-scenes.</div></div>
-      <div class="rule-card"><div class="rule-num">06</div><div class="rule-text"><strong>Responder en las primeras 2 horas</strong> — El algoritmo de IG y TikTok prioriza posts con alta interacción temprana. Reservar recursos para la ventana de 2h post-publicación.</div></div>
+    <div class="plat-body">
+      <div>
+        <div class="posts-heading">👁 Top 5 por Impresiones</div>
+        <div class="post-rows">
+          <a href="https://www.tiktok.com/@netflixes/video/7652023896958356768" target="_blank" class="post-row">
+            <div class="post-num">1</div><div class="post-icon">🍂</div>
+            <div class="post-text"><div class="post-title">Nuestras vidas son mejores... #HeartstopperParaSiempre</div><div class="post-tags"><span class="tag">Video</span><span class="tag">16 jun</span><span class="tag">Tráiler</span></div></div>
+            <div class="post-nums"><div class="post-primary">207K</div><div class="post-secondary">32,5K eng</div><div class="post-er hot">ER 15,70%</div></div>
+          </a>
+          <a href="https://www.tiktok.com/@netflixes/video/7651645024957975841" target="_blank" class="post-row">
+            <div class="post-num">2</div><div class="post-icon">⚽</div>
+            <div class="post-text"><div class="post-title">No nos preguntéis más allá de Lamine Yamal. #Mundial</div><div class="post-tags"><span class="tag">Video</span><span class="tag">15 jun</span><span class="tag">Clip</span></div></div>
+            <div class="post-nums"><div class="post-primary">189K</div><div class="post-secondary">15,3K eng</div><div class="post-er">ER 8,10%</div></div>
+          </a>
+          <a href="https://www.tiktok.com/@netflixes/video/7650166888235830550" target="_blank" class="post-row">
+            <div class="post-num">3</div><div class="post-icon">🎾</div>
+            <div class="post-text"><div class="post-title">Despedida de Rafa en el ojo 🥺 #RafaNetflix</div><div class="post-tags"><span class="tag">Video</span><span class="tag">11 jun</span><span class="tag">Clip</span></div></div>
+            <div class="post-nums"><div class="post-primary">102K</div><div class="post-secondary">8,6K eng</div><div class="post-er">ER 8,47%</div></div>
+          </a>
+          <a href="https://www.tiktok.com/@netflixes/video/7651900156031307040" target="_blank" class="post-row">
+            <div class="post-num">4</div><div class="post-icon">🔍</div>
+            <div class="post-text"><div class="post-title">La extraña muerte de su madre... #LosCreyentes 24 jul</div><div class="post-tags"><span class="tag">Video</span><span class="tag">16 jun</span><span class="tag">Tráiler</span></div></div>
+            <div class="post-nums"><div class="post-primary">80K</div><div class="post-secondary">4,9K eng</div><div class="post-er">ER 6,15%</div></div>
+          </a>
+          <a href="https://www.tiktok.com/@netflixes/video/7650508594592435489" target="_blank" class="post-row">
+            <div class="post-num">5</div><div class="post-icon">🧠</div>
+            <div class="post-text"><div class="post-title">Hacerle perder el juicio, literalmente. #PerdiendoElJuicio</div><div class="post-tags"><span class="tag">Video</span><span class="tag">12 jun</span><span class="tag">Clip</span></div></div>
+            <div class="post-nums"><div class="post-primary">77K</div><div class="post-secondary">2,8K eng</div><div class="post-er">ER 3,64%</div></div>
+          </a>
+        </div>
+      </div>
+      <div>
+        <div class="posts-heading">💬 Top 5 por Engagements</div>
+        <div class="post-rows">
+          <a href="https://www.tiktok.com/@netflixes/video/7652023896958356768" target="_blank" class="post-row">
+            <div class="post-num">1</div><div class="post-icon">🍂</div>
+            <div class="post-text"><div class="post-title">Heartstopper Para Siempre · Tráiler</div><div class="post-tags"><span class="tag">Video</span><span class="tag">207K imp</span></div></div>
+            <div class="post-nums"><div class="post-primary">32,5K</div><div class="post-secondary">engagements</div><div class="post-er hot">ER 15,70% 🔥</div></div>
+          </a>
+          <a href="https://www.tiktok.com/@netflixes/video/7651645024957975841" target="_blank" class="post-row">
+            <div class="post-num">2</div><div class="post-icon">⚽</div>
+            <div class="post-text"><div class="post-title">Lamine Yamal · Copa Mundial España</div><div class="post-tags"><span class="tag">Video</span><span class="tag">189K imp</span></div></div>
+            <div class="post-nums"><div class="post-primary">15,3K</div><div class="post-secondary">engagements</div><div class="post-er">ER 8,10%</div></div>
+          </a>
+          <a href="https://www.tiktok.com/@netflixes/video/7650166888235830550" target="_blank" class="post-row">
+            <div class="post-num">3</div><div class="post-icon">🎾</div>
+            <div class="post-text"><div class="post-title">Rafa Nadal · Despedida · #RafaNetflix</div><div class="post-tags"><span class="tag">Video</span><span class="tag">102K imp</span></div></div>
+            <div class="post-nums"><div class="post-primary">8,6K</div><div class="post-secondary">engagements</div><div class="post-er">ER 8,47%</div></div>
+          </a>
+          <a href="https://www.tiktok.com/@netflixes/video/7651900156031307040" target="_blank" class="post-row">
+            <div class="post-num">4</div><div class="post-icon">🔍</div>
+            <div class="post-text"><div class="post-title">Los Creyentes · Tráiler</div><div class="post-tags"><span class="tag">Video</span><span class="tag">80K imp</span></div></div>
+            <div class="post-nums"><div class="post-primary">4,9K</div><div class="post-secondary">engagements</div><div class="post-er">ER 6,15%</div></div>
+          </a>
+          <a href="https://www.tiktok.com/@netflixes/video/7650562717127806240" target="_blank" class="post-row">
+            <div class="post-num">5</div><div class="post-icon">🏝</div>
+            <div class="post-text"><div class="post-title">¿Esto no formaba parte de la prueba? #OasisNetflix</div><div class="post-tags"><span class="tag">Video</span><span class="tag">72K imp</span></div></div>
+            <div class="post-nums"><div class="post-primary">3,2K</div><div class="post-secondary">engagements</div><div class="post-er">ER 4,48%</div></div>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="plat-insight">
+      <div class="plat-insight-label">Insight</div>
+      <div class="plat-insight-text">TikTok es el canal con <strong>mayor ER de todos (8,21% de media)</strong>. La caída de impresiones brutas vs W2 no es alarmante: W2 tuvo el viral de Rafa (14,8M). El contenido que mejor funciona: <strong>emocional/nostálgico</strong> (Heartstopper, Rafa) y <strong>reactivo al momento cultural</strong> (Mundial). Recomendación: apostar más por contenido en tiempo real y mantener el push de teasers emocionales. Aumentar frecuencia de vídeos únicos de TikTok vs. reposts de IG.</div>
     </div>
   </div>
 
-  <div style="text-align:center;padding:24px 0;font-size:11px;color:#bbb;border-top:1px solid #e8e8e8;margin-top:16px;">
-    Netflix España · Dashboard Social Media · Semana 19–25 de junio de 2026<br>
-    Generado automáticamente por Cowork · 26 de junio de 2026
+  <!-- FACEBOOK -->
+  <div class="platform-block">
+    <div class="plat-header">
+      <div class="plat-icon fb">f</div>
+      <div>
+        <div class="plat-title fb-t">Facebook</div>
+        <div class="plat-handle">Netflix Spain · 7,6M seguidores</div>
+      </div>
+      <div class="plat-kpis">
+        <div class="plat-kpi"><div class="plat-kpi-val">2,30M</div><div class="plat-kpi-label">Impresiones W1</div></div>
+        <div class="plat-kpi"><div class="plat-kpi-val">23,6K</div><div class="plat-kpi-label">Engagements W1</div></div>
+        <div class="plat-kpi"><div class="plat-kpi-val" style="color:var(--orange)">1,03%</div><div class="plat-kpi-label">ER · vs 1,46% W2</div></div>
+        <div class="plat-kpi"><div class="plat-kpi-val" style="color:var(--orange)">10</div><div class="plat-kpi-label">Posts ↓ vs 31 W2</div></div>
+      </div>
+    </div>
+    <div class="plat-body">
+      <div>
+        <div class="posts-heading">👁 Top 5 por Impresiones</div>
+        <div class="post-rows">
+          <a href="https://www.facebook.com/photo.php?fbid=1445785707576338" target="_blank" class="post-row">
+            <div class="post-num">1</div><div class="post-icon">🔴</div>
+            <div class="post-text"><div class="post-title">Los colores del mar · Thriller policiaco</div><div class="post-tags"><span class="tag">Photo</span><span class="tag">13 jun</span></div></div>
+            <div class="post-nums"><div class="post-primary">712K</div><div class="post-secondary">3,1K eng</div><div class="post-er">ER 0,44%</div></div>
+          </a>
+          <a href="https://www.facebook.com/reel/976946311777546/" target="_blank" class="post-row">
+            <div class="post-num">2</div><div class="post-icon">🧠</div>
+            <div class="post-text"><div class="post-title">Perdiendo el juicio · Amanda y su TOC · Reel</div><div class="post-tags"><span class="tag">Reel</span><span class="tag">12 jun</span><span class="tag">Clip</span></div></div>
+            <div class="post-nums"><div class="post-primary">645K</div><div class="post-secondary">7,7K eng</div><div class="post-er">ER 1,19%</div></div>
+          </a>
+          <a href="https://www.facebook.com/reel/991657120173347/" target="_blank" class="post-row">
+            <div class="post-num">3</div><div class="post-icon">🔍</div>
+            <div class="post-text"><div class="post-title">Los Creyentes · Tráiler · 24 jul</div><div class="post-tags"><span class="tag">Reel</span><span class="tag">16 jun</span></div></div>
+            <div class="post-nums"><div class="post-primary">258K</div><div class="post-secondary">5,2K eng</div><div class="post-er">ER 2,03%</div></div>
+          </a>
+          <a href="https://www.facebook.com/photo.php?fbid=1447691010719141" target="_blank" class="post-row">
+            <div class="post-num">4</div><div class="post-icon">🍂</div>
+            <div class="post-text"><div class="post-title">El tráiler del final de #Heartstopper llega mañana</div><div class="post-tags"><span class="tag">Photo</span><span class="tag">15 jun</span></div></div>
+            <div class="post-nums"><div class="post-primary">175K</div><div class="post-secondary">3,0K eng</div><div class="post-er">ER 1,72%</div></div>
+          </a>
+          <a href="https://www.facebook.com/637261485095435/posts/1446832800804962" target="_blank" class="post-row">
+            <div class="post-num">5</div><div class="post-icon">🏔</div>
+            <div class="post-text"><div class="post-title">La sociedad de la nieve · tres años después</div><div class="post-tags"><span class="tag">Photo</span><span class="tag">14 jun</span></div></div>
+            <div class="post-nums"><div class="post-primary">155K</div><div class="post-secondary">527 eng</div><div class="post-er">ER 0,34%</div></div>
+          </a>
+        </div>
+      </div>
+      <div>
+        <div class="posts-heading">💬 Top 5 por Engagements</div>
+        <div class="post-rows">
+          <a href="https://www.facebook.com/reel/976946311777546/" target="_blank" class="post-row">
+            <div class="post-num">1</div><div class="post-icon">🧠</div>
+            <div class="post-text"><div class="post-title">Perdiendo el juicio · Reel</div><div class="post-tags"><span class="tag">Reel</span><span class="tag">645K imp</span></div></div>
+            <div class="post-nums"><div class="post-primary">7,7K</div><div class="post-secondary">engagements</div><div class="post-er">ER 1,19%</div></div>
+          </a>
+          <a href="https://www.facebook.com/reel/991657120173347/" target="_blank" class="post-row">
+            <div class="post-num">2</div><div class="post-icon">🔍</div>
+            <div class="post-text"><div class="post-title">Los Creyentes · Tráiler · Reel</div><div class="post-tags"><span class="tag">Reel</span><span class="tag">258K imp</span></div></div>
+            <div class="post-nums"><div class="post-primary">5,2K</div><div class="post-secondary">engagements</div><div class="post-er">ER 2,03%</div></div>
+          </a>
+          <a href="https://www.facebook.com/photo.php?fbid=1447691010719141" target="_blank" class="post-row">
+            <div class="post-num">3</div><div class="post-icon">🍂</div>
+            <div class="post-text"><div class="post-title">Heartstopper tráiler mañana · Foto</div><div class="post-tags"><span class="tag">Photo</span><span class="tag">175K imp</span></div></div>
+            <div class="post-nums"><div class="post-primary">3,0K</div><div class="post-secondary">engagements</div><div class="post-er">ER 1,72%</div></div>
+          </a>
+          <a href="https://www.facebook.com/photo.php?fbid=1445785707576338" target="_blank" class="post-row">
+            <div class="post-num">4</div><div class="post-icon">🔴</div>
+            <div class="post-text"><div class="post-title">Los colores del mar · Foto thriller</div><div class="post-tags"><span class="tag">Photo</span><span class="tag">712K imp</span></div></div>
+            <div class="post-nums"><div class="post-primary">3,1K</div><div class="post-secondary">engagements</div><div class="post-er">ER 0,44%</div></div>
+          </a>
+          <a href="https://www.facebook.com/reel/1409394421221217/" target="_blank" class="post-row">
+            <div class="post-num">5</div><div class="post-icon">🔎</div>
+            <div class="post-text"><div class="post-title">Zárate, ¿poli bueno o poli malo? #LaDesconocida</div><div class="post-tags"><span class="tag">Reel</span><span class="tag">112K imp</span></div></div>
+            <div class="post-nums"><div class="post-primary">997</div><div class="post-secondary">engagements</div><div class="post-er">ER 0,89%</div></div>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="plat-insight">
+      <div class="plat-insight-label">Insight · Alerta</div>
+      <div class="plat-insight-text"><strong>Solo 10 posts esta semana vs. 31 en W2.</strong> Esta caída en frecuencia explica la mayor parte de la bajada de impresiones en Facebook (−83%). Los <strong>Reels superan claramente a las Fotos en ER</strong>. Pendiente revisar si la reducción de frecuencia fue deliberada o un problema operativo.</div>
+    </div>
+  </div>
+
+  <!-- X -->
+  <div class="platform-block">
+    <div class="plat-header">
+      <div class="plat-icon xv" style="font-weight:900;font-size:16px">𝕏</div>
+      <div>
+        <div class="plat-title xv-t">X / Twitter</div>
+        <div class="plat-handle">@NetflixES · 4,6M seguidores</div>
+      </div>
+      <div class="plat-kpis">
+        <div class="plat-kpi"><div class="plat-kpi-val">1,30M</div><div class="plat-kpi-label">Impresiones W1</div></div>
+        <div class="plat-kpi"><div class="plat-kpi-val">13,7K</div><div class="plat-kpi-label">Engagements W1</div></div>
+        <div class="plat-kpi"><div class="plat-kpi-val">1,05%</div><div class="plat-kpi-label">ER · vs 2,31% W2</div></div>
+        <div class="plat-kpi"><div class="plat-kpi-val">20</div><div class="plat-kpi-label">Posts</div></div>
+      </div>
+    </div>
+    <div class="plat-body">
+      <div>
+        <div class="posts-heading">👁 Top 5 por Impresiones</div>
+        <div class="post-rows">
+          <a href="https://twitter.com/NetflixES/status/2066083220819435897" target="_blank" class="post-row">
+            <div class="post-num">1</div><div class="post-icon">🦔</div>
+            <div class="post-text"><div class="post-title">La felicidad, por Zero Calcare · Clip vídeo</div><div class="post-tags"><span class="tag">Video</span><span class="tag">14 jun</span><span class="tag">Clip</span></div></div>
+            <div class="post-nums"><div class="post-primary">654K</div><div class="post-secondary">5,1K eng</div><div class="post-er">ER 0,78%</div></div>
+          </a>
+          <a href="https://twitter.com/NetflixES/status/2066562629628313683" target="_blank" class="post-row">
+            <div class="post-num">2</div><div class="post-icon">⛸️</div>
+            <div class="post-text"><div class="post-title">Afila tus patines ⛸️ — Icebreach · Foto</div><div class="post-tags"><span class="tag">Photo</span><span class="tag">15 jun</span></div></div>
+            <div class="post-nums"><div class="post-primary">71K</div><div class="post-secondary">1,0K eng</div><div class="post-er">ER 1,44%</div></div>
+          </a>
+          <a href="https://twitter.com/NetflixES/status/2066543757856473264" target="_blank" class="post-row">
+            <div class="post-num">3</div><div class="post-icon">⚽</div>
+            <div class="post-text"><div class="post-title">Todo el mundo hoy un poquito cucurella · España</div><div class="post-tags"><span class="tag">Video</span><span class="tag">15 jun</span></div></div>
+            <div class="post-nums"><div class="post-primary">64K</div><div class="post-secondary">293 eng</div><div class="post-er">ER 0,46%</div></div>
+          </a>
+          <a href="https://twitter.com/NetflixES/status/2066913693997080605" target="_blank" class="post-row">
+            <div class="post-num">4</div><div class="post-icon">🍂</div>
+            <div class="post-text"><div class="post-title">Heartstopper Para Siempre · 17 de julio 🍂</div><div class="post-tags"><span class="tag">Video</span><span class="tag">16 jun</span></div></div>
+            <div class="post-nums"><div class="post-primary">49K</div><div class="post-secondary">1,0K eng</div><div class="post-er">ER 2,05%</div></div>
+          </a>
+          <a href="https://twitter.com/NetflixES/status/2066536206003757274" target="_blank" class="post-row">
+            <div class="post-num">5</div><div class="post-icon">🍂</div>
+            <div class="post-text"><div class="post-title">El tráiler del final de Heartstopper llega mañana</div><div class="post-tags"><span class="tag">Photo</span><span class="tag">15 jun</span></div></div>
+            <div class="post-nums"><div class="post-primary">45K</div><div class="post-secondary">1,96K eng</div><div class="post-er">ER 4,34%</div></div>
+          </a>
+        </div>
+      </div>
+      <div>
+        <div class="posts-heading">💬 Top 5 por Engagements</div>
+        <div class="post-rows">
+          <a href="https://twitter.com/NetflixES/status/2066083220819435897" target="_blank" class="post-row">
+            <div class="post-num">1</div><div class="post-icon">🦔</div>
+            <div class="post-text"><div class="post-title">Zero Calcare · La felicidad · Clip vídeo</div><div class="post-tags"><span class="tag">Video</span><span class="tag">654K imp</span></div></div>
+            <div class="post-nums"><div class="post-primary">5,1K</div><div class="post-secondary">engagements</div><div class="post-er">ER 0,78%</div></div>
+          </a>
+          <a href="https://twitter.com/NetflixES/status/2066536206003757274" target="_blank" class="post-row">
+            <div class="post-num">2</div><div class="post-icon">🍂</div>
+            <div class="post-text"><div class="post-title">Heartstopper tráiler llega mañana · Foto</div><div class="post-tags"><span class="tag">Photo</span><span class="tag">45K imp</span></div></div>
+            <div class="post-nums"><div class="post-primary">1,96K</div><div class="post-secondary">engagements</div><div class="post-er hot">ER 4,34%</div></div>
+          </a>
+          <a href="https://twitter.com/NetflixES/status/2066913693997080605" target="_blank" class="post-row">
+            <div class="post-num">3</div><div class="post-icon">🍂</div>
+            <div class="post-text"><div class="post-title">Heartstopper Para Siempre · vídeo</div><div class="post-tags"><span class="tag">Video</span><span class="tag">49K imp</span></div></div>
+            <div class="post-nums"><div class="post-primary">1,0K</div><div class="post-secondary">engagements</div><div class="post-er">ER 2,05%</div></div>
+          </a>
+          <a href="https://twitter.com/NetflixES/status/2066562629628313683" target="_blank" class="post-row">
+            <div class="post-num">4</div><div class="post-icon">⛸️</div>
+            <div class="post-text"><div class="post-title">Icebreach · Afila tus patines</div><div class="post-tags"><span class="tag">Photo</span><span class="tag">71K imp</span></div></div>
+            <div class="post-nums"><div class="post-primary">1,0K</div><div class="post-secondary">engagements</div><div class="post-er">ER 1,44%</div></div>
+          </a>
+          <a href="https://twitter.com/NetflixES/status/2066543757856473264" target="_blank" class="post-row">
+            <div class="post-num">5</div><div class="post-icon">⚽</div>
+            <div class="post-text"><div class="post-title">Cucurella · España · Copa del Mundo</div><div class="post-tags"><span class="tag">Video</span><span class="tag">64K imp</span></div></div>
+            <div class="post-nums"><div class="post-primary">293</div><div class="post-secondary">engagements</div><div class="post-er">ER 0,46%</div></div>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="plat-insight">
+      <div class="plat-insight-label">Insight</div>
+      <div class="plat-insight-text">X sigue siendo el canal con menor ER (1% promedio), pero <strong>Zero Calcare dominó con 654K impresiones</strong>: el contenido cultural de nicho con comunidades fuertes puede funcionar muy bien. <strong>Heartstopper tiene una comunidad muy activa en X</strong> (ER 4,3% en foto anticipatoria, un resultado excepcional para este canal).</div>
+    </div>
+  </div>
+
+  <!-- YouTube nota -->
+  <div class="platform-block">
+    <div class="plat-header">
+      <div class="plat-icon yt">▶</div>
+      <div>
+        <div class="plat-title yt-t">YouTube</div>
+        <div class="plat-handle">Netflix España · 2,2M suscriptores</div>
+      </div>
+      <div class="plat-kpis">
+        <div class="plat-kpi"><div class="plat-kpi-val">102K</div><div class="plat-kpi-label">Impresiones W1</div></div>
+        <div class="plat-kpi"><div class="plat-kpi-val">4,2K</div><div class="plat-kpi-label">Engagements W1</div></div>
+        <div class="plat-kpi"><div class="plat-kpi-val" style="color:var(--green)">4,13%</div><div class="plat-kpi-label">ER · vs 2,66% W2</div></div>
+        <div class="plat-kpi"><div class="plat-kpi-val">24</div><div class="plat-kpi-label">Posts</div></div>
+      </div>
+    </div>
+    <div class="plat-insight" style="border-top:none">
+      <div class="plat-insight-label">Sobre YouTube</div>
+      <div class="plat-insight-text">Menor volumen de impresiones absolutas pero <strong>segundo ER más alto (4,13%)</strong>: audiencia comprometida y cualificada. Con 24 posts semanales (Shorts y tráilers), YouTube funciona principalmente como canal de discovery y repositorio. Potencial de crecimiento relevante con una estrategia de Shorts más agresiva en títulos clave.</div>
+    </div>
   </div>
 
 </div>
 
+
+<!-- ══════════════════════════
+     3. OVERVIEW DE TÍTULOS
+══════════════════════════ -->
+<div class="section">
+  <div class="section-label">Sección 03</div>
+  <div class="section-heading">Overview de Títulos</div>
+  <div class="section-sub">Top títulos por plataforma · semana 11–17 jun 2026 · tendencias 4 semanas</div>
+
+  <!-- Instagram -->
+  <div class="titles-platform">
+    <div class="titles-plat-header"><span class="ig-t">📸 Instagram</span></div>
+    <div class="title-cards">
+      <div class="title-card">
+        <div class="title-rank">🥇 #1 Impresiones + Engagement</div>
+        <div class="title-name">Icebreach</div>
+        <div class="title-genre">Romance · Comedia · Nueva estrena</div>
+        <div class="title-metric-row"><div class="title-metric-label">Imp.</div><div class="title-bar-bg"><div class="title-bar-fg" style="width:100%"></div></div><div class="title-metric-val">3,80M</div></div>
+        <div class="title-metric-row"><div class="title-metric-label">Eng.</div><div class="title-bar-bg"><div class="title-bar-fg" style="width:100%;background:var(--green)"></div></div><div class="title-metric-val">163,7K</div></div>
+        <div class="title-metric-row"><div class="title-metric-label">ER</div><div class="title-bar-bg"><div class="title-bar-fg" style="width:86%;background:var(--orange)"></div></div><div class="title-metric-val">4,30%</div></div>
+      </div>
+      <div class="title-card">
+        <div class="title-rank">🥈 #2 Presencia sostenida</div>
+        <div class="title-name">Bridgerton S4</div>
+        <div class="title-genre">Drama romántico · En emisión</div>
+        <div class="title-metric-row"><div class="title-metric-label">Imp.</div><div class="title-bar-bg"><div class="title-bar-fg" style="width:55%"></div></div><div class="title-metric-val">~2,1M+</div></div>
+        <div class="title-metric-row"><div class="title-metric-label">Eng.</div><div class="title-bar-bg"><div class="title-bar-fg" style="width:69%;background:var(--green)"></div></div><div class="title-metric-val">~114K</div></div>
+        <div class="title-metric-row"><div class="title-metric-label">Posts</div><div class="title-bar-bg"><div class="title-bar-fg" style="width:60%;background:var(--orange)"></div></div><div class="title-metric-val">3+ posts</div></div>
+      </div>
+      <div class="title-card">
+        <div class="title-rank">🥉 #3 Momentum creciente</div>
+        <div class="title-name">Heartstopper</div>
+        <div class="title-genre">Drama · Fin de serie · 17 jul</div>
+        <div class="title-metric-row"><div class="title-metric-label">Imp.</div><div class="title-bar-bg"><div class="title-bar-fg" style="width:50%"></div></div><div class="title-metric-val">~1,9M</div></div>
+        <div class="title-metric-row"><div class="title-metric-label">Eng.</div><div class="title-bar-bg"><div class="title-bar-fg" style="width:58%;background:var(--green)"></div></div><div class="title-metric-val">~95K</div></div>
+        <div class="title-metric-row"><div class="title-metric-label">ER</div><div class="title-bar-bg"><div class="title-bar-fg" style="width:80%;background:var(--orange)"></div></div><div class="title-metric-val">5–7%</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TikTok -->
+  <div class="titles-platform">
+    <div class="titles-plat-header"><span class="tk-t">♪ TikTok</span></div>
+    <div class="title-cards">
+      <div class="title-card">
+        <div class="title-rank">🥇 #1 ER excepcional</div>
+        <div class="title-name">Heartstopper</div>
+        <div class="title-genre">Drama · Final de serie</div>
+        <div class="title-metric-row"><div class="title-metric-label">Imp.</div><div class="title-bar-bg"><div class="title-bar-fg" style="width:100%"></div></div><div class="title-metric-val">207K</div></div>
+        <div class="title-metric-row"><div class="title-metric-label">Eng.</div><div class="title-bar-bg"><div class="title-bar-fg" style="width:100%;background:var(--green)"></div></div><div class="title-metric-val">32,5K</div></div>
+        <div class="title-metric-row"><div class="title-metric-label">ER</div><div class="title-bar-bg"><div class="title-bar-fg" style="width:100%;background:var(--orange)"></div></div><div class="title-metric-val">15,70% 🔥</div></div>
+      </div>
+      <div class="title-card">
+        <div class="title-rank">🥈 #2 Momento cultural</div>
+        <div class="title-name">Copa Mundial 2026</div>
+        <div class="title-genre">Fútbol · Contenido reactivo</div>
+        <div class="title-metric-row"><div class="title-metric-label">Imp.</div><div class="title-bar-bg"><div class="title-bar-fg" style="width:91%"></div></div><div class="title-metric-val">189K</div></div>
+        <div class="title-metric-row"><div class="title-metric-label">Eng.</div><div class="title-bar-bg"><div class="title-bar-fg" style="width:47%;background:var(--green)"></div></div><div class="title-metric-val">15,3K</div></div>
+        <div class="title-metric-row"><div class="title-metric-label">ER</div><div class="title-bar-bg"><div class="title-bar-fg" style="width:52%;background:var(--orange)"></div></div><div class="title-metric-val">8,10%</div></div>
+      </div>
+      <div class="title-card">
+        <div class="title-rank">🥉 #3 Longtail deportivo</div>
+        <div class="title-name">Rafa Nadal Doc.</div>
+        <div class="title-genre">Documental · Deportes</div>
+        <div class="title-metric-row"><div class="title-metric-label">Imp.</div><div class="title-bar-bg"><div class="title-bar-fg" style="width:49%"></div></div><div class="title-metric-val">102K</div></div>
+        <div class="title-metric-row"><div class="title-metric-label">Eng.</div><div class="title-bar-bg"><div class="title-bar-fg" style="width:26%;background:var(--green)"></div></div><div class="title-metric-val">8,6K</div></div>
+        <div class="title-metric-row"><div class="title-metric-label">ER</div><div class="title-bar-bg"><div class="title-bar-fg" style="width:54%;background:var(--orange)"></div></div><div class="title-metric-val">8,47%</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tendencias -->
+  <div class="section-label" style="margin-bottom:10px">Tendencias últimas 4 semanas</div>
+  <div class="trends-2col">
+    <div class="trend-card">
+      <h4>Tipología de títulos que funcionan</h4>
+      <div class="trend-item"><div class="trend-dot" style="background:var(--red)"></div><div><strong>Producciones españolas:</strong> La Desconocida, Romper el círculo, El mapa de los anhelos, Toda la verdad de mis mentiras, Miguel Ángel Blanco. La audiencia española responde especialmente bien al contenido local.</div></div>
+      <div class="trend-item"><div class="trend-dot" style="background:var(--green)"></div><div><strong>Documentales deportivos:</strong> Rafa Nadal sostenido semanas. Con el Mundial activo, el contenido deportivo tiene un multiplicador de alcance significativo.</div></div>
+      <div class="trend-item"><div class="trend-dot" style="background:#818cf8"></div><div><strong>Fandoms jóvenes:</strong> Heartstopper, Bridgerton, Attack on Titan. Comunidades muy activas que amplifican el contenido orgánicamente, especialmente en IG y X.</div></div>
+      <div class="trend-item"><div class="trend-dot" style="background:var(--orange)"></div><div><strong>Evergreen de catálogo:</strong> La sociedad de la nieve (3 años después), Riverdale, Lupin. El contenido nostálgico reactiva el engagement de manera consistente.</div></div>
+    </div>
+    <div class="trend-card">
+      <h4>Formatos y plataformas dominantes</h4>
+      <div class="trend-item"><div class="trend-dot" style="background:#e1306c"></div><div><strong>Instagram:</strong> Carruseles gráficos dominan el alcance. Reels superiores en ER. PhotoDUMP semanal es el contenido más consistente en engagement.</div></div>
+      <div class="trend-item"><div class="trend-dot" style="background:#00ccc5"></div><div><strong>TikTok:</strong> Vídeos cortos con copy emocional y hashtags de comunidad. El algoritmo premia la especificidad de nicho (fandoms, deportes, cultura española).</div></div>
+      <div class="trend-item"><div class="trend-dot" style="background:#1877f2"></div><div><strong>Facebook:</strong> Reels superan a Fotos en ER. Reducción drástica de frecuencia esta semana — necesita revisión urgente.</div></div>
+      <div class="trend-item"><div class="trend-dot" style="background:#888"></div><div><strong>X:</strong> Contenido cultural de nicho (Zero Calcare, Heartstopper) supera al reactivo genérico. La comunidad de series es la más activa en el canal.</div></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════
+     4. INSIGHTS Y RECOMENDACIONES
+══════════════════════════ -->
+<div class="section">
+  <div class="section-label">Sección 04</div>
+  <div class="section-heading">Insights y Recomendaciones</div>
+  <div class="section-sub">Acciones basadas en tendencias de las últimas 4 semanas y señales de la semana actual</div>
+
+  <div class="reco-grid">
+    <div class="reco">
+      <div class="reco-top">
+        <div><div class="reco-title">⚽ Aprovechar la ventana del Mundial</div><div class="reco-sub">Ventana activa: hasta finales de julio</div></div>
+        <div class="reco-badge badge-high">Alta prioridad</div>
+      </div>
+      <div class="reco-body">El post de Lamine Yamal en TikTok (8,1% ER) y el de Cucurella en X demuestran que el contenido reactivo al Mundial tiene un multiplicador de alcance real. Recomendamos preparar <strong>assets reutilizables por partido de España</strong> y ligar el catálogo deportivo (Rafa, documentales de fútbol) a los momentos clave del torneo. La ventana es las próximas 2–3 semanas mientras España siga compitiendo.</div>
+    </div>
+    <div class="reco">
+      <div class="reco-top">
+        <div><div class="reco-title">🍂 Maximizar el lanzamiento de Heartstopper</div><div class="reco-sub">Estreno: 17 julio · Campaña activa ahora</div></div>
+        <div class="reco-badge badge-high">Alta prioridad</div>
+      </div>
+      <div class="reco-body">Con el tráiler ya viral en todos los canales (TikTok 15,7% ER, X 4,3%), Heartstopper es el <strong>título con mayor engagement de calidad</strong> de las últimas semanas. Recomendamos coordinar una campaña de cuenta atrás cross-platform con contenidos exclusivos por canal y activaciones específicas con la comunidad LGBTQ+.</div>
+    </div>
+    <div class="reco">
+      <div class="reco-top">
+        <div><div class="reco-title">📉 Revisar la frecuencia en Facebook</div><div class="reco-sub">Señal de alerta: 10 posts vs 31 semana anterior</div></div>
+        <div class="reco-badge badge-med">Prioridad media</div>
+      </div>
+      <div class="reco-body">La caída de frecuencia en Facebook (−68% de posts vs W2) explica la mayor parte de la bajada de impresiones en ese canal. La W3 con 23 posts generó 10,3M imp, demostrando que el canal responde a la frecuencia. <strong>Recomendamos asegurar un mínimo de 18–20 posts semanales</strong> y revisar si la bajada fue deliberada o un problema operativo.</div>
+    </div>
+    <div class="reco">
+      <div class="reco-top">
+        <div><div class="reco-title">🇪🇸 Potenciar producciones españolas</div><div class="reco-sub">Tendencia consolidada en 4 semanas</div></div>
+        <div class="reco-badge badge-med">Prioridad media</div>
+      </div>
+      <div class="reco-body">La Desconocida, Romper el Círculo, El mapa de los anhelos, Toda la verdad de mis mentiras: todas con ER por encima de la media del canal. Próximos lanzamientos a potenciar: <strong>Los Creyentes (24 jul), La casa de la pradera (9 jul), Miguel Ángel Blanco (10 jul)</strong>. Recomendamos integrar voices locales (actores, prensa española) en TikTok e IG Stories.</div>
+    </div>
+    <div class="reco">
+      <div class="reco-top">
+        <div><div class="reco-title">📊 Recalibrar mix de formatos en Instagram</div><div class="reco-sub">Hallazgo: Foto de lanzamiento &gt; Reel en alcance</div></div>
+        <div class="reco-badge badge-med">Prioridad media</div>
+      </div>
+      <div class="reco-body">Icebreach demuestra que una <strong>buena Foto de lanzamiento con copy de romance puede superar en alcance a cualquier Reel</strong> (3,8M vs máx. 705K del mejor Reel esta semana). Los Reels siguen siendo superiores en ER alto. Recomendamos reservar posts tipo Foto/Carousel para key art de nuevos lanzamientos y usar Reels para contenido de comunidad y emocional.</div>
+    </div>
+    <div class="reco">
+      <div class="reco-top">
+        <div><div class="reco-title">🧵 Activar Threads</div><div class="reco-sub">1,7M seguidores · sin actividad esta semana</div></div>
+        <div class="reco-badge badge-low">Monitorizar</div>
+      </div>
+      <div class="reco-body">Netflix España tiene 1,7M de seguidores en Threads pero no registramos posts esta semana. Threads está creciendo como plataforma de conversación escrita en España. Recomendamos activar una <strong>presencia mínima de 3–5 posts semanales</strong> con contenido de conversación, preguntas a la comunidad y reacciones en tiempo real. El coste de producción es bajo y el potencial de engagement temprano es alto.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════
+     5. PUBLISHING
+══════════════════════════ -->
+<div class="section">
+  <div class="section-label">Sección 05</div>
+  <div class="section-heading">Publishing · Aprendizajes y Recomendaciones</div>
+  <div class="section-sub">Observaciones de las últimas 4 semanas sobre formatos, cadencias y tipos de contenido</div>
+
+  <!-- Formatos por plataforma -->
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:20px;margin-bottom:14px;">
+    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--muted);margin-bottom:14px;">📐 Formatos — rendimiento por canal</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
+
+      <div style="background:var(--surface2);border:1px solid var(--border2);border-radius:10px;padding:14px;">
+        <div style="font-size:11px;font-weight:700;color:#e1306c;margin-bottom:8px;">📸 Instagram</div>
+        <div style="display:flex;flex-direction:column;gap:5px;">
+          <div style="display:flex;justify-content:space-between;font-size:12px;"><span>Foto</span><span style="font-weight:700;color:var(--green)">↑ Máx. alcance</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;"><span>Carousel</span><span style="font-weight:700;color:var(--green)">↑ Alcance + ER</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;"><span>Reel</span><span style="font-weight:700;color:var(--orange)">↑ ER · menor alcance</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;"><span>Story</span><span style="color:var(--muted)">Comunidad activa</span></div>
+        </div>
+        <div style="margin-top:10px;padding-top:8px;border-top:1px solid var(--border2);font-size:11px;color:var(--muted)">
+          <strong>Regla:</strong> Foto/Carousel para lanzamientos key art. Reel para contenido de fandom y emocional.
+        </div>
+      </div>
+
+      <div style="background:var(--surface2);border:1px solid var(--border2);border-radius:10px;padding:14px;">
+        <div style="font-size:11px;font-weight:700;color:#008c86;margin-bottom:8px;">♪ TikTok</div>
+        <div style="display:flex;flex-direction:column;gap:5px;">
+          <div style="display:flex;justify-content:space-between;font-size:12px;"><span>Vídeo nativo</span><span style="font-weight:700;color:var(--green)">↑ 2–3x vs repost</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;"><span>Repost de Reel</span><span style="color:var(--muted)">Aceptable</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;"><span>Reactivo en tiempo real</span><span style="font-weight:700;color:var(--green)">↑ ER muy alto</span></div>
+        </div>
+        <div style="margin-top:10px;padding-top:8px;border-top:1px solid var(--border2);font-size:11px;color:var(--muted)">
+          <strong>Regla:</strong> Al menos 50% de contenido nativo de TikTok. Copy emocional, hashtags de nicho.
+        </div>
+      </div>
+
+      <div style="background:var(--surface2);border:1px solid var(--border2);border-radius:10px;padding:14px;">
+        <div style="font-size:11px;font-weight:700;color:#1877f2;margin-bottom:8px;">f Facebook</div>
+        <div style="display:flex;flex-direction:column;gap:5px;">
+          <div style="display:flex;justify-content:space-between;font-size:12px;"><span>Reel</span><span style="font-weight:700;color:var(--green)">↑ ER superior</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;"><span>Foto</span><span style="color:var(--muted)">ER bajo · alcance alto</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;"><span>Paid/boost</span><span style="font-weight:700;color:var(--green)">↑ Amplificador clave</span></div>
+        </div>
+        <div style="margin-top:10px;padding-top:8px;border-top:1px solid var(--border2);font-size:11px;color:var(--muted)">
+          <strong>Regla:</strong> Frecuencia mínima 18–20 posts/semana. Coordinar boost con paid media.
+        </div>
+      </div>
+
+      <div style="background:var(--surface2);border:1px solid var(--border2);border-radius:10px;padding:14px;">
+        <div style="font-size:11px;font-weight:700;color:#555;margin-bottom:8px;">𝕏 X / Twitter</div>
+        <div style="display:flex;flex-direction:column;gap:5px;">
+          <div style="display:flex;justify-content:space-between;font-size:12px;"><span>Foto</span><span style="font-weight:700;color:var(--green)">↑ Mayor ER</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;"><span>Vídeo</span><span style="color:var(--muted)">Mayor alcance bruto</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;"><span>Texto solo</span><span style="color:var(--muted)">Conversación · bajo alcance</span></div>
+        </div>
+        <div style="margin-top:10px;padding-top:8px;border-top:1px solid var(--border2);font-size:11px;color:var(--muted)">
+          <strong>Regla:</strong> Reservar slots diarios para reactividad. Fandoms generan el mejor ER del canal.
+        </div>
+      </div>
+
+      <div style="background:var(--surface2);border:1px solid var(--border2);border-radius:10px;padding:14px;">
+        <div style="font-size:11px;font-weight:700;color:#cc0000;margin-bottom:8px;">▶ YouTube</div>
+        <div style="display:flex;flex-direction:column;gap:5px;">
+          <div style="display:flex;justify-content:space-between;font-size:12px;"><span>Short (&lt;60s)</span><span style="font-weight:700;color:var(--green)">↑ Discovery</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;"><span>Long-form</span><span style="color:var(--muted)">Comunidad fidelizada</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;"><span>Tráiler oficial</span><span style="color:var(--muted)">Búsqueda orgánica</span></div>
+        </div>
+        <div style="margin-top:10px;padding-top:8px;border-top:1px solid var(--border2);font-size:11px;color:var(--muted)">
+          <strong>Regla:</strong> Priorizar Shorts para alcance algorítmico. Títulos con keywords en español.
+        </div>
+      </div>
+
+      <div style="background:var(--surface2);border:1px solid var(--border2);border-radius:10px;padding:14px;">
+        <div style="font-size:11px;font-weight:700;color:#888;margin-bottom:8px;">⊞ Threads</div>
+        <div style="display:flex;flex-direction:column;gap:5px;">
+          <div style="display:flex;justify-content:space-between;font-size:12px;"><span>Texto conversacional</span><span style="font-weight:700;color:var(--green)">↑ Canal nativo</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;"><span>Reacciones en tiempo real</span><span style="font-weight:700;color:var(--green)">↑ Alto potencial</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;"><span>Reposts de IG</span><span style="color:var(--muted)">Bajo rendimiento</span></div>
+        </div>
+        <div style="margin-top:10px;padding-top:8px;border-top:1px solid var(--border2);font-size:11px;color:var(--muted)">
+          <strong>Regla:</strong> Contenido conversacional propio. 3–5 posts/semana. Sin necesidad de assets visuales.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cadencias -->
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:20px;margin-bottom:14px;">
+    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--muted);margin-bottom:14px;">📅 Cadencias recomendadas</div>
+    <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:10px;text-align:center;">
+      <div><div style="font-size:10px;font-weight:700;color:#e1306c;margin-bottom:4px;">Instagram</div><div style="font-size:18px;font-weight:900;color:var(--text)">4–6</div><div style="font-size:10px;color:var(--muted)">posts/día</div></div>
+      <div><div style="font-size:10px;font-weight:700;color:#008c86;margin-bottom:4px;">TikTok</div><div style="font-size:18px;font-weight:900;color:var(--text)">2–4</div><div style="font-size:10px;color:var(--muted)">posts/día</div></div>
+      <div><div style="font-size:10px;font-weight:700;color:#1877f2;margin-bottom:4px;">Facebook</div><div style="font-size:18px;font-weight:900;color:var(--text)">18–22</div><div style="font-size:10px;color:var(--muted)">posts/semana</div></div>
+      <div><div style="font-size:10px;font-weight:700;color:#555;margin-bottom:4px;">X / Twitter</div><div style="font-size:18px;font-weight:900;color:var(--text)">3–6</div><div style="font-size:10px;color:var(--muted)">posts/día</div></div>
+      <div><div style="font-size:10px;font-weight:700;color:#cc0000;margin-bottom:4px;">YouTube</div><div style="font-size:18px;font-weight:900;color:var(--text)">3–5</div><div style="font-size:10px;color:var(--muted)">posts/semana</div></div>
+      <div><div style="font-size:10px;font-weight:700;color:#888;margin-bottom:4px;">Threads</div><div style="font-size:18px;font-weight:900;color:var(--text)">3–5</div><div style="font-size:10px;color:var(--muted)">posts/semana</div></div>
+    </div>
+  </div>
+
+  <!-- Reglas de oro -->
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:20px;">
+    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--muted);margin-bottom:14px;">🏅 Reglas de oro del publishing</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+
+      <div style="background:var(--surface2);border:1px solid var(--border2);border-radius:10px;padding:14px;display:flex;gap:12px;">
+        <div style="font-size:22px;font-weight:900;color:var(--border);flex-shrink:0;line-height:1">01</div>
+        <div><div style="font-size:13px;font-weight:800;color:var(--text);margin-bottom:4px">Formato según objetivo, no por defecto</div><div style="font-size:12px;color:var(--text2);line-height:1.6">En Instagram, una Foto de lanzamiento puede superar al Reel en alcance bruto (3,8M vs 705K en la semana analizada). Elegir formato en función de si el objetivo es alcance (Foto/Carousel) o ER (Reel).</div></div>
+      </div>
+
+      <div style="background:var(--surface2);border:1px solid var(--border2);border-radius:10px;padding:14px;display:flex;gap:12px;">
+        <div style="font-size:22px;font-weight:900;color:var(--border);flex-shrink:0;line-height:1">02</div>
+        <div><div style="font-size:13px;font-weight:800;color:var(--text);margin-bottom:4px">La frecuencia es infraestructura</div><div style="font-size:12px;color:var(--text2);line-height:1.6">Facebook: pasar de 31 a 10 posts redujo el alcance un 83%. La frecuencia no es opcional — es la base sobre la que se construye cualquier resultado. Definir un mínimo semanal no negociable por canal.</div></div>
+      </div>
+
+      <div style="background:var(--surface2);border:1px solid var(--border2);border-radius:10px;padding:14px;display:flex;gap:12px;">
+        <div style="font-size:22px;font-weight:900;color:var(--border);flex-shrink:0;line-height:1">03</div>
+        <div><div style="font-size:13px;font-weight:800;color:var(--text);margin-bottom:4px">Reservar slots de reactividad diaria</div><div style="font-size:12px;color:var(--text2);line-height:1.6">El contenido reactivo (partidos, virales, trends) tiene un multiplicador de alcance orgánico que no se puede planificar. Mantener al menos 1 slot/día vacío en el calendario para improvisar en tiempo real.</div></div>
+      </div>
+
+      <div style="background:var(--surface2);border:1px solid var(--border2);border-radius:10px;padding:14px;display:flex;gap:12px;">
+        <div style="font-size:22px;font-weight:900;color:var(--border);flex-shrink:0;line-height:1">04</div>
+        <div><div style="font-size:13px;font-weight:800;color:var(--text);margin-bottom:4px">Activar fandoms 2–3 semanas antes del estreno</div><div style="font-size:12px;color:var(--text2);line-height:1.6">Heartstopper, Bridgerton, Attack on Titan generan ER 2–4x superior a la media sin boost. Identificar estos títulos antes del lanzamiento e iniciar la activación de comunidad con antelación suficiente.</div></div>
+      </div>
+
+      <div style="background:var(--surface2);border:1px solid var(--border2);border-radius:10px;padding:14px;display:flex;gap:12px;">
+        <div style="font-size:22px;font-weight:900;color:var(--border);flex-shrink:0;line-height:1">05</div>
+        <div><div style="font-size:13px;font-weight:800;color:var(--text);margin-bottom:4px">Lo local supera a lo global en ER</div><div style="font-size:12px;color:var(--text2);line-height:1.6">Las producciones españolas registran sistemáticamente ER por encima de la media. Priorizar editorialmente el contenido local y localizar el copy de títulos internacionales con referencias culturales específicas para España.</div></div>
+      </div>
+
+      <div style="background:var(--surface2);border:1px solid var(--border2);border-radius:10px;padding:14px;display:flex;gap:12px;">
+        <div style="font-size:22px;font-weight:900;color:var(--border);flex-shrink:0;line-height:1">06</div>
+        <div><div style="font-size:13px;font-weight:800;color:var(--text);margin-bottom:4px">TikTok necesita contenido nativo, no reposts</div><div style="font-size:12px;color:var(--text2);line-height:1.6">El algoritmo detecta y penaliza el contenido duplicado entre plataformas. Los vídeos nativos de TikTok generan 2–3x más ER que los Reels reposteados. Crear al menos el 50% del calendario de TikTok de forma nativa.</div></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+</div><!-- /container -->
+
+<div class="footer">
+  <div>Dashboard generado por Claude · Datos: Kragle / Sprinklr · Netflix España Social Media</div>
+  <div>18 jun 2026 · W1 = 11–17 jun · Métricas lifetime por semana de publicación · W1 en acumulación</div>
+</div>
+
 <script>
-new Chart(document.getElementById('chartImp'), {
+const weekLabels = ['W5 14–20 may','W4 21–27 may','W3 28 may–3 jun','W2 4–10 jun','W1 11–17 jun'];
+const gridColor = 'rgba(0,0,0,0.05)';
+const tickColor = '#aaa';
+
+// Chart 1
+const ctx1 = document.getElementById('chartImpressions').getContext('2d');
+new Chart(ctx1, {
   type: 'bar',
   data: {
-    labels: ['22–28 may', '29 may–4 jun', '5–11 jun', '12–18 jun', '19–25 jun'],
+    labels: weekLabels,
     datasets: [
-      { label: 'Instagram', data: [43.05, 54.41, 32.92, 30.64, 23.25], backgroundColor: '#e1306c' },
-      { label: 'TikTok',    data: [10.82, 56.84, 13.85, 2.86, 4.22],   backgroundColor: '#00ccc5' },
-      { label: 'Facebook',  data: [5.03, 10.45, 14.79, 5.55, 3.76],    backgroundColor: '#1877f2' },
-      { label: 'X',         data: [1.93, 1.76, 1.60, 3.61, 1.51],      backgroundColor: '#888' },
-      { label: 'YouTube',   data: [0.98, 1.31, 0.27, 0.30, 0.13],      backgroundColor: '#ff4444' }
+      { label: 'Instagram', data: [52042277,42787411,48902792,34538130,18881508], backgroundColor: '#e1306c', borderRadius: 3 },
+      { label: 'TikTok',    data: [27265023,11458202,35186259,27005786,930830],  backgroundColor: '#00ccc5', borderRadius: 3 },
+      { label: 'Facebook',  data: [9698251,4880383,10270552,13830776,2295359],   backgroundColor: '#1877f2', borderRadius: 3 },
+      { label: 'X',         data: [883860,1961115,1765699,1715416,1297199],      backgroundColor: '#bbb', borderRadius: 3 },
+      { label: 'YouTube',   data: [1904137,1023203,1225570,227334,102485],       backgroundColor: '#ff6666', borderRadius: 3 },
     ]
   },
   options: {
-    responsive: true,
-    plugins: { legend: { position: 'bottom', labels: { font: { size: 10 }, boxWidth: 10 } } },
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { labels: { color: '#666', boxWidth: 10, font: { size: 11 } } }, tooltip: { callbacks: { label: c => ' ' + c.dataset.label + ': ' + (c.raw/1000000).toFixed(1) + 'M imp' } } },
     scales: {
-      x: { stacked: true, ticks: { font: { size: 10 } } },
-      y: { stacked: true, ticks: { callback: v => v + 'M', font: { size: 10 } } }
+      x: { stacked: true, ticks: { color: tickColor, font: { size: 10 } }, grid: { color: gridColor } },
+      y: { stacked: true, ticks: { color: tickColor, font: { size: 10 }, callback: v => (v/1000000).toFixed(0) + 'M' }, grid: { color: gridColor } }
     }
   }
 });
 
-new Chart(document.getElementById('chartPlat'), {
+// Chart 2
+const ctx2 = document.getElementById('chartEngagements').getContext('2d');
+new Chart(ctx2, {
   type: 'doughnut',
   data: {
-    labels: ['Instagram', 'TikTok', 'Facebook', 'X', 'YouTube', 'Threads'],
-    datasets: [{ data: [23.25, 4.22, 3.76, 1.51, 0.13, 0], backgroundColor: ['#e1306c','#00ccc5','#1877f2','#888','#ff4444','#444'], borderWidth: 1 }]
+    labels: ['Instagram','TikTok','Facebook','X','YouTube'],
+    datasets: [{
+      data: [673611,76460,23613,13680,4236],
+      backgroundColor: ['#e1306c','#00ccc5','#1877f2','#bbb','#ff6666'],
+      borderWidth: 2, borderColor: '#fff', hoverOffset: 6
+    }]
   },
   options: {
-    responsive: true,
-    plugins: { legend: { position: 'bottom', labels: { font: { size: 10 }, boxWidth: 10 } } }
+    responsive: true, maintainAspectRatio: false,
+    cutout: '66%',
+    plugins: {
+      legend: { position: 'right', labels: { color: '#666', boxWidth: 10, font: { size: 11 }, padding: 10 } },
+      tooltip: { callbacks: { label: c => ' ' + c.label + ': ' + c.raw.toLocaleString('es-ES') + ' (' + (c.raw/791600*100).toFixed(1) + '%)' } }
+    }
   }
 });
 </script>
-
 </body>
 </html>
