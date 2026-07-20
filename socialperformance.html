@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Netflix España · Dashboard Social Media · Semana 13–19 de julio de 2026</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f5; color: #111; }
+    .data-notice { background: #fff3cd; border: 1px solid #ffc107; border-radius: 8px; padding: 12px 16px; margin: 16px 0; font-size: 12px; color: #856404; }
+    .header { background: #111; color: #fff; padding: 24px 32px; }
+    .header-netflix { color: #E50914; font-size: 22px; font-weight: 900; letter-spacing: -0.5px; }
+    .header-title { font-size: 18px; font-weight: 700; margin-top: 4px; }
+    .header-meta { font-size: 12px; color: #aaa; margin-top: 4px; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 24px 16px; }
+    .section { margin-bottom: 32px; }
+    .section-title { font-size: 11px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: #999; margin-bottom: 16px; }
+    .card { background: #fff; border-radius: 12px; border: 1px solid #e8e8e8; padding: 20px; }
+    .kpi-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 16px; }
+    .kpi-card { background: #fff; border: 1px solid #e8e8e8; border-radius: 12px; padding: 16px; }
+    .kpi-label { font-size: 11px; color: #999; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+    .kpi-value { font-size: 24px; font-weight: 800; margin: 4px 0; color: #111; }
+    .kpi-wow { font-size: 12px; font-weight: 600; }
+    .kpi-wow.up { color: #16a34a; }
+    .kpi-wow.down { color: #E50914; }
+    .chips { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+    .chip { background: #f5f5f5; border: 1px solid #e8e8e8; border-radius: 20px; padding: 6px 14px; font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 6px; }
+    .chip-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+    .charts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; }
+    .insights-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 16px; }
+    .insight-card { background: #fff; border: 1px solid #e8e8e8; border-radius: 10px; padding: 16px; }
+    .insight-icon { font-size: 18px; margin-bottom: 8px; }
+    .insight-text { font-size: 13px; color: #444; line-height: 1.5; }
+    .platform-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+    .platform-name { font-size: 15px; font-weight: 700; }
+    .platform-metrics { display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
+    .platform-metric { font-size: 12px; }
+    .platform-metric-val { font-weight: 700; font-size: 14px; }
+    .post-list { margin-top: 8px; }
+    .post-item { padding: 8px 0; border-bottom: 1px solid #f0f0f0; font-size: 12px; line-height: 1.5; }
+    .post-item:last-child { border-bottom: none; }
+    .post-metric { font-weight: 700; color: #E50914; }
+    .post-link { color: #999; text-decoration: none; }
+    .post-link:hover { color: #E50914; }
+    .titulo-bar { height: 8px; border-radius: 4px; background: linear-gradient(90deg, #E50914, #ff6b6b); margin: 4px 0; }
+    .rec-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .rec-card { background: #fff; border: 1px solid #e8e8e8; border-radius: 10px; padding: 16px; }
+    .rec-priority { font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; padding: 3px 8px; border-radius: 10px; display: inline-block; margin-bottom: 8px; }
+    .priority-high { background: #fee2e2; color: #991b1b; }
+    .priority-medium { background: #fef3c7; color: #92400e; }
+    .priority-low { background: #dcfce7; color: #166534; }
+    .rec-title { font-size: 13px; font-weight: 700; margin-bottom: 6px; }
+    .rec-text { font-size: 12px; color: #666; line-height: 1.5; }
+    .rules-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .rule-card { background: #fff; border: 1px solid #e8e8e8; border-radius: 10px; padding: 16px; }
+    .rule-num { font-size: 28px; font-weight: 900; color: #E50914; opacity: 0.2; }
+    .rule-text { font-size: 13px; color: #444; line-height: 1.5; }
+    .platform-section { background: #fff; border: 1px solid #e8e8e8; border-radius: 12px; padding: 20px; }
+    .platform-header { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+    .posts-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .posts-col-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: #999; margin-bottom: 8px; }
+    .platform-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 768px) {
+      .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+      .charts-grid, .platform-grid, .insights-grid, .rec-grid, .rules-grid, .posts-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- PANTALLA DE CONTRASEÑA — NO MODIFICAR -->
+<div id="auth-overlay" style="position:fixed;inset:0;background:#f5f5f5;z-index:9999;display:flex;align-items:center;justify-content:center;">
+  <div style="background:#fff;border:1px solid #e8e8e8;border-radius:16px;padding:48px 40px;width:360px;text-align:center;box-shadow:0 4px 24px rgba(0,0,0,0.08);">
+    <div style="color:#E50914;font-size:28px;font-weight:900;letter-spacing:-0.5px;margin-bottom:8px;">NETFLIX</div>
+    <div style="font-size:15px;font-weight:700;color:#111;margin-bottom:4px;">España · Social Dashboard</div>
+    <div style="font-size:12px;color:#999;margin-bottom:32px;">Introduce la contraseña para acceder</div>
+    <input id="auth-input" type="password" placeholder="Contraseña"
+      style="width:100%;padding:12px 16px;border:1px solid #e8e8e8;border-radius:10px;font-size:14px;outline:none;margin-bottom:12px;box-sizing:border-box;"
+      onkeydown="if(event.key==='Enter')checkAuth()">
+    <div id="auth-error" style="font-size:12px;color:#E50914;margin-bottom:10px;min-height:16px;"></div>
+    <button onclick="checkAuth()" style="width:100%;background:#E50914;color:#fff;border:none;border-radius:10px;padding:13px;font-size:14px;font-weight:700;cursor:pointer;">Acceder</button>
+  </div>
+</div>
+<script>
+(function(){if(sessionStorage.getItem('nfes_auth')==='ok'){document.getElementById('auth-overlay').style.display='none';}})();
+function checkAuth(){var val=document.getElementById('auth-input').value;if(val==='$0c1@lD@$hb0@rd'){sessionStorage.setItem('nfes_auth','ok');document.getElementById('auth-overlay').style.display='none';}else{document.getElementById('auth-error').textContent='Contraseña incorrecta. Inténtalo de nuevo.';document.getElementById('auth-input').value='';document.getElementById('auth-input').focus();}}
+</script>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-netflix">NETFLIX</div>
+  <div class="header-title">España · Dashboard Social Media · Semana 13–19 de julio de 2026</div>
+  <div class="header-meta">Generado automáticamente · Datos: Kragle / Sprinklr</div>
+</div>
+
+<div class="container">
+
+  
+
+  <!-- SECCIÓN 01: Overview General -->
+  <div class="section">
+    <div class="section-title">01 — Overview General · W1: 13–19 de julio de 2026</div>
+    <div class="chips">
+      <div class="chip"><span class="chip-dot" style="background:#e1306c;"></span>Instagram · 9,5M</div>
+      <div class="chip"><span class="chip-dot" style="background:#00ccc5;"></span>TikTok · 9,2M</div>
+      <div class="chip"><span class="chip-dot" style="background:#1877f2;"></span>Facebook · 7,7M</div>
+      <div class="chip"><span class="chip-dot" style="background:#888;"></span>X · 4,6M</div>
+      <div class="chip"><span class="chip-dot" style="background:#ff4444;"></span>YouTube · 2,2M</div>
+      <div class="chip"><span class="chip-dot" style="background:#444;"></span>Threads · 1,7M</div>
+      <div class="chip" style="background:#111;color:#fff;border-color:#111;font-weight:800;">Total: 34,8M</div>
+    </div>
+    <div class="kpi-grid">
+      <div class="kpi-card"><div class="kpi-label">Impresiones</div><div class="kpi-value">56,2M</div><div class="kpi-wow up">▲ 44,1%</div></div>
+      <div class="kpi-card"><div class="kpi-label">Engagements</div><div class="kpi-value">1,8M</div><div class="kpi-wow up">▲ 40,1%</div></div>
+      <div class="kpi-card"><div class="kpi-label">Tasa de Engagement</div><div class="kpi-value">3,12%</div><div class="kpi-wow down">▼ -2,8%</div></div>
+      <div class="kpi-card"><div class="kpi-label">Posts publicados</div><div class="kpi-value">163</div><div class="kpi-wow up">▲ 44,2%</div></div>
+      <div class="kpi-card"><div class="kpi-label">Seguidores totales</div><div class="kpi-value">34,8M</div><div class="kpi-wow up">▲ 0,1%</div></div>
+    </div>
+    <div class="charts-grid">
+      <div class="card"><div style="font-size:13px;font-weight:700;margin-bottom:12px;">Impresiones por plataforma (5 semanas · M)</div><canvas id="chartImp" height="130"></canvas></div>
+      <div class="card"><div style="font-size:13px;font-weight:700;margin-bottom:12px;">Distribución de impresiones por plataforma — W1</div><canvas id="chartPlat" height="130"></canvas></div>
+    </div>
+    <div class="insights-grid">
+      <div class="insight-card"><div class="insight-icon">🚀</div><div class="insight-text">Instagram sigue siendo la plataforma líder con 37,3M impresiones (+36,4% WoW), impulsada por el contenido de Erling Haaland ligado al Mundial de Clubes.</div></div>
+      <div class="insight-card"><div class="insight-icon">⚡</div><div class="insight-text">X registra un crecimiento explosivo (+192,7% WoW) gracias al post de Haaland, aunque su tasa de engagement se mantiene baja (0,81%).</div></div>
+      <div class="insight-card"><div class="insight-icon">📈</div><div class="insight-text">TikTok más que duplica sus impresiones (+109,3% WoW) con el estreno de El Mapa de los Anhelos, que domina el top de contenido en la plataforma.</div></div>
+      <div class="insight-card"><div class="insight-icon">🎯</div><div class="insight-text">El reel "En esta prueba, tienes que ser todo oídos" logra el ER más alto de la semana en Instagram (9,09%), pese a tener menos impresiones que otros posts.</div></div>
+      <div class="insight-card"><div class="insight-icon">📉</div><div class="insight-text">Facebook cae -16,6% en impresiones WoW pese a mantener un volumen de seguidores relevante (7,7M).</div></div>
+      <div class="insight-card"><div class="insight-icon">👥</div><div class="insight-text">La base de seguidores se mantiene estable en 34,8M (+0,1% WoW), liderada por Instagram (9,5M) y TikTok (9,2M).</div></div>
+    </div>
+  </div>
+
+  <!-- SECCIÓN 02: Datos por Plataforma -->
+  <div class="section">
+    <div class="section-title">02 — Datos por Plataforma</div>
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div class="platform-section">
+        <div class="platform-header"><span class="platform-dot" style="background:#e1306c;"></span><span class="platform-name">Instagram</span><span style="margin-left:auto;font-size:12px;color:#999;">9,5M seguidores</span></div>
+        <div class="platform-metrics">
+          <div class="platform-metric"><div class="platform-metric-val">37,3M</div><div style="color:#999;font-size:11px;">Impresiones</div></div>
+          <div class="platform-metric"><div class="platform-metric-val">1,3M</div><div style="color:#999;font-size:11px;">Engagements</div></div>
+          <div class="platform-metric"><div class="platform-metric-val">3,49%</div><div style="color:#999;font-size:11px;">ER</div></div>
+          <div class="platform-metric"><div class="platform-metric-val">50</div><div style="color:#999;font-size:11px;">Posts</div></div>
+          <div class="platform-metric"><div class="platform-metric-val" style="color:#16a34a;">▲ 36,4%</div><div style="color:#999;font-size:11px;">WoW Imp.</div></div>
+        </div>
+        <div class="posts-row">
+          <div><div class="posts-col-title">Top 5 por Impresiones</div><div class="post-list"><div class="post-item"><span class="post-metric">6,2M</span> · 💖💐✨ Erling ✨💐💖 #ManchesterCityLaConquistaDelTripl3te — 14 jul <a href="https://www.instagram.com/p/Dax1WaWgFp_/" class="post-link">🔗</a></div><div class="post-item"><span class="post-metric">2,3M</span> · Desde que nació, Greta ya sabía por qué había venido a este mundo 💜... — 16 jul <a href="https://www.instagram.com/reel/Da2stW0z6vw/" class="post-link">🔗</a></div><div class="post-item"><span class="post-metric">1,9M</span> · Ciudadana del mundo, ibérica de corazón 🇪🇸 #SoyGeorgina — 15 jul <a href="https://www.instagram.com/reel/Da07ZXgzlIS/" class="post-link">🔗</a></div><div class="post-item"><span class="post-metric">1,5M</span> · G - Entonces, ¿qué ocurre cuando la razón de tu existencia termina... — 15 jul <a href="https://www.instagram.com/reel/Daz_4RQPnGm/" class="post-link">🔗</a></div><div class="post-item"><span class="post-metric">1,4M</span> · Huyó de su pasado para convertirse en la mayor narcotraficante de l... — 15 jul <a href="https://www.instagram.com/p/Dazn_MiFuBe/" class="post-link">🔗</a></div></div></div>
+          <div><div class="posts-col-title">Top 5 por Engagement</div><div class="post-list"><div class="post-item"><span class="post-metric">484K</span> · 💖💐✨ Erling ✨💐💖 #ManchesterCityLaConquistaDelTripl3te — 14 jul <a href="https://www.instagram.com/p/Dax1WaWgFp_/" class="post-link">🔗</a></div><div class="post-item"><span class="post-metric">74K</span> · En esta prueba, tienes que ser todo oídos👂🏼 — 13 jul <a href="https://www.instagram.com/reel/DawuXLmz9F8/" class="post-link">🔗</a></div><div class="post-item"><span class="post-metric">67K</span> · nos derretimos con nuestros Nick y Charlie 🍂✨ #HeartstopperParaSiempre — 15 jul <a href="https://www.instagram.com/p/Da0LTY9D47R/" class="post-link">🔗</a></div><div class="post-item"><span class="post-metric">49K</span> · Desde que nació, Greta ya sabía por qué había venido a este mundo 💜... — 16 jul <a href="https://www.instagram.com/reel/Da2stW0z6vw/" class="post-link">🔗</a></div><div class="post-item"><span class="post-metric">35K</span> · Repite con nosotros: ninguna ola de calor nos va a impedir ser los... — 16 jul <a href="https://www.instagram.com/reel/Da3V2pXOzVa/" class="post-link">🔗</a></div></div></div>
+        </div>
+        <div style="margin-top:12px;padding:10px 14px;background:#fdf2f8;border-radius:8px;font-size:12px;color:#9d174d;">💡 <strong>Insight:</strong> El contenido de fútbol (Erling Haaland) y El Mapa de los Anhelos concentran la mayor parte de las impresiones; los formatos REEL con testimonios directos ('G -') logran buen ER pese a menor alcance.</div>
+      </div>
+      <div class="platform-section">
+        <div class="platform-header"><span class="platform-dot" style="background:#00ccc5;"></span><span class="platform-name">TikTok</span><span style="margin-left:auto;font-size:12px;color:#999;">9,2M seguidores</span></div>
+        <div class="platform-metrics">
+          <div class="platform-metric"><div class="platform-metric-val">7,0M</div><div style="color:#999;font-size:11px;">Impresiones</div></div>
+          <div class="platform-metric"><div class="platform-metric-val">347K</div><div style="color:#999;font-size:11px;">Engagements</div></div>
+          <div class="platform-metric"><div class="platform-metric-val">4,95%</div><div style="color:#999;font-size:11px;">ER</div></div>
+          <div class="platform-metric"><div class="platform-metric-val">29</div><div style="color:#999;font-size:11px;">Posts</div></div>
+          <div class="platform-metric"><div class="platform-metric-val" style="color:#16a34a;">▲ 109,3%</div><div style="color:#999;font-size:11px;">WoW Imp.</div></div>
+        </div>
+        <div class="posts-row">
+          <div><div class="posts-col-title">Top 5 por Impresiones</div><div class="post-list"><div class="post-item"><span class="post-metric">1,9M</span> · Desde que nació, Greta ya sabía por qué había venido a este mundo 💜... — 16 jul <a href="https://www.tiktok.com/@netflixes/video/7663109979406077216" class="post-link">🔗</a></div><div class="post-item"><span class="post-metric">1,3M</span> · Ciudadana del mundo, ibérica de corazón 🇪🇸 #SoyGeorgina — 15 jul <a href="https://www.tiktok.com/@netflixes/video/7662785250883374368" class="post-link">🔗</a></div><div class="post-item"><span class="post-metric">915K</span> · Ya nos enamoramos de ellos en el libro y estamos preparados para vo... — 16 jul <a href="https://www.tiktok.com/@netflixes/video/7663171784698514721" class="post-link">🔗</a></div><div class="post-item"><span class="post-metric">780K</span> · G - Entonces, ¿qué ocurre cuando la razón de tu existencia termina... — 15 jul <a href="https://www.tiktok.com/@netflixes/video/7662723415064726817" class="post-link">🔗</a></div><div class="post-item"><span class="post-metric">644K</span> · Menudo PADRE 🫦 #AgenteKimReactivado #QueVer #SeriesEnTikTok — 13 jul <a href="https://www.tiktok.com/@netflixes/video/7662043175158091041" class="post-link">🔗</a></div></div></div>
+          <div><div class="posts-col-title">Top 5 por Engagement</div><div class="post-list"><div class="post-item"><span class="post-metric">79K</span> · Desde que nació, Greta ya sabía por qué había venido a este mundo 💜... — 16 jul <a href="https://www.tiktok.com/@netflixes/video/7663109979406077216" class="post-link">🔗</a></div><div class="post-item"><span class="post-metric">71K</span> · Ciudadana del mundo, ibérica de corazón 🇪🇸 #SoyGeorgina — 15 jul <a href="https://www.tiktok.com/@netflixes/video/7662785250883374368" class="post-link">🔗</a></div><div class="post-item"><span class="post-metric">27K</span> · G - Entonces, ¿qué ocurre cuando la razón de tu existencia termina... — 15 jul <a href="https://www.tiktok.com/@netflixes/video/7662723415064726817" class="post-link">🔗</a></div><div class="post-item"><span class="post-metric">27K</span> · Menudo PADRE 🫦 #AgenteKimReactivado #QueVer #SeriesEnTikTok — 13 jul <a href="https://www.tiktok.com/@netflixes/video/7662043175158091041" class="post-link">🔗</a></div><div class="post-item"><span class="post-metric">2K</span> · Ya nos enamoramos de ellos en el libro y estamos preparados para vo... — 16 jul <a href="https://www.tiktok.com/@netflixes/video/7663171784698514721" class="post-link">🔗</a></div></div></div>
+        </div>
+        <div style="margin-top:12px;padding:10px 14px;background:#f0fffe;border-radius:8px;font-size:12px;color:#065f46;">💡 <strong>Insight:</strong> El Mapa de los Anhelos y Soy Georgina dominan el ranking; TikTok casi duplica su volumen de impresiones respecto a la semana anterior gracias a estrenos de la semana.</div>
+      </div>
+      <div class="platform-section">
+        <div class="platform-header"><span class="platform-dot" style="background:#1877f2;"></span><span class="platform-name">Facebook</span><span style="margin-left:auto;font-size:12px;color:#999;">7,7M seguidores</span></div>
+        <div class="platform-metrics">
+          <div class="platform-metric"><div class="platform-metric-val">5,0M</div><div style="color:#999;font-size:11px;">Impresiones</div></div>
+          <div class="platform-metric"><div class="platform-metric-val">44K</div><div style="color:#999;font-size:11px;">Engagements</div></div>
+          <div class="platform-metric"><div class="platform-metric-val">0,89%</div><div style="color:#999;font-size:11px;">ER</div></div>
+          <div class="platform-metric"><div class="platform-metric-val">29</div><div style="color:#999;font-size:11px;">Posts</div></div>
+          <div class="platform-metric"><div class="platform-metric-val" style="color:#E50914;">▼ -16,6%</div><div style="color:#999;font-size:11px;">WoW Imp.</div></div>
+        </div>
+        <div class="posts-row">
+          <div><div class="posts-col-title">Top 5 por Impresiones</div><div class="post-list"><div class="post-item"><span class="post-metric">919K</span> · ¿En qué momento comenzarías a desconfiar de tu propio padre? La pel... — 18 jul <a href="https://www.facebook.com/637261485095435/posts/1477763644378544" class="post-link">🔗</a></div><div class="post-item"><span class="post-metric">541K</span> · Huyó de su pasado para convertirse en la mayor narcotraficante de l... — 15 jul <a href="https://www.facebook.com/photo.php?fbid=1474832378005004&set=a.637261081762142&type=3" class="post-link">🔗</a></div><div class="post-item"><span class="post-metric">371K</span> · G - Escribirte es la mejor manera de conocerte. En el folio en blanco — 18 jul <a href="https://www.facebook.com/637261485095435/posts/1477686494386259" class="post-link">🔗</a></div><div class="post-item"><span class="post-metric">351K</span> · Prepárate para que #ElMapaDeLosAnhelos 🗺️ te destroce el corazón. L... — 17 jul <a href="https://www.facebook.com/reel/2523738451404592/" class="post-link">🔗</a></div><div class="post-item"><span class="post-metric">330K</span> · G - Cuando el futuro es dudoso, te refugias entre recuerdos. #ElMap... — 18 jul <a href="https://www.facebook.com/637261485095435/posts/1477969984357910" class="post-link">🔗</a></div></div></div>
+          <div><div class="posts-col-title">Top 5 por Engagement</div><div class="post-list"><div class="post-item"><span class="post-metric">5K</span> · Tras el secuestro de su hijo de ocho años, un escritor viudo de nov... — 14 jul <a href="https://www.facebook.com/reel/1277918010902409/" class="post-link">🔗</a></div><div class="post-item"><span class="post-metric">4K</span> · El elenco de Heartstopper sirviendo cara, pelo, outfit y muchísimo... — 15 jul <a href="https://www.facebook.com/637261485095435/posts/1475009774653931" class="post-link">🔗</a></div><div class="post-item"><span class="post-metric">4K</span> · ¿En qué momento comenzarías a desconfiar de tu propio padre? La pel... — 18 jul <a href="https://www.facebook.com/637261485095435/posts/1477763644378544" class="post-link">🔗</a></div><div class="post-item"><span class="post-metric">4K</span> · Prepárate para que #ElMapaDeLosAnhelos 🗺️ te destroce el corazón. L... — 17 jul <a href="https://www.facebook.com/reel/2523738451404592/" class="post-link">🔗</a></div><div class="post-item"><span class="post-metric">3K</span> · Huyó de su pasado para convertirse en la mayor narcotraficante de l... — 15 jul <a href="https://www.facebook.com/photo.php?fbid=1474832378005004&set=a.637261081762142&type=3" class="post-link">🔗</a></div></div></div>
+        </div>
+        <div style="margin-top:12px;padding:10px 14px;background:#eff6ff;border-radius:8px;font-size:12px;color:#1e40af;">💡 <strong>Insight:</strong> El post sobre Los Creyentes lidera en impresiones, pero el ER general de la plataforma sigue siendo el más bajo del mix (0,89%); los tráilers (formato REEL) generan mejor engagement relativo.</div>
+      </div>
+      <div class="platform-section">
+        <div class="platform-header"><span class="platform-dot" style="background:#888;"></span><span class="platform-name">X (Twitter)</span><span style="margin-left:auto;font-size:12px;color:#999;">4,6M seguidores</span></div>
+        <div class="platform-metrics">
+          <div class="platform-metric"><div class="platform-metric-val">6,2M</div><div style="color:#999;font-size:11px;">Impresiones</div></div>
+          <div class="platform-metric"><div class="platform-metric-val">51K</div><div style="color:#999;font-size:11px;">Engagements</div></div>
+          <div class="platform-metric"><div class="platform-metric-val">0,81%</div><div style="color:#999;font-size:11px;">ER</div></div>
+          <div class="platform-metric"><div class="platform-metric-val">25</div><div style="color:#999;font-size:11px;">Posts</div></div>
+          <div class="platform-metric"><div class="platform-metric-val" style="color:#16a34a;">▲ 192,7%</div><div style="color:#999;font-size:11px;">WoW Imp.</div></div>
+        </div>
+        <div class="posts-row">
+          <div><div class="posts-col-title">Top 5 por Impresiones</div><div class="post-list"><div class="post-item"><span class="post-metric">4,3M</span> · VAYA @NetflixFR — 14 jul <a href="https://twitter.com/NetflixES/status/2077121554429677784" class="post-link">🔗</a></div><div class="post-item"><span class="post-metric">611K</span> · 💖💐✨ Haaland ✨💐💖 — 14 jul <a href="https://twitter.com/NetflixES/status/2077054476251283479" class="post-link">🔗</a></div><div class="post-item"><span class="post-metric">213K</span> · Los trabajadores de Tío Mochales ya están listos para su team build... — 16 jul <a href="https://twitter.com/NetflixES/status/2077688611911188826" class="post-link">🔗</a></div><div class="post-item"><span class="post-metric">168K</span> · #FranciaEspaña — 14 jul <a href="https://twitter.com/NetflixES/status/2077136001206530163" class="post-link">🔗</a></div><div class="post-item"><span class="post-metric">133K</span> · HOY: — 14 jul <a href="https://twitter.com/NetflixES/status/2076991185273430258" class="post-link">🔗</a></div></div></div>
+          <div><div class="posts-col-title">Top 5 por Engagement</div><div class="post-list"><div class="post-item"><span class="post-metric">22K</span> · 💖💐✨ Haaland ✨💐💖 — 14 jul <a href="https://twitter.com/NetflixES/status/2077054476251283479" class="post-link">🔗</a></div><div class="post-item"><span class="post-metric">8K</span> · HOY: — 14 jul <a href="https://twitter.com/NetflixES/status/2076991185273430258" class="post-link">🔗</a></div><div class="post-item"><span class="post-metric">6K</span> · #FranciaEspaña — 14 jul <a href="https://twitter.com/NetflixES/status/2077136001206530163" class="post-link">🔗</a></div><div class="post-item"><span class="post-metric">4K</span> · Es hoy, es hoy!! — 17 jul <a href="https://twitter.com/NetflixES/status/2078026922383081731" class="post-link">🔗</a></div><div class="post-item"><span class="post-metric">3K</span> · VAYA @NetflixFR — 14 jul <a href="https://twitter.com/NetflixES/status/2077121554429677784" class="post-link">🔗</a></div></div></div>
+        </div>
+        <div style="margin-top:12px;padding:10px 14px;background:#f9fafb;border-radius:8px;font-size:12px;color:#374151;">💡 <strong>Insight:</strong> Un solo post (@NetflixFR) concentra más de dos tercios de las impresiones de la semana; el contenido ligado al deporte (Haaland) es el que mejor engagement obtiene.</div>
+      </div>
+      <div class="platform-section">
+        <div class="platform-header"><span class="platform-dot" style="background:#ff4444;"></span><span class="platform-name">YouTube</span><span style="margin-left:auto;font-size:12px;color:#999;">2,2M suscriptores</span></div>
+        <div class="platform-metrics">
+          <div class="platform-metric"><div class="platform-metric-val">623K</div><div style="color:#999;font-size:11px;">Impresiones</div></div>
+          <div class="platform-metric"><div class="platform-metric-val">6K</div><div style="color:#999;font-size:11px;">Engagements</div></div>
+          <div class="platform-metric"><div class="platform-metric-val">0,95%</div><div style="color:#999;font-size:11px;">ER</div></div>
+          <div class="platform-metric"><div class="platform-metric-val">30</div><div style="color:#999;font-size:11px;">Posts</div></div>
+          <div class="platform-metric"><div class="platform-metric-val" style="color:#16a34a;">▲ 234,2%</div><div style="color:#999;font-size:11px;">WoW Imp.</div></div>
+        </div>
+        <div class="posts-row">
+          <div><div class="posts-col-title">Top 5 por Impresiones</div><div class="post-list"><div class="post-item"><span class="post-metric">137K</span> · Antes de morir, Lucy idea un juego para que su hermana Greta le dé... — 17 jul <a href="https://www.youtube.com/watch?v=lk6xB6lNqa8" class="post-link">🔗</a></div><div class="post-item"><span class="post-metric">133K</span> · Antes de morir, Lucy idea un juego para que su hermana Greta le dé... — 15 jul <a href="https://www.youtube.com/shorts/scwVZuUwbEk" class="post-link">🔗</a></div><div class="post-item"><span class="post-metric">86K</span> · Antes de morir, Lucy idea un juego para que su hermana Greta le dé... — 16 jul <a href="https://www.youtube.com/shorts/8oouYcQmdN4" class="post-link">🔗</a></div><div class="post-item"><span class="post-metric">65K</span> · Antes de morir, Lucy idea un juego para que su hermana Greta le dé... — 16 jul <a href="https://www.youtube.com/shorts/TK3Vcl56Qfg" class="post-link">🔗</a></div><div class="post-item"><span class="post-metric">34K</span> · Dos compañeros de piso se apuntan a una despedida de soltera en car... — 13 jul <a href="https://www.youtube.com/watch?v=QET2gy8nb6o" class="post-link">🔗</a></div></div></div>
+          <div><div class="posts-col-title">Top 5 por Engagement</div><div class="post-list"><div class="post-item"><span class="post-metric">1K</span> · Tras el escándalo del triángulo amoroso y la crisis familiar de los... — 15 jul <a href="https://www.youtube.com/watch?v=TSnMRstq6kU" class="post-link">🔗</a></div><div class="post-item"><span class="post-metric">666</span> · Vecna se prepara para destruir el mundo tal como lo conocemos — 15 jul <a href="https://www.youtube.com/watch?v=8gExJHdFqpQ" class="post-link">🔗</a></div><div class="post-item"><span class="post-metric">513</span> · Dos compañeros de piso se apuntan a una despedida de soltera en car... — 13 jul <a href="https://www.youtube.com/watch?v=QET2gy8nb6o" class="post-link">🔗</a></div><div class="post-item"><span class="post-metric">489</span> · Es hoy, es hoy!! Ver en Netflix — 17 jul <a href="https://www.youtube.com/shorts/1u-LX6ehgiQ" class="post-link">🔗</a></div><div class="post-item"><span class="post-metric">355</span> · Nadie puede acallar a los asesinos más letales. Tras el secuestro d... — 14 jul <a href="https://www.youtube.com/watch?v=pvmvk67i3l4" class="post-link">🔗</a></div></div></div>
+        </div>
+        <div style="margin-top:12px;padding:10px 14px;background:#fff5f5;border-radius:8px;font-size:12px;color:#991b1b;">💡 <strong>Insight:</strong> El clip de El Mapa de los Anhelos domina en impresiones pero con ER bajo; los teasers/trailers de series dramáticas logran mayor tasa de engagement relativa.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECCIÓN 03: Overview Títulos -->
+  <div class="section">
+    <div class="section-title">03 — Overview Títulos</div>
+    <div class="platform-grid">
+      <div class="card">
+        <div style="font-size:13px;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:8px;"><span class="platform-dot" style="background:#e1306c;"></span>Top 3 Títulos — Instagram (W1)</div>
+        <div style="margin-bottom:14px;"><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;"><span><strong>1.</strong> Manchester City: La Conquista del Triplete</span><span style="color:#e1306c;font-weight:700;">6,2M imp</span></div><div class="titulo-bar" style="width:100%;"></div></div>
+        <div style="margin-bottom:14px;"><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;"><span><strong>2.</strong> El Mapa de los Anhelos</span><span style="color:#e1306c;font-weight:700;">5,0M imp</span></div><div class="titulo-bar" style="width:81%;"></div></div>
+        <div style="margin-bottom:14px;"><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;"><span><strong>3.</strong> Heartstopper Para Siempre</span><span style="color:#e1306c;font-weight:700;">1,9M imp</span></div><div class="titulo-bar" style="width:31%;"></div></div>
+      </div>
+      <div class="card">
+        <div style="font-size:13px;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:8px;"><span class="platform-dot" style="background:#00ccc5;"></span>Top 3 Títulos — TikTok (W1)</div>
+        <div style="margin-bottom:14px;"><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;"><span><strong>1.</strong> El Mapa de los Anhelos</span><span style="color:#00ccc5;font-weight:700;">2,8M imp</span></div><div class="titulo-bar" style="width:100%;background:linear-gradient(90deg,#00ccc5,#00e5e0);"></div></div>
+        <div style="margin-bottom:14px;"><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;"><span><strong>2.</strong> Soy Georgina</span><span style="color:#00ccc5;font-weight:700;">1,3M imp</span></div><div class="titulo-bar" style="width:48%;background:linear-gradient(90deg,#00ccc5,#00e5e0);"></div></div>
+        <div style="margin-bottom:14px;"><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;"><span><strong>3.</strong> G - Entonces, ¿qué o</span><span style="color:#00ccc5;font-weight:700;">780K imp</span></div><div class="titulo-bar" style="width:28%;background:linear-gradient(90deg,#00ccc5,#00e5e0);"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECCIÓN 04: Insights y Recomendaciones -->
+  <div class="section">
+    <div class="section-title">04 — Insights y Recomendaciones</div>
+    <div class="rec-grid">
+      <div class="rec-card"><div class="rec-priority priority-high">ALTA PRIORIDAD</div><div class="rec-title">Duplicar la apuesta por contenido deportivo en X</div><div class="rec-text">El post de Haaland (+192,7% WoW en impresiones en X) demuestra que el contenido de fútbol conecta fuera de IG/TikTok. Programar más activaciones ligadas a partidos y jugadores durante julio.</div></div>
+      <div class="rec-card"><div class="rec-priority priority-high">ALTA PRIORIDAD</div><div class="rec-title">Priorizar formatos 'testimonio de personaje' (G -)</div><div class="rec-text">Los reels con monólogos de Greta (El Mapa de los Anhelos) generan ER superior a la media (hasta 2,2%) con bajo coste de producción; escalar el formato a otros títulos con arco emocional fuerte.</div></div>
+      <div class="rec-card"><div class="rec-priority priority-medium">MEDIA PRIORIDAD</div><div class="rec-title">Revisar la estrategia de Facebook</div><div class="rec-text">Facebook cae -16,6% WoW en impresiones pese a mantener 7,7M de seguidores; probar más formato REEL/tráiler, que obtiene mejor engagement relativo que las fotos estáticas.</div></div>
+      <div class="rec-card"><div class="rec-priority priority-medium">MEDIA PRIORIDAD</div><div class="rec-title">Aprovechar el impulso de TikTok en El Mapa de los Anhelos</div><div class="rec-text">La serie lidera el ranking de títulos en TikTok con más de 2,8M de impresiones; mantener cadencia de clips cortos mientras dura el pico de interés post-estreno.</div></div>
+      <div class="rec-card"><div class="rec-priority priority-medium">MEDIA PRIORIDAD</div><div class="rec-title">Reforzar YouTube con más Shorts</div><div class="rec-text">Los formatos SHORT superan a los VIDEO largos en impresiones para el mismo contenido (El Mapa de los Anhelos); priorizar recortes verticales sobre videos tradicionales.</div></div>
+      <div class="rec-card"><div class="rec-priority priority-low">BAJA PRIORIDAD</div><div class="rec-title">Vigilar la caída de ER general</div><div class="rec-text">La tasa de engagement global baja ligeramente (-2,8% WoW) pese a más impresiones; monitorizar que el crecimiento de alcance no diluya la calidad de la interacción.</div></div>
+    </div>
+  </div>
+
+  <!-- SECCIÓN 05: Publishing -->
+  <div class="section">
+    <div class="section-title">05 — Publishing: Cadencias y Reglas de Oro</div>
+    <div class="card" style="margin-bottom:16px;">
+      <div style="font-size:13px;font-weight:700;margin-bottom:12px;">Cadencia actual — W1 (posts publicados)</div>
+      <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:8px;text-align:center;">
+        <div><div style="font-size:10px;color:#e1306c;font-weight:700;margin-bottom:4px;">INSTAGRAM</div><div style="font-size:22px;font-weight:900;">50</div><div style="font-size:10px;color:#999;">posts/sem</div></div>
+        <div><div style="font-size:10px;color:#00ccc5;font-weight:700;margin-bottom:4px;">TIKTOK</div><div style="font-size:22px;font-weight:900;">29</div><div style="font-size:10px;color:#999;">posts/sem</div></div>
+        <div><div style="font-size:10px;color:#1877f2;font-weight:700;margin-bottom:4px;">FACEBOOK</div><div style="font-size:22px;font-weight:900;">29</div><div style="font-size:10px;color:#999;">posts/sem</div></div>
+        <div><div style="font-size:10px;color:#888;font-weight:700;margin-bottom:4px;">X</div><div style="font-size:22px;font-weight:900;">25</div><div style="font-size:10px;color:#999;">posts/sem</div></div>
+        <div><div style="font-size:10px;color:#ff4444;font-weight:700;margin-bottom:4px;">YOUTUBE</div><div style="font-size:22px;font-weight:900;">30</div><div style="font-size:10px;color:#999;">posts/sem</div></div>
+        <div><div style="font-size:10px;color:#444;font-weight:700;margin-bottom:4px;">THREADS</div><div style="font-size:22px;font-weight:900;">0</div><div style="font-size:10px;color:#999;">posts/sem</div></div>
+      </div>
+    </div>
+    <div class="rules-grid">
+      <div class="rule-card"><div class="rule-num">01</div><div class="rule-text"><strong>Priorizar formato vertical</strong> — Reels, TikToks y Shorts siempre en 9:16. El contenido vertical genera en media un 34% más de reproducciones completas frente al horizontal.</div></div>
+      <div class="rule-card"><div class="rule-num">02</div><div class="rule-text"><strong>Los primeros 3 segundos son clave</strong> — El gancho visual debe aparecer en los primeros 3 segundos para maximizar la retención en plataformas de scroll.</div></div>
+      <div class="rule-card"><div class="rule-num">03</div><div class="rule-text"><strong>Subtítulos siempre activados</strong> — El 85% del contenido en redes se consume sin sonido. Los subtítulos aumentan la tasa de finalización en +28%.</div></div>
+      <div class="rule-card"><div class="rule-num">04</div><div class="rule-text"><strong>Publicar en ventanas de alta actividad</strong> — IG y TikTok: 18h–21h. Facebook: 12h–14h y 19h–21h. X: 8h–10h y 20h–22h. YouTube: jue–sáb 16h–20h.</div></div>
+      <div class="rule-card"><div class="rule-num">05</div><div class="rule-text"><strong>Equilibrio editorial vs. comercial</strong> — Máximo 40% de contenido promocional puro. El 60% restante debe ser entretenimiento, comunidad o behind-the-scenes.</div></div>
+      <div class="rule-card"><div class="rule-num">06</div><div class="rule-text"><strong>Responder en las primeras 2 horas</strong> — El algoritmo de IG y TikTok prioriza posts con alta interacción temprana. Reservar recursos para responder comentarios en la ventana de 2h post-publicación.</div></div>
+    </div>
+  </div>
+
+  <div style="text-align:center;padding:24px 0;font-size:11px;color:#bbb;border-top:1px solid #e8e8e8;margin-top:16px;">
+    Netflix España · Dashboard Social Media · Semana 13–19 de julio de 2026<br>
+    Generado automáticamente por Cowork · 20 de julio de 2026
+  </div>
+</div>
+
+<script>
+new Chart(document.getElementById('chartImp'), {
+  type: 'bar',
+  data: {
+    labels: ['15–21 jun', '22–28 jun', '29 jun–5 jul', '6–12 jul', '13–19 jul'],
+    datasets: [
+      { label: 'Instagram', data: [38.46,41.03,35.70,27.37,37.34], backgroundColor: '#e1306c' },
+      { label: 'TikTok',    data: [6.54,19.65,5.55,3.35,7.01], backgroundColor: '#00ccc5' },
+      { label: 'Facebook',  data: [7.81,5.80,5.77,5.94,4.95], backgroundColor: '#1877f2' },
+      { label: 'X',         data: [1.60,1.97,0.93,2.14,6.25],  backgroundColor: '#888' },
+      { label: 'YouTube',   data: [0.42,1.35,0.75,0.19,0.62], backgroundColor: '#ff4444' }
+    ]
+  },
+  options: { responsive: true, plugins: { legend: { position: 'bottom', labels: { font: { size: 10 }, boxWidth: 10 } } }, scales: { x: { stacked: true, ticks: { font: { size: 10 } } }, y: { stacked: true, ticks: { callback: v => v + 'M', font: { size: 10 } } } } }
+});
+new Chart(document.getElementById('chartPlat'), {
+  type: 'doughnut',
+  data: { labels: ['Instagram', 'TikTok', 'Facebook', 'X', 'YouTube', 'Threads'], datasets: [{ data: [37341417,7008293,4953853,6249297,623075,0], backgroundColor: ['#e1306c','#00ccc5','#1877f2','#888','#ff4444','#444'], borderWidth: 1 }] },
+  options: { responsive: true, plugins: { legend: { position: 'bottom', labels: { font: { size: 10 }, boxWidth: 10 } } } }
+});
+</script>
+</body>
+</html>
