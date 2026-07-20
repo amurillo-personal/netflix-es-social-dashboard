@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Organic Audience Explorer — Cross-Platform</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root{
+    --bg:#f5f6f8; --panel:#ffffff; --panel2:#f4f5f8; --line:#e3e5ea;
+    --txt:#17171f; --muted:#6c6c78; --accent:#e50914;
+    --x:#1d84d8; --yts:#e5541f; --ytv:#d81f1f; --tt:#0bb8b0; --fb:#1877f2; --ig:#d1348a;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--txt);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.45;font-size:15px}
+  a{color:var(--x)}
+  .wrap{max-width:1240px;margin:0 auto;padding:28px 22px 80px}
+  header.top{display:flex;flex-direction:column;gap:6px;margin-bottom:8px}
+  header.top h1{font-size:26px;margin:0;font-weight:750;letter-spacing:-.4px}
+  header.top .sub{color:var(--muted);font-size:14px;max-width:820px}
+  .pills{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0 6px}
+  .pill{display:flex;align-items:center;gap:7px;background:var(--panel);border:1px solid var(--line);
+    border-radius:999px;padding:5px 12px;font-size:12.5px;color:var(--muted)}
+  .dot{width:10px;height:10px;border-radius:50%}
+  .banner{background:#fdeced;
+    border:1px solid #f5c9cd;border-left:3px solid var(--accent);border-radius:10px;
+    padding:10px 14px;font-size:12.5px;color:#8a2a30;margin:14px 0 22px}
+  .banner strong{color:#6d1f24}
+  .tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
+  .tab{background:var(--panel);border:1px solid var(--line);color:var(--muted);
+    padding:9px 15px;border-radius:9px;cursor:pointer;font-size:13.5px;font-weight:600;
+    transition:.15s;user-select:none}
+  .tab:hover{color:var(--txt);border-color:#c3c6cf}
+  .tab.active{background:var(--accent);border-color:var(--accent);color:#fff}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px;margin-bottom:20px;box-shadow:0 1px 3px rgba(20,20,40,.05)}
+  .panel h2{margin:0 0 4px;font-size:18px;font-weight:700}
+  .panel .desc{color:var(--muted);font-size:13px;margin:0 0 18px;max-width:900px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  @media(max-width:900px){.grid2,.grid3{grid-template-columns:1fr}}
+  .chartbox{position:relative;height:340px}
+  .chartbox.tall{height:400px}
+  .card{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:16px 17px}
+  .card h3{margin:0 0 8px;font-size:14.5px;display:flex;align-items:center;gap:8px}
+  .card p{margin:0;color:#3d3d48;font-size:13px}
+  .tag{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;
+    padding:3px 8px;border-radius:6px}
+  .tag.opp{background:#dff5e8;color:#177a49}
+  .tag.chal{background:#fde6ea;color:#b02a3c}
+  .tag.note{background:#e3eefc;color:#1f5fae}
+  .controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:16px}
+  .seg{display:flex;background:var(--panel2);border:1px solid var(--line);border-radius:9px;overflow:hidden}
+  .seg button{background:transparent;border:none;color:var(--muted);padding:8px 13px;cursor:pointer;font-size:12.5px;font-weight:600}
+  .seg button.on{background:var(--accent);color:#fff}
+  table.matrix{width:100%;border-collapse:collapse;font-size:12.5px}
+  table.matrix th,table.matrix td{padding:9px 8px;text-align:center;border-bottom:1px solid var(--line)}
+  table.matrix th{color:var(--muted);font-weight:600;font-size:11.5px;text-transform:uppercase;letter-spacing:.4px}
+  table.matrix td.seglabel{text-align:left;font-weight:600;color:var(--txt);white-space:nowrap}
+  table.matrix td.cell{font-weight:700;color:#0b0b0f;border-radius:5px}
+  .legendrow{display:flex;gap:14px;flex-wrap:wrap;font-size:11.5px;color:var(--muted);margin-top:12px;align-items:center}
+  .swatch{display:inline-block;width:22px;height:12px;border-radius:3px;vertical-align:middle;margin-right:5px}
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px}
+  @media(max-width:900px){.kpis{grid-template-columns:repeat(2,1fr)}}
+  .kpi{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:15px 16px}
+  .kpi .n{font-size:24px;font-weight:750;letter-spacing:-.5px}
+  .kpi .l{color:var(--muted);font-size:12px;margin-top:3px}
+  .view{display:none}
+  .view.active{display:block}
+  footer{color:var(--muted);font-size:11.5px;margin-top:30px;border-top:1px solid var(--line);padding-top:16px}
+  .muted{color:var(--muted)}
+  ul.clean{margin:8px 0 0;padding-left:18px;color:#3d3d48;font-size:13px}
+  ul.clean li{margin-bottom:6px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <h1>Organic Audience Explorer</h1>
+    <div class="sub">Who we actually reach organically across our main social platforms — normalized so channels are comparable. Built to answer <em>which channel is best for reaching which audience</em>, not to compare raw volume. Sample windows differ slightly by platform.</div>
+  </header>
+
+  <div class="pills" id="platformPills"></div>
+
+  <div class="banner">
+    <strong>Read me first.</strong> Figures are shares of each platform's audience, not absolute reach. Facebook shows <em>followers</em> (not reached audience) and its age split is estimated from the chart. YouTube reports Shorts and Videos as distinct audiences — they behave very differently, so they're kept separate. YouTube &amp; TikTok geo percentages are share of <em>total</em> views (long global tail), while X / Instagram / Facebook geo is share of audience — compare geo <em>within</em> a platform, not across.
+  </div>
+
+  <div class="kpis" id="kpis"></div>
+
+  <div class="tabs" id="tabs"></div>
+
+  <!-- AGE -->
+  <div class="view active" data-view="age">
+    <div class="panel">
+      <h2>Age distribution by channel</h2>
+      <p class="desc">Age buckets normalized to a shared scale (55-64 and 65+ merged into 55+ for comparability). TikTok and Facebook do not report a 13-17 bucket.</p>
+      <div class="chartbox tall"><canvas id="ageChart"></canvas></div>
+    </div>
+    <div class="panel">
+      <h2>Channel × age index — who over-indexes where</h2>
+      <p class="desc">Index of 100 = the cross-channel average for that age band. <span style="color:#5fe6a0">Green &gt;120</span> means the channel over-indexes (your best lever for that age); <span style="color:#ff8b9a">red &lt;80</span> means it under-reaches. This is the core "best-channel-for-the-audience" view.</p>
+      <div id="ageMatrix"></div>
+    </div>
+  </div>
+
+  <!-- GENDER -->
+  <div class="view" data-view="gender">
+    <div class="panel">
+      <h2>Gender split by channel</h2>
+      <p class="desc">Share of audience by gender. "Other / unspecified" shown where the platform reports it.</p>
+      <div class="chartbox tall"><canvas id="genderChart"></canvas></div>
+    </div>
+    <div class="grid2">
+      <div class="panel"><h2>Female reach index</h2><p class="desc">100 = cross-channel average female share.</p><div id="genderMatrix"></div></div>
+      <div class="panel"><h2>What it means</h2>
+        <ul class="clean">
+          <li><strong>Instagram &amp; Facebook</strong> are our female-skewing channels (~64% women).</li>
+          <li><strong>TikTok</strong> tilts female (55%) but is the most balanced of the high-reach channels.</li>
+          <li><strong>X</strong> is our most male channel (60% men) — and YouTube Shorts (63% men) is more male than Videos (51%).</li>
+          <li>If a campaign needs to reach <strong>men</strong>, X and YouTube Shorts are the efficient picks; for <strong>women</strong>, IG / FB / TikTok.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- GEOGRAPHY -->
+  <div class="view" data-view="geo">
+    <div class="panel">
+      <h2>Spain concentration by channel</h2>
+      <p class="desc">Share of audience/views located in Spain. Higher = more domestic. Remember: YouTube &amp; TikTok are share of total views (large global tail), so their Spain % looks lower by construction.</p>
+      <div class="chartbox"><canvas id="geoChart"></canvas></div>
+    </div>
+    <div class="panel">
+      <h2>Top markets per channel</h2>
+      <p class="desc">Top-5 countries as reported by each platform. Useful for spotting where each channel travels internationally.</p>
+      <div class="grid3" id="geoLists"></div>
+    </div>
+  </div>
+
+  <!-- DEVICE -->
+  <div class="view" data-view="device">
+    <div class="panel">
+      <h2>Device / surface mix</h2>
+      <p class="desc">Only X and YouTube expose device data. The headline: YouTube <em>Videos</em> are watched on the <strong>TV</strong> (45%) — a lean-back, living-room surface — while everything else is phone-first.</p>
+      <div class="chartbox tall"><canvas id="deviceChart"></canvas></div>
+    </div>
+    <div class="grid3">
+      <div class="card"><h3><span class="tag note">Surface</span> Phone-first</h3><p>X is ~92% mobile (iOS 56% / Android 36%). TikTok, Instagram and YouTube Shorts are inherently phone-native. Creative must work sound-on, vertical, thumb-stopping in the first second.</p></div>
+      <div class="card"><h3><span class="tag note">Surface</span> Living-room</h3><p>YouTube Videos are 45% TV + 6% tablet — over half on a large screen. This is the one place long-form, higher-production trailers pay off. Shorts stay 65% mobile.</p></div>
+      <div class="card"><h3><span class="tag note">Surface</span> iOS lean</h3><p>Where reported, iOS over-indexes vs Android (X 56/36). Worth checking that landing pages / deep-links are iOS-optimized.</p></div>
+    </div>
+  </div>
+
+  <!-- ACTIVITY -->
+  <div class="view" data-view="activity">
+    <div class="panel">
+      <h2>When each audience is active</h2>
+      <p class="desc">Best posting windows as reported per platform. Times are local (GMT+2 / Spain).</p>
+      <div class="grid3" id="activityCards"></div>
+    </div>
+    <div class="panel">
+      <h2>Scheduling takeaways</h2>
+      <ul class="clean">
+        <li><strong>Instagram</strong> peaks Sun 18-23h and Mon 21-23h — evening, front-of-week. Prime slot for weekend hype and Monday launches.</li>
+        <li><strong>TikTok</strong> activity spikes very late (00-01h) — a night-owl audience; late-evening drops can catch the peak.</li>
+        <li><strong>X</strong> peaks midweek (Wednesday) mornings/midday — align real-time / news-style posts here.</li>
+        <li><strong>YouTube</strong> viewing builds through afternoon-evening across the whole week — less time-sensitive, more evergreen.</li>
+        <li>Combined: a title moment can roll <strong>X midday → YouTube afternoon → IG evening → TikTok late-night</strong> to ride each audience's peak in sequence.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- MATRIX (combined best-channel) -->
+  <div class="view" data-view="matrix">
+    <div class="panel">
+      <h2>Best channel for each audience — at a glance</h2>
+      <p class="desc">For every segment, the channel(s) that over-index most. Derived from the age &amp; gender indices. Use it as a targeting cheat-sheet.</p>
+      <div id="bestMatrix"></div>
+    </div>
+  </div>
+
+  <!-- OPPORTUNITIES -->
+  <div class="view" data-view="opps">
+    <div class="panel">
+      <h2>Opportunities</h2>
+      <div class="grid2" id="oppCards"></div>
+    </div>
+    <div class="panel">
+      <h2>Challenges &amp; watch-outs</h2>
+      <div class="grid2" id="chalCards"></div>
+    </div>
+  </div>
+
+  <footer id="footer"></footer>
+</div>
+
+<script>
+/* ---------- DATA ---------- */
+const PLATFORMS = {
+  x:   {name:"X (Twitter)",     color:"#4aa8ff", metric:"Impressions, 28d"},
+  yts: {name:"YouTube Shorts",  color:"#ff6a3d", metric:"Views, 28d"},
+  ytv: {name:"YouTube Videos",  color:"#ff3d3d", metric:"Views, 28d"},
+  tt:  {name:"TikTok",          color:"#25f4ee", metric:"Viewers, ~30d"},
+  fb:  {name:"Facebook*",       color:"#1877f2", metric:"Followers (est.)"},
+  ig:  {name:"Instagram",       color:"#e948a1", metric:"Audience"}
+};
+const ORDER = ["x","yts","ytv","tt","fb","ig"];
+
+// Age (%). null = not reported. Buckets: 13-17,18-24,25-34,35-44,45-54,55+
+const AGE_BUCKETS = ["13-17","18-24","25-34","35-44","45-54","55+"];
+const AGE = {
+  x:   [2.5, 25.1, 46.0, 15.2, 6.2, 5.0],
+  yts: [3.6, 8.1, 27.8, 28.3, 25.7, 6.5],
+  ytv: [5.6, 12.5, 30.5, 21.8, 15.1, 14.4],
+  tt:  [null, 32.2, 38.0, 15.6, 10.4, 3.8],
+  fb:  [null, 15.9, 34.5, 25.2, 14.7, 10.5],   // estimated from chart, followers
+  ig:  [2.8, 22.0, 36.5, 21.3, 11.1, 6.4]
+};
+
+// Gender: [female, male, other]
+const GENDER = {
+  x:   [33.1, 60.1, 6.8],
+  yts: [37.1, 62.9, 0],
+  ytv: [49.1, 50.8, 0.1],
+  tt:  [55, 44, 1],
+  fb:  [64.2, 35.8, 0],
+  ig:  [63.9, 36.1, 0]
+};
+
+// Spain concentration %
+const SPAIN = { x:65.3, yts:20.4, ytv:4.5, tt:67.9, fb:18.4, ig:27.8 };
+
+// Top countries per platform (as reported)
+const GEO = {
+  x:   [["Spain",65.3],["France",7.0],["Mexico",4.8],["Argentina",4.1],["United States",3.1]],
+  yts: [["Spain",20.4],["Mexico",3.1],["Argentina",1.5],["Colombia",0.9],["Peru",0.9]],
+  ytv: [["Spain",4.5],["Mexico",1.7],["Argentina",1.1],["United States",0.8],["Colombia",0.7]],
+  tt:  [["Spain",67.9],["Romania",21.7],["Venezuela",1.1],["Mexico",0.9],["Peru",0.8]],
+  fb:  [["Mexico",19.4],["Spain",18.4],["Colombia",9.6],["Cuba",6.5],["Argentina",6.2]],
+  ig:  [["Spain",27.8],["Mexico",7.0],["Brazil",6.4],["Argentina",6.1],["Venezuela",4.1]]
+};
+
+// Device: labels + per-platform values (only x, yts, ytv)
+const DEVICE = {
+  labels:["Mobile","TV","Computer","Tablet"],
+  x:   [92.3, 0, 0, 0],       // iOS 56.4 + Android 35.9
+  yts: [64.9, 22.2, 7.0, 5.7],
+  ytv: [38.9, 45.1, 9.4, 6.3]
+};
+
+const ACTIVITY = {
+  x:   {peak:"Wed, morning–midday", note:"Midweek daytime spike; real-time / news cadence."},
+  ytv: {peak:"Afternoon–evening, all week", note:"Steady, evergreen; less time-sensitive."},
+  yts: {peak:"Afternoon–evening, all week", note:"Same rhythm as Videos, phone-led."},
+  tt:  {peak:"Late night (00–01h)", note:"Night-owl audience; late drops catch the peak."},
+  ig:  {peak:"Sun 18–23h · Mon 21–23h", note:"Evening, front-of-week. Great for launches."},
+  fb:  {peak:"n/a (followers only)", note:"No activity data in this sample."}
+};
+
+/* ---------- HELPERS ---------- */
+const CH = document.getElementById.bind(document);
+function pill(k){const p=PLATFORMS[k];return `<div class="pill"><span class="dot" style="background:${p.color}"></span>${p.name} <span style="opacity:.6">· ${p.metric}</span></div>`;}
+document.getElementById("platformPills").innerHTML = ORDER.map(pill).join("");
+
+// KPIs
+const kpis = [
+  {n:"6", l:"Channels compared (YouTube split into Shorts & Videos)"},
+  {n:"25–34", l:"The universal core — leads on every channel"},
+  {n:"Spain", l:"#1 market on X, TikTok, Instagram & (est.) reach"},
+  {n:"F 64% / M 60%", l:"IG&FB skew female · X most male"}
+];
+CH("kpis").innerHTML = kpis.map(k=>`<div class="kpi"><div class="n">${k.n}</div><div class="l">${k.l}</div></div>`).join("");
+
+// Tabs
+const TABS = [
+  ["age","Age"],["gender","Gender"],["geo","Geography"],["device","Device"],
+  ["activity","Activity"],["matrix","Best-channel matrix"],["opps","Opportunities & Challenges"]
+];
+CH("tabs").innerHTML = TABS.map((t,i)=>`<div class="tab${i===0?' active':''}" data-t="${t[0]}">${t[1]}</div>`).join("");
+let built = {};
+document.querySelectorAll(".tab").forEach(tab=>{
+  tab.addEventListener("click",()=>{
+    document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
+    tab.classList.add("active");
+    const v=tab.dataset.t;
+    document.querySelectorAll(".view").forEach(x=>x.classList.toggle("active",x.dataset.view===v));
+    build(v);
+  });
+});
+
+/* ---------- INDEX / MATRIX ---------- */
+function indexMatrix(dataObj, buckets, keys){
+  // returns per-segment index (value / mean-of-available * 100)
+  const res={};
+  buckets.forEach((b,bi)=>{
+    const vals = keys.map(k=>dataObj[k][bi]).filter(v=>v!=null);
+    const mean = vals.reduce((a,b)=>a+b,0)/vals.length;
+    res[b] = {};
+    keys.forEach(k=>{
+      const v=dataObj[k][bi];
+      res[b][k] = v==null? null : Math.round(v/mean*100);
+    });
+  });
+  return res;
+}
+function idxColor(v){
+  if(v==null) return "#e8e9ee";
+  // 60 -> red, 100 -> grey, 160+ -> green
+  if(v>=100){ const t=Math.min((v-100)/60,1); return `rgb(${Math.round(120-40*t)},${Math.round(180+50*t)},${Math.round(140+20*t)})`; }
+  const t=Math.min((100-v)/40,1); return `rgb(${Math.round(200+40*t)},${Math.round(110-40*t)},${Math.round(120-30*t)})`;
+}
+function renderMatrix(elId, dataObj, buckets, keys, valueSuffix){
+  const idx = indexMatrix(dataObj, buckets, keys);
+  let h='<div style="overflow-x:auto"><table class="matrix"><thead><tr><th>Segment</th>';
+  keys.forEach(k=> h+=`<th><span class="dot" style="background:${PLATFORMS[k].color};display:inline-block;margin-right:4px"></span>${PLATFORMS[k].name}</th>`);
+  h+='</tr></thead><tbody>';
+  buckets.forEach(b=>{
+    h+=`<tr><td class="seglabel">${b}</td>`;
+    keys.forEach(k=>{
+      const raw = dataObj[k][buckets.indexOf(b)];
+      const v = idx[b][k];
+      const disp = v==null? "—" : v;
+      const rawDisp = raw==null? "" : `<div style="font-size:9.5px;opacity:.7">${raw}%</div>`;
+      h+=`<td class="cell" style="background:${idxColor(v)}">${disp}${rawDisp}</td>`;
+    });
+    h+='</tr>';
+  });
+  h+='</tbody></table></div>';
+  h+=`<div class="legendrow"><span><span class="swatch" style="background:${idxColor(150)}"></span>Over-indexes (&gt;120)</span><span><span class="swatch" style="background:${idxColor(100)}"></span>Average (~100)</span><span><span class="swatch" style="background:${idxColor(70)}"></span>Under-reaches (&lt;80)</span><span>· big number = index, small = raw share</span></div>`;
+  CH(elId).innerHTML=h;
+}
+
+/* ---------- CHARTS ---------- */
+Chart.defaults.color="#6c6c78";
+Chart.defaults.font.family="-apple-system,Segoe UI,Roboto,sans-serif";
+Chart.defaults.borderColor="#e3e5ea";
+function ds(k,data){return {label:PLATFORMS[k].name,data:data,backgroundColor:PLATFORMS[k].color,borderRadius:4,maxBarThickness:26};}
+
+function build(v){
+  if(built[v]) return; built[v]=true;
+  if(v==="age"){
+    new Chart(CH("ageChart"),{type:"bar",data:{labels:AGE_BUCKETS,
+      datasets:ORDER.map(k=>ds(k,AGE[k]))},
+      options:{responsive:true,maintainAspectRatio:false,
+        plugins:{legend:{position:"top"},tooltip:{callbacks:{label:c=>`${c.dataset.label}: ${c.raw==null?"n/a":c.raw+"%"}`}}},
+        scales:{y:{title:{display:true,text:"% of audience"},grid:{color:"#ececf1"}},x:{grid:{display:false}}}}});
+    renderMatrix("ageMatrix",AGE,AGE_BUCKETS,ORDER);
+  }
+  if(v==="gender"){
+    new Chart(CH("genderChart"),{type:"bar",data:{labels:["Female","Male","Other / unspecified"],
+      datasets:ORDER.map(k=>ds(k,GENDER[k]))},
+      options:{responsive:true,maintainAspectRatio:false,
+        plugins:{legend:{position:"top"}},
+        scales:{y:{title:{display:true,text:"% of audience"},grid:{color:"#ececf1"}},x:{grid:{display:false}}}}});
+    renderMatrix("genderMatrix",{x:[GENDER.x[0]],yts:[GENDER.yts[0]],ytv:[GENDER.ytv[0]],tt:[GENDER.tt[0]],fb:[GENDER.fb[0]],ig:[GENDER.ig[0]]},["Female %"],ORDER);
+  }
+  if(v==="geo"){
+    new Chart(CH("geoChart"),{type:"bar",data:{labels:ORDER.map(k=>PLATFORMS[k].name),
+      datasets:[{label:"Spain %",data:ORDER.map(k=>SPAIN[k]),backgroundColor:ORDER.map(k=>PLATFORMS[k].color),borderRadius:4}]},
+      options:{indexAxis:"y",responsive:true,maintainAspectRatio:false,
+        plugins:{legend:{display:false}},
+        scales:{x:{title:{display:true,text:"% located in Spain"},grid:{color:"#ececf1"}},y:{grid:{display:false}}}}});
+    CH("geoLists").innerHTML = ORDER.map(k=>{
+      const rows = GEO[k].map(r=>`<div style="display:flex;justify-content:space-between;font-size:12.5px;margin:4px 0"><span>${r[0]}</span><span class="muted">${r[1]}%</span></div>`).join("");
+      return `<div class="card"><h3><span class="dot" style="background:${PLATFORMS[k].color}"></span>${PLATFORMS[k].name}</h3>${rows}</div>`;
+    }).join("");
+  }
+  if(v==="device"){
+    const dkeys=["x","yts","ytv"];
+    new Chart(CH("deviceChart"),{type:"bar",data:{labels:DEVICE.labels,
+      datasets:dkeys.map(k=>ds(k,DEVICE[k]))},
+      options:{responsive:true,maintainAspectRatio:false,
+        plugins:{legend:{position:"top"}},
+        scales:{y:{title:{display:true,text:"% of watch/usage"},grid:{color:"#ececf1"}},x:{grid:{display:false}}}}});
+  }
+  if(v==="activity"){
+    CH("activityCards").innerHTML = ORDER.map(k=>{
+      const a=ACTIVITY[k];
+      return `<div class="card"><h3><span class="dot" style="background:${PLATFORMS[k].color}"></span>${PLATFORMS[k].name}</h3><p style="font-weight:700;color:var(--txt);margin-bottom:5px">${a.peak}</p><p>${a.note}</p></div>`;
+    }).join("");
+  }
+  if(v==="matrix"){
+    const rows = [
+      ["Gen Z / 18-24","TikTok, X","YouTube Shorts, YouTube Videos"],
+      ["Core 25-34","X (peaks here), TikTok, Instagram","YouTube Shorts"],
+      ["Mid 35-44","YouTube Shorts, Facebook*","X"],
+      ["Older 45-54","YouTube Shorts, YouTube Videos","X, TikTok"],
+      ["55+","YouTube Videos, Facebook*","X, TikTok"],
+      ["Women","Instagram, Facebook*, TikTok","X, YouTube Shorts"],
+      ["Men","X, YouTube Shorts","Instagram, Facebook*"],
+      ["Living-room / TV","YouTube Videos","—"],
+      ["Domestic (Spain)","TikTok, X","YouTube, Facebook*"],
+      ["LatAm / international","Facebook*, Instagram","X (very Spain-heavy)"]
+    ];
+    let h='<div style="overflow-x:auto"><table class="matrix"><thead><tr><th>Audience</th><th style="text-align:left;color:#5fe6a0">Best channels (over-index)</th><th style="text-align:left;color:#ff8b9a">Weak / avoid</th></tr></thead><tbody>';
+    rows.forEach(r=>{ h+=`<tr><td class="seglabel">${r[0]}</td><td style="text-align:left">${r[1]}</td><td style="text-align:left;color:var(--muted)">${r[2]}</td></tr>`; });
+    h+='</tbody></table></div>';
+    CH("bestMatrix").innerHTML=h;
+  }
+  if(v==="opps"){
+    const opps=[
+      ["Own the living room with YouTube long-form","YouTube Videos are 45% TV — the only surface where lean-back, higher-production trailers land on a big screen. Prioritize full trailers & featurettes here, not just Shorts."],
+      ["YouTube Shorts is your 35-54 engine","Counter-intuitively, Shorts over-indexes hard on 35-54 (54% combined) while TikTok/X skew younger. Use Shorts to reach older adults that TikTok can't."],
+      ["Sequence a launch across peak windows","X midday → YouTube afternoon → Instagram evening → TikTok late-night lets one title moment ride each audience's active hours in a single day."],
+      ["Instagram + Facebook for female-led titles","Both ~64% women. For female-skewing content (romance, certain dramas), these two channels are the efficient reach play."],
+      ["TikTok is the balanced volume play","Highest raw reach, night-owl 18-34, only mild female skew (55/44). Best single channel when you want broad young-adult scale."],
+      ["X for real-time, male, Spain-domestic moments","60% male, 65% Spain, midweek-daytime peak — ideal for reactive, news-style, domestic buzz."]
+    ];
+    const chals=[
+      ["Teens (13-17) are barely reached anywhere","Max ~5.6% (YouTube Videos); TikTok & FB don't even report the bucket. If a title targets teens, current organic mix has a real gap."],
+      ["X is a Spain echo-chamber","65% Spain + France #2 (likely diaspora/algorithmic). Almost no LatAm reach — don't rely on X for regional Spanish-speaking audiences."],
+      ["Facebook = followers, not reach","FB data is who follows us, not who we reached, and age is estimated. Treat FB insights as directional; don't plan reach off it."],
+      ["TikTok's Romania anomaly","21.7% Romania is unusual — likely a viral clip or bot/algorithmic spill. Validate before treating TikTok geo as intent-based."],
+      ["Under-reaching 45+ on social","Outside YouTube, the 45+ audience is thin (X 11%, TikTok 14%). Older-skewing titles need YouTube or paid/other channels."],
+      ["Cross-platform geo isn't apples-to-apples","YouTube/TikTok geo is share of total views; X/IG/FB is share of audience. Compare geo within a platform, or you'll misread Spain concentration."]
+    ];
+    CH("oppCards").innerHTML = opps.map(o=>`<div class="card"><h3><span class="tag opp">Opportunity</span> ${o[0]}</h3><p>${o[1]}</p></div>`).join("");
+    CH("chalCards").innerHTML = chals.map(o=>`<div class="card"><h3><span class="tag chal">Challenge</span> ${o[0]}</h3><p>${o[1]}</p></div>`).join("");
+  }
+}
+build("age");
+
+CH("footer").innerHTML = `Sources: native platform analytics screenshots (X, YouTube, TikTok, Facebook, Instagram), sample windows ~28–30 days as of July 2026. Facebook reflects followers (not reached audience) with age estimated from chart. YouTube & TikTok geography are share of total views. Indices computed as segment share ÷ cross-channel average × 100. Built for internal organic-reach planning — figures are directional, not absolute reach.`;
+</script>
+</body>
+</html>
