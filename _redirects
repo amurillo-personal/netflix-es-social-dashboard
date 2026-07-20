@@ -1,0 +1,8 @@
+# Cloudflare Pages — redirecciones
+# Mantiene vivos los enlaces antiguos tras renombrar el dashboard de Social Performance.
+# Coloca este archivo en la raíz del repositorio (mismo nivel que index.html).
+
+/social            /socialperformance   301
+/dashboard         /socialperformance   301
+/dashboard.html    /socialperformance   301
+/social.html       /socialperformance   301
