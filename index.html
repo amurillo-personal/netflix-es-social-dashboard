@@ -109,6 +109,7 @@
   <div class="auth-box">
     <div class="auth-title">España · Social Intelligence Hub</div>
     <input id="auth-input" type="password" placeholder="Contraseña" onkeydown="if(event.key==='Enter')checkAuth()">
+    <label class="auth-remember" style="display:flex;align-items:center;gap:8px;font-size:13px;color:#cfd3e6;margin:6px 0 2px;cursor:pointer;user-select:none;"><input id="auth-remember" type="checkbox" style="width:15px;height:15px;accent-color:#E50914;cursor:pointer;"> Recordar contraseña en este dispositivo</label>
     <div id="auth-error" class="auth-error"></div>
     <button onclick="checkAuth()" class="auth-btn">Acceder</button>
   </div>
@@ -138,7 +139,7 @@
 
 <script>
 (function(){
-  if(sessionStorage.getItem('nfes_auth')==='ok'){
+  if(localStorage.getItem('nfes_auth')==='ok' || sessionStorage.getItem('nfes_auth')==='ok'){
     document.getElementById('auth-overlay').style.display='none';
     document.getElementById('page').style.display='flex';
   }
@@ -146,7 +147,9 @@
 function checkAuth(){
   var val=document.getElementById('auth-input').value;
   if(val==='$0c1@lD@$hb0@rd'){
-    sessionStorage.setItem('nfes_auth','ok');
+    var remember=document.getElementById('auth-remember')&&document.getElementById('auth-remember').checked;
+    if(remember){ localStorage.setItem('nfes_auth','ok'); sessionStorage.removeItem('nfes_auth'); }
+    else { sessionStorage.setItem('nfes_auth','ok'); localStorage.removeItem('nfes_auth'); }
     document.getElementById('auth-overlay').style.display='none';
     document.getElementById('page').style.display='flex';
   }else{
